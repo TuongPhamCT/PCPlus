@@ -1,0 +1,15 @@
+class AssetHelper {
+  //Assets in icons
+  static const String iconAssets = 'assets/icons/';
+  //Assets in images
+  static const String imgAssets = 'assets/images/';
+
+  //splash
+  static const String logo = '${imgAssets}Logo.png';
+
+  //default user image
+  static const String defaultAvt = '${imgAssets}avatar.jpg';
+
+  //no network
+  static const String noNetwork = '${imgAssets}noInternet.png';
+}
