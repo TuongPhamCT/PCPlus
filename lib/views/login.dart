@@ -11,6 +11,8 @@ import 'package:pcplus/views/register.dart';
 import 'package:pcplus/views/widgets/profile/button_profile.dart';
 import 'package:pcplus/views/widgets/profile/profile_input.dart';
 
+import '../presenter/login_presenter.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
   static const String routeName = 'login';
@@ -19,11 +21,16 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen> implements LoginViewContract {
+  LoginPresenter? _loginPresenter;
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
   BuildContext? progressbarContext;
 
   @override
   void initState() {
+    _loginPresenter = LoginPresenter(this);
     super.initState();
   }
 
@@ -51,11 +58,13 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               const Gap(30),
               ProfileInput(
+                controller: emailController,
                 icon: FontAwesomeIcons.user,
                 hintText: 'Username',
               ),
               const Gap(20),
               ProfileInput(
+                controller: passwordController,
                 icon: Icons.lock_outline_rounded,
                 hintText: 'Password',
                 obscureText: true,
@@ -63,7 +72,9 @@ class _LoginScreenState extends State<LoginScreen> {
               const Gap(35),
               ButtonProfile(
                 name: 'Login',
-                onPressed: () {},
+                onPressed: () async {
+                  await _loginPresenter!.login(emailController.text, passwordController.text);
+                },
               ),
               const Gap(20),
               Container(
@@ -110,5 +121,35 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void onForgotPasswordError(String errorMessage) {
+    // TODO: implement onForgotPasswordError
+  }
+
+  @override
+  void onForgotPasswordSent() {
+    // TODO: implement onForgotPasswordSent
+  }
+
+  @override
+  void onLoginFailed() {
+    // TODO: implement onLoginFailed
+  }
+
+  @override
+  void onLoginSucceeded() {
+    // TODO: implement onLoginSucceeded
+  }
+
+  @override
+  void onPopContext() {
+    // TODO: implement onPopContext
+  }
+
+  @override
+  void onWaitingProgressBar() {
+    // TODO: implement onWaitingProgressBar
   }
 }

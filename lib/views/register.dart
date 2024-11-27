@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:gap/gap.dart';
 import 'package:pcplus/config/asset_helper.dart';
+import 'package:pcplus/contract/register_contract.dart';
+import 'package:pcplus/presenter/register_presenter.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 import 'package:pcplus/views/OTP.dart';
@@ -17,7 +19,17 @@ class RegisterScreen extends StatefulWidget {
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _RegisterScreenState extends State<RegisterScreen> implements RegisterViewContract {
+  RegisterPresenter? _registerPresenter;
+
+  final emailController = TextEditingController();
+
+  @override
+  void initState() {
+    _registerPresenter = RegisterPresenter(this);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -42,14 +54,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               const Gap(30),
               ProfileInput(
+                controller: emailController,
                 icon: FontAwesomeIcons.user,
                 hintText: 'Your Email',
               ),
               const Gap(35),
               ButtonProfile(
                 name: 'Register',
-                onPressed: () {
-                  Navigator.of(context).pushNamed(OTPScreen.routeName);
+                onPressed: () async {
+                  await _registerPresenter!.register(emailController.text);
                 },
               ),
               const Gap(20),
@@ -80,5 +93,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void onEmailAlreadyInUse() {
+    // TODO: implement onEmailAlreadyInUse
+  }
+
+  @override
+  void onPopContext() {
+    // TODO: implement onPopContext
+  }
+
+  @override
+  void onSignUpFailed() {
+    // TODO: implement onSignUpFailed
+  }
+
+  @override
+  void onSignUpSucceeded() {
+    // TODO: implement onSignUpSucceeded
+    Navigator.of(context).pushNamed(OTPScreen.routeName);
+  }
+
+  @override
+  void onWaitingProgressBar() {
+    // TODO: implement onWaitingProgressBar
   }
 }
