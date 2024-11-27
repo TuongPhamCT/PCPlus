@@ -1,3 +1,4 @@
+import 'package:pcplus/controller/register_controller.dart';
 import 'package:pcplus/services/authenticator_service.dart';
 import 'package:string_validator/string_validator.dart';
 
@@ -6,6 +7,7 @@ import '../contract/register_contract.dart';
 class RegisterPresenter {
   final RegisterViewContract? _view;
   final AuthenticatorService _authService = AuthenticatorService();
+  final RegisterController _registerController = RegisterController();
   RegisterPresenter(this._view);
 
   String? validateEmail(String? email) {
@@ -18,7 +20,7 @@ class RegisterPresenter {
     return null;
   }
 
-  Future<void> signUp(String email) async {
+  Future<void> register(String email) async {
     email = email.trim();
     _view?.onWaitingProgressBar();
     bool? result = await _authService.checkIfEmailExists(email);
@@ -27,6 +29,7 @@ class RegisterPresenter {
     if (result == true) {
       _view?.onEmailAlreadyInUse();
     } else if (result == false) {
+      _registerController.email = email;
       _view?.onSignUpSucceeded();
     } else if (result == null) {
       _view?.onSignUpFailed();

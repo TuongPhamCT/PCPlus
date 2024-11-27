@@ -17,7 +17,7 @@ class OtpPresenter {
   }
 
   Future<void> pinCodeVerify(String? pinCode) async {
-    if (pinCode == pinCode) {
+    if (this.pinCode == pinCode) {
       _view?.onVerifySucceeded();
     } else {
       _view?.onWrongPinCodeError();

@@ -53,15 +53,16 @@ class _RegisterScreenState extends State<RegisterScreen> implements RegisterView
                 style: TextDecor.profileTitle,
               ),
               const Gap(30),
-              const ProfileInput(
+              ProfileInput(
+                controller: emailController,
                 icon: FontAwesomeIcons.user,
                 hintText: 'Your Email',
               ),
               const Gap(35),
               ButtonProfile(
                 name: 'Register',
-                onPressed: () {
-                  Navigator.of(context).pushNamed(OTPScreen.routeName);
+                onPressed: () async {
+                  await _registerPresenter!.register(emailController.text);
                 },
               ),
               const Gap(20),
@@ -112,6 +113,7 @@ class _RegisterScreenState extends State<RegisterScreen> implements RegisterView
   @override
   void onSignUpSucceeded() {
     // TODO: implement onSignUpSucceeded
+    Navigator.of(context).pushNamed(OTPScreen.routeName);
   }
 
   @override
