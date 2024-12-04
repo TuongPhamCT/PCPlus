@@ -37,7 +37,7 @@ class _UserInformationState extends State<UserInformation> {
           color: Colors.white,
           height: size.height,
           width: size.width,
-          padding: EdgeInsets.all(20),
+          padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [

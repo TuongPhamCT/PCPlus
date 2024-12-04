@@ -10,6 +10,7 @@ import 'package:pcplus/views/OTP.dart';
 import 'package:pcplus/views/login.dart';
 import 'package:pcplus/views/widgets/profile/button_profile.dart';
 import 'package:pcplus/views/widgets/profile/profile_input.dart';
+import 'package:pcplus/views/widgets/util_widgets.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -23,6 +24,7 @@ class _RegisterScreenState extends State<RegisterScreen> implements RegisterView
   RegisterPresenter? _registerPresenter;
 
   final emailController = TextEditingController();
+  String? error;
 
   @override
   void initState() {
@@ -57,6 +59,7 @@ class _RegisterScreenState extends State<RegisterScreen> implements RegisterView
                 controller: emailController,
                 icon: FontAwesomeIcons.user,
                 hintText: 'Your Email',
+                errorText: error,
               ),
               const Gap(35),
               ButtonProfile(
@@ -97,27 +100,36 @@ class _RegisterScreenState extends State<RegisterScreen> implements RegisterView
 
   @override
   void onEmailAlreadyInUse() {
-    // TODO: implement onEmailAlreadyInUse
+    setState(() {
+      error = "This email is already registered";
+    });
   }
 
   @override
   void onPopContext() {
-    // TODO: implement onPopContext
+    Navigator.of(context, rootNavigator: true).pop();
   }
 
   @override
-  void onSignUpFailed() {
-    // TODO: implement onSignUpFailed
+  void onRegisterFailed() {
+    UtilWidgets.createDismissibleDialog(
+        context,
+        UtilWidgets.NOTIFICATION,
+        "An error occurred while registering your account."
+        " Please try again later.",
+        () {
+          Navigator.of(context, rootNavigator: true).pop();
+        }
+    );
   }
 
   @override
-  void onSignUpSucceeded() {
-    // TODO: implement onSignUpSucceeded
+  void onRegisterSucceeded() {
     Navigator.of(context).pushNamed(OTPScreen.routeName);
   }
 
   @override
   void onWaitingProgressBar() {
-    // TODO: implement onWaitingProgressBar
+    UtilWidgets.createLoadingWidget(context);
   }
 }

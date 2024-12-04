@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:pcplus/models/users/user_repo.dart';
 
-class AuthenticatorService {
+class AuthenticationService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   // final UserRepository _repo = UserRepository();
 
@@ -59,6 +59,46 @@ class AuthenticatorService {
       }
     } catch (e) {
       return null;
+    }
+  }
+
+  // send reset password email
+  Future<String?> sendPasswordResetEmail(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      return null;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        return 'No user found with this email.';
+      } else if (e.code == 'invalid-email') {
+        return 'Invalid email format.';
+      }
+      return e.toString();
+    }
+  }
+
+  // Change password
+  Future<bool> changePassword(String newPassword) async {
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+
+      if (user != null) {
+        await user.updatePassword(newPassword);
+        print("Password changed successfully.");
+        return true;
+      } else {
+        print("No user is signed in.");
+        return false;
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password is too weak.');
+      } else if (e.code == 'requires-recent-login') {
+        print('Please re-authenticate to change your password.');
+      } else {
+        print('Error: ${e.message}');
+      }
+      return false;
     }
   }
 }
