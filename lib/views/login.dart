@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:pcplus/config/asset_helper.dart';
 import 'package:pcplus/contract/login_contract.dart';
 import 'package:pcplus/themes/palette/palette.dart';
@@ -10,6 +9,7 @@ import 'package:pcplus/views/forgot_password.dart';
 import 'package:pcplus/views/register.dart';
 import 'package:pcplus/views/widgets/profile/button_profile.dart';
 import 'package:pcplus/views/widgets/profile/profile_input.dart';
+import 'package:pcplus/views/widgets/util_widgets.dart';
 
 import '../presenter/login_presenter.dart';
 
@@ -27,6 +27,7 @@ class _LoginScreenState extends State<LoginScreen> implements LoginViewContract 
   final passwordController = TextEditingController();
 
   BuildContext? progressbarContext;
+  String? error;
 
   @override
   void initState() {
@@ -61,6 +62,7 @@ class _LoginScreenState extends State<LoginScreen> implements LoginViewContract 
                 controller: emailController,
                 icon: FontAwesomeIcons.user,
                 hintText: 'Username',
+                errorText: error,
               ),
               const Gap(20),
               ProfileInput(
@@ -68,6 +70,7 @@ class _LoginScreenState extends State<LoginScreen> implements LoginViewContract 
                 icon: Icons.lock_outline_rounded,
                 hintText: 'Password',
                 obscureText: true,
+                errorText: error,
               ),
               const Gap(35),
               ButtonProfile(
@@ -124,32 +127,40 @@ class _LoginScreenState extends State<LoginScreen> implements LoginViewContract 
   }
 
   @override
-  void onForgotPasswordError(String errorMessage) {
-    // TODO: implement onForgotPasswordError
-  }
-
-  @override
-  void onForgotPasswordSent() {
-    // TODO: implement onForgotPasswordSent
-  }
-
-  @override
   void onLoginFailed() {
-    // TODO: implement onLoginFailed
+    setState(() {
+      error = "Email or password is invalid";
+    });
+    UtilWidgets.createDialog(
+        context,
+        UtilWidgets.NOTIFICATION,
+        "Login failed!",
+        () {
+          Navigator.pop(context);
+        }
+    );
   }
 
   @override
   void onLoginSucceeded() {
     // TODO: implement onLoginSucceeded
+    UtilWidgets.createDialog(
+        context,
+        UtilWidgets.NOTIFICATION,
+        "Login successfully!",
+        () {
+          Navigator.of(context, rootNavigator: true).pop();
+        }
+    );
   }
 
   @override
   void onPopContext() {
-    // TODO: implement onPopContext
+    Navigator.of(context, rootNavigator: true).pop();
   }
 
   @override
   void onWaitingProgressBar() {
-    // TODO: implement onWaitingProgressBar
+    UtilWidgets.createLoadingWidget(context);
   }
 }

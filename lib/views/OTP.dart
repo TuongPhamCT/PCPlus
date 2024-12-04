@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:gap/gap.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pcplus/config/asset_helper.dart';
@@ -10,6 +11,7 @@ import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 import 'package:pcplus/views/user_information.dart';
 import 'package:pcplus/views/widgets/profile/button_profile.dart';
+import 'package:pcplus/views/widgets/util_widgets.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../presenter/OTP_presenter.dart';
@@ -42,10 +44,18 @@ class _OTPScreenState extends State<OTPScreen> implements OtpViewContract {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(FontAwesomeIcons.arrowLeft),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
       body: SingleChildScrollView(
         child: Container(
           width: size.width,
-          height: size.height,
+          height: size.height - 115,
           padding: const EdgeInsets.symmetric(
             horizontal: 50,
           ),
@@ -53,9 +63,9 @@ class _OTPScreenState extends State<OTPScreen> implements OtpViewContract {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Gap(50),
               Column(
                 children: [
+                  const Gap(5),
                   Image.asset(
                     AssetHelper.logo,
                     width: 150,
@@ -181,7 +191,14 @@ class _OTPScreenState extends State<OTPScreen> implements OtpViewContract {
 
   @override
   void onResendPinCode() {
-    // TODO: implement onResendPinCode
+    UtilWidgets.createDismissibleDialog(
+        context,
+        UtilWidgets.NOTIFICATION,
+        "OTP code has been resent.",
+        () {
+          Navigator.of(context, rootNavigator: true).pop();
+        }
+    );
   }
 
   @override
@@ -192,6 +209,13 @@ class _OTPScreenState extends State<OTPScreen> implements OtpViewContract {
 
   @override
   void onWrongPinCodeError() {
-    // TODO: implement onWrongPinCodeError
+    UtilWidgets.createDismissibleDialog(
+        context,
+        UtilWidgets.NOTIFICATION,
+        "Input code is incorrect",
+        () {
+          Navigator.of(context, rootNavigator: true).pop();
+        }
+    );
   }
 }

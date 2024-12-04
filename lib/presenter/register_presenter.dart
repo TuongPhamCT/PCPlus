@@ -1,13 +1,13 @@
 import 'package:pcplus/controller/register_controller.dart';
-import 'package:pcplus/services/authenticator_service.dart';
+import 'package:pcplus/services/authentication_service.dart';
 import 'package:string_validator/string_validator.dart';
 
 import '../contract/register_contract.dart';
 
 class RegisterPresenter {
   final RegisterViewContract? _view;
-  final AuthenticatorService _authService = AuthenticatorService();
-  final RegisterController _registerController = RegisterController();
+  final AuthenticationService _authService = AuthenticationService();
+  final RegisterController _registerController = RegisterController.getInstance();
   RegisterPresenter(this._view);
 
   String? validateEmail(String? email) {
@@ -30,9 +30,9 @@ class RegisterPresenter {
       _view?.onEmailAlreadyInUse();
     } else if (result == false) {
       _registerController.email = email;
-      _view?.onSignUpSucceeded();
+      _view?.onRegisterSucceeded();
     } else if (result == null) {
-      _view?.onSignUpFailed();
+      _view?.onRegisterFailed();
     }
   }
 }
