@@ -95,7 +95,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 style: TextDecor.profileName,
               ),
             ),
-            const Gap(15),
+            const Gap(25),
             BackgroundContainer(
               horizontalPadding: 20,
               child: Column(
@@ -199,6 +199,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Column(
                 children: [
+                  const Gap(20),
                   GestureDetector(
                     onTap: () {
                       Navigator.of(context)
