@@ -1,14 +1,20 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:gap/gap.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pcplus/config/asset_helper.dart';
+import 'package:pcplus/contract/otp_contract.dart';
+import 'package:pcplus/controller/register_controller.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 import 'package:pcplus/views/user_information.dart';
 import 'package:pcplus/views/widgets/profile/button_profile.dart';
+import 'package:pcplus/views/widgets/util_widgets.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+
+import '../presenter/OTP_presenter.dart';
 
 class OTPScreen extends StatefulWidget {
   const OTPScreen({super.key});
@@ -18,23 +24,38 @@ class OTPScreen extends StatefulWidget {
   State<OTPScreen> createState() => _OTPScreenState();
 }
 
-class _OTPScreenState extends State<OTPScreen> {
+class _OTPScreenState extends State<OTPScreen> implements OtpViewContract {
+  OtpPresenter? _otpPresenter;
+  final RegisterController _registerController = RegisterController.getInstance();
   final _formKey = GlobalKey<FormState>();
   StreamController<ErrorAnimationType> errorController =
       StreamController<ErrorAnimationType>();
   TextEditingController textEditingController = TextEditingController();
 
   String currentText = "";
-  String pinCode = '';
+
+  @override
+  void initState() {
+    _otpPresenter = OtpPresenter(this, _registerController.email);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(FontAwesomeIcons.arrowLeft),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
       body: SingleChildScrollView(
         child: Container(
           width: size.width,
-          height: size.height,
+          height: size.height - 115,
           padding: const EdgeInsets.symmetric(
             horizontal: 50,
           ),
@@ -42,9 +63,9 @@ class _OTPScreenState extends State<OTPScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Gap(50),
               Column(
                 children: [
+                  const Gap(5),
                   Image.asset(
                     AssetHelper.logo,
                     width: 150,
@@ -64,7 +85,7 @@ class _OTPScreenState extends State<OTPScreen> {
                     style: TextDecor.profileButtonText,
                   ),
                   Text(
-                    'abc@gmail.com',
+                    _otpPresenter!.email!,
                     style: TextDecor.otpEmailText,
                   ),
                   const Gap(20),
@@ -139,7 +160,9 @@ class _OTPScreenState extends State<OTPScreen> {
                         style: TextDecor.profileIntroText,
                       ),
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          _otpPresenter!.resendConfirmationCode();
+                        },
                         child: Text(
                           'Resend',
                           style: TextDecor.profileTextButton.copyWith(
@@ -155,7 +178,7 @@ class _OTPScreenState extends State<OTPScreen> {
               ButtonProfile(
                 name: 'NEXT',
                 onPressed: () {
-                  Navigator.of(context).pushNamed(UserInformation.routeName);
+                  _otpPresenter!.pinCodeVerify(currentText);
                 },
               ),
               const Gap(20),
@@ -163,6 +186,36 @@ class _OTPScreenState extends State<OTPScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  @override
+  void onResendPinCode() {
+    UtilWidgets.createDismissibleDialog(
+        context,
+        UtilWidgets.NOTIFICATION,
+        "OTP code has been resent.",
+        () {
+          Navigator.of(context, rootNavigator: true).pop();
+        }
+    );
+  }
+
+  @override
+  void onVerifySucceeded() {
+    // TODO: implement onVerifySucceeded
+    Navigator.of(context).pushNamed(UserInformation.routeName);
+  }
+
+  @override
+  void onWrongPinCodeError() {
+    UtilWidgets.createDismissibleDialog(
+        context,
+        UtilWidgets.NOTIFICATION,
+        "Input code is incorrect",
+        () {
+          Navigator.of(context, rootNavigator: true).pop();
+        }
     );
   }
 }

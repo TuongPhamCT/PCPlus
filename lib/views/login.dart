@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:pcplus/config/asset_helper.dart';
+import 'package:pcplus/contract/login_contract.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 import 'package:gap/gap.dart';
@@ -8,6 +9,9 @@ import 'package:pcplus/views/forgot_password.dart';
 import 'package:pcplus/views/register.dart';
 import 'package:pcplus/views/widgets/profile/button_profile.dart';
 import 'package:pcplus/views/widgets/profile/profile_input.dart';
+import 'package:pcplus/views/widgets/util_widgets.dart';
+
+import '../presenter/login_presenter.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -17,11 +21,17 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends State<LoginScreen> implements LoginViewContract {
+  LoginPresenter? _loginPresenter;
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
   BuildContext? progressbarContext;
+  String? error;
 
   @override
   void initState() {
+    _loginPresenter = LoginPresenter(this);
     super.initState();
   }
 
@@ -48,20 +58,26 @@ class _LoginScreenState extends State<LoginScreen> {
                 style: TextDecor.profileTitle,
               ),
               const Gap(30),
-              const ProfileInput(
+              ProfileInput(
+                controller: emailController,
                 icon: FontAwesomeIcons.user,
                 hintText: 'Username',
+                errorText: error,
               ),
               const Gap(20),
-              const ProfileInput(
+              ProfileInput(
+                controller: passwordController,
                 icon: Icons.lock_outline_rounded,
                 hintText: 'Password',
                 obscureText: true,
+                errorText: error,
               ),
               const Gap(35),
               ButtonProfile(
                 name: 'Login',
-                onPressed: () {},
+                onPressed: () async {
+                  await _loginPresenter!.login(emailController.text, passwordController.text);
+                },
               ),
               const Gap(20),
               Container(
@@ -108,5 +124,43 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void onLoginFailed() {
+    setState(() {
+      error = "Email or password is invalid";
+    });
+    UtilWidgets.createDialog(
+        context,
+        UtilWidgets.NOTIFICATION,
+        "Login failed!",
+        () {
+          Navigator.pop(context);
+        }
+    );
+  }
+
+  @override
+  void onLoginSucceeded() {
+    // TODO: implement onLoginSucceeded
+    UtilWidgets.createDialog(
+        context,
+        UtilWidgets.NOTIFICATION,
+        "Login successfully!",
+        () {
+          Navigator.of(context, rootNavigator: true).pop();
+        }
+    );
+  }
+
+  @override
+  void onPopContext() {
+    Navigator.of(context, rootNavigator: true).pop();
+  }
+
+  @override
+  void onWaitingProgressBar() {
+    UtilWidgets.createLoadingWidget(context);
   }
 }

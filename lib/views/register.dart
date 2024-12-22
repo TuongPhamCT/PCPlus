@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:gap/gap.dart';
 import 'package:pcplus/config/asset_helper.dart';
+import 'package:pcplus/contract/register_contract.dart';
+import 'package:pcplus/presenter/register_presenter.dart';
+import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 import 'package:pcplus/views/OTP.dart';
 import 'package:pcplus/views/login.dart';
 import 'package:pcplus/views/widgets/profile/button_profile.dart';
 import 'package:pcplus/views/widgets/profile/profile_input.dart';
+import 'package:pcplus/views/widgets/util_widgets.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -16,7 +20,18 @@ class RegisterScreen extends StatefulWidget {
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _RegisterScreenState extends State<RegisterScreen> implements RegisterViewContract {
+  RegisterPresenter? _registerPresenter;
+
+  final emailController = TextEditingController();
+  String? error;
+
+  @override
+  void initState() {
+    _registerPresenter = RegisterPresenter(this);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -40,15 +55,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 style: TextDecor.profileTitle,
               ),
               const Gap(30),
-              const ProfileInput(
+              ProfileInput(
+                controller: emailController,
                 icon: FontAwesomeIcons.user,
                 hintText: 'Your Email',
+                errorText: error,
               ),
               const Gap(35),
               ButtonProfile(
                 name: 'Register',
-                onPressed: () {
-                  Navigator.of(context).pushNamed(OTPScreen.routeName);
+                onPressed: () async {
+                  await _registerPresenter!.register(emailController.text);
                 },
               ),
               const Gap(20),
@@ -79,5 +96,40 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void onEmailAlreadyInUse() {
+    setState(() {
+      error = "This email is already registered";
+    });
+  }
+
+  @override
+  void onPopContext() {
+    Navigator.of(context, rootNavigator: true).pop();
+  }
+
+  @override
+  void onRegisterFailed() {
+    UtilWidgets.createDismissibleDialog(
+        context,
+        UtilWidgets.NOTIFICATION,
+        "An error occurred while registering your account."
+        " Please try again later.",
+        () {
+          Navigator.of(context, rootNavigator: true).pop();
+        }
+    );
+  }
+
+  @override
+  void onRegisterSucceeded() {
+    Navigator.of(context).pushNamed(OTPScreen.routeName);
+  }
+
+  @override
+  void onWaitingProgressBar() {
+    UtilWidgets.createLoadingWidget(context);
   }
 }
