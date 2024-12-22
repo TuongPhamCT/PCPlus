@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen>
     // Tạo AnimationController với thời gian 3 giây
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 3),
+      duration: const Duration(seconds: 3),
     );
 
     // Sử dụng Tween để tạo giá trị tiến trình từ 0 đến 1
@@ -58,20 +58,20 @@ class _SplashScreenState extends State<SplashScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
+            SizedBox(
               width: size.width * 0.7,
               height: size.width * 0.7,
               child: Image.asset(AssetHelper.logo),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 60),
+              padding: const EdgeInsets.symmetric(horizontal: 60),
               child: LinearProgressIndicator(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
+                borderRadius: const BorderRadius.all(Radius.circular(20)),
                 minHeight: 18,
                 value: _animation?.value, // Giá trị tiến trình từ Animation
                 backgroundColor: Palette.greyBackground,
-                valueColor: AlwaysStoppedAnimation<Color>(Palette.main1),
+                valueColor: const AlwaysStoppedAnimation<Color>(Palette.main1),
               ),
             ),
           ],

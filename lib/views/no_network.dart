@@ -29,7 +29,7 @@ class _NoNetworkScreenState extends State<NoNetworkScreen> {
               'Not Connected',
               style: TextDecor.noInternetTitle,
             ),
-            Gap(12),
+            const Gap(12),
             Text(
               'Ups. You are not connected to internet\nTry again',
               textAlign: TextAlign.center,

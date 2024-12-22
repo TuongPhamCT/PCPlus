@@ -9,4 +9,8 @@ class Palette {
   static const Color main3 = Color(0xffCC57C8);
 
   static const Color hintText = Color(0xff9B9B9B);
+
+  static const Color containerBackground = Color(0xffF5F6F9);
+
+  static const Color bottomBarUnSelect = Color(0xffCCCCCC);
 }
