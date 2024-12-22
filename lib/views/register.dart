@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:gap/gap.dart';
 import 'package:pcplus/config/asset_helper.dart';
-import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 import 'package:pcplus/views/OTP.dart';
 import 'package:pcplus/views/login.dart';
@@ -41,7 +40,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 style: TextDecor.profileTitle,
               ),
               const Gap(30),
-              ProfileInput(
+              const ProfileInput(
                 icon: FontAwesomeIcons.user,
                 hintText: 'Your Email',
               ),

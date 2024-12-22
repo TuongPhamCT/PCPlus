@@ -47,7 +47,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               style: TextDecor.profileTitle,
             ),
             const Gap(50),
-            ProfileInput(
+            const ProfileInput(
               icon: FontAwesomeIcons.user,
               hintText: 'Your Email',
             ),

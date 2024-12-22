@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:pcplus/config/asset_helper.dart';
-import 'package:pcplus/contract/login_contract.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 import 'package:gap/gap.dart';
@@ -50,12 +48,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 style: TextDecor.profileTitle,
               ),
               const Gap(30),
-              ProfileInput(
+              const ProfileInput(
                 icon: FontAwesomeIcons.user,
                 hintText: 'Username',
               ),
               const Gap(20),
-              ProfileInput(
+              const ProfileInput(
                 icon: Icons.lock_outline_rounded,
                 hintText: 'Password',
                 obscureText: true,

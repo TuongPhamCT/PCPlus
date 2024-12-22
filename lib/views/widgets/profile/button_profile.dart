@@ -16,7 +16,7 @@ class _ButtonProfileState extends State<ButtonProfile> {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        fixedSize: Size(300, 50),
+        fixedSize: const Size(300, 50),
         padding: const EdgeInsets.symmetric(vertical: 10),
         backgroundColor: Palette.main3,
         shape: RoundedRectangleBorder(

@@ -73,4 +73,20 @@ class TextDecor {
     fontWeight: FontWeight.w300,
     color: Colors.black,
   );
+
+  static TextStyle bottomLableSelect = GoogleFonts.roboto(
+    fontSize: 12,
+  );
+
+  static TextStyle profileName = GoogleFonts.roboto(
+    fontSize: 24,
+    fontWeight: FontWeight.w600,
+    color: Palette.primaryColor,
+  );
+
+  static TextStyle orderProfile = GoogleFonts.roboto(
+    fontSize: 13,
+    fontWeight: FontWeight.w300,
+    color: Palette.main1,
+  );
 }
