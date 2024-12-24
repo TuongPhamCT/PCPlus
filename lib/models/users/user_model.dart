@@ -4,6 +4,7 @@ class UserModel {
   String? name;
   String? email;
   DateTime? dateOfBirth;
+  String? gender;
   bool? isSeller;
   int? money = 0;
 
@@ -14,6 +15,7 @@ class UserModel {
     required this.name,
     required this.email,
     required this.dateOfBirth,
+    required this.gender,
     required this.isSeller,
     this.money
   });
@@ -23,6 +25,7 @@ class UserModel {
     'name': name,
     'email': email,
     'dateOfBirth': dateOfBirth,
+    'gender': gender,
     'isSeller': isSeller,
     'money': money
   };
@@ -33,6 +36,7 @@ class UserModel {
       name: json['name'] as String,
       email: json['email'] as String,
       dateOfBirth: json['dateOfBirth'] as DateTime,
+      gender: json['gender'] as String,
       isSeller: json['isSeller'] as bool,
       money: json['money'] as int,
     );

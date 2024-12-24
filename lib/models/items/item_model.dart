@@ -3,6 +3,7 @@ class ItemModel {
   String? itemID;
   String? name;
   String? sellerID;
+  String? itemType;
   String? description;
   int? price;
   int? stock;
@@ -14,6 +15,7 @@ class ItemModel {
     {
       required this.itemID,
       required this.name,
+      required this.itemType,
       required this.sellerID,
       this.description,
       required this.price,
@@ -26,6 +28,7 @@ class ItemModel {
     'itemID': itemID,
     'name': name,
     'sellerID': sellerID,
+    'itemType': itemType,
     'description': description,
     'price': price,
     'stock': stock,
@@ -37,6 +40,7 @@ class ItemModel {
       itemID: json['orderID'] as String,
       name: json['name'] as String,
       sellerID: json['sellerID'] as String,
+      itemType: json['itemType'] as String,
       description: json['description'] as String,
       price: json['price'] as int,
       stock: json['stock'] as int,

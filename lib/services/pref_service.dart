@@ -9,6 +9,7 @@ class PrefService {
     prefs.setString('userID', userData.userID!);
     prefs.setString('name', userData.name!);
     prefs.setString('email', userData.email!);
+    prefs.setString('gender', userData.gender!);
     prefs.setString('dateOfBirth', userData.dateOfBirth!.toString());
     prefs.setBool('isSeller', userData.isSeller!);
     prefs.setInt('money', userData.money!);
@@ -21,6 +22,7 @@ class PrefService {
       userID: prefs.getString('userID'),
       name: prefs.getString('name'),
       email: prefs.getString('email'),
+      gender: prefs.getString('gender'),
       dateOfBirth: DateTime.parse(prefs.getString('dateOfBirth')!),
       isSeller: prefs.getBool('isSeller'),
       money: prefs.getInt('money')

@@ -5,6 +5,7 @@ class InteractionModel {
   String? itemID;
   int? clickTimes;
   int? buyTimes;
+  int? rating;
   bool? isFavor;
 
   static String collectionName = 'Interactions';
@@ -15,6 +16,7 @@ class InteractionModel {
     required this.itemID,
     required this.clickTimes,
     required this.buyTimes,
+    required this.rating,
     required this.isFavor,
   });
 
@@ -24,6 +26,7 @@ class InteractionModel {
     'itemID': itemID,
     'clickTimes': clickTimes,
     'buyTimes': buyTimes,
+    'rating': rating,
     'isFavor': isFavor
   };
 
@@ -34,6 +37,7 @@ class InteractionModel {
       itemID: json['itemID'] as String,
       clickTimes: json['clickTimes'] as int,
       buyTimes: json['buyTimes'] as int,
+      rating: json['rating'] as int,
       isFavor: json['isFavor'] as bool
     );
   }
