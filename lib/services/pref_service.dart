@@ -11,8 +11,15 @@ class PrefService {
     prefs.setString('email', userData.email!);
     prefs.setString('gender', userData.gender!);
     prefs.setString('dateOfBirth', userData.dateOfBirth!.toString());
+    prefs.setString('phone', userData.phone!.toString());
     prefs.setBool('isSeller', userData.isSeller!);
+    prefs.setString('avatarUrl', userData.avatarUrl!);
     prefs.setInt('money', userData.money!);
+  }
+
+  Future<void> clearUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
   }
 
   Future<UserModel> loadUserData() async {
@@ -22,9 +29,11 @@ class PrefService {
       userID: prefs.getString('userID'),
       name: prefs.getString('name'),
       email: prefs.getString('email'),
+      phone: prefs.getString('phone'),
       gender: prefs.getString('gender'),
       dateOfBirth: DateTime.parse(prefs.getString('dateOfBirth')!),
       isSeller: prefs.getBool('isSeller'),
+      avatarUrl: prefs.getString('avatarUrl'),
       money: prefs.getInt('money')
     );
   }

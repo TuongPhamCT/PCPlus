@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:gap/gap.dart';
 import 'package:pcplus/config/asset_helper.dart';
+import 'package:pcplus/contract/profile_screen_contract.dart';
+import 'package:pcplus/presenter/profile_screen_presenter.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 import 'package:pcplus/views/edit_profile.dart';
+import 'package:pcplus/views/login.dart';
 import 'package:pcplus/views/widgets/bottom/bottom_bar_custom.dart';
 import 'package:pcplus/views/widgets/profile/background_container.dart';
+import 'package:pcplus/views/widgets/util_widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -17,8 +21,11 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
-  final String _userAvatarUrl = "";
+class _ProfileScreenState extends State<ProfileScreen> implements ProfileScreenContract {
+  ProfileScreenPresenter? _presenter;
+  String _userAvatarUrl = "";
+  String _userName = "";
+  bool _isLoading = true;
 
   Future<void> launchEmailApp() async {
     final Uri emailLaunchUri = Uri(
@@ -43,12 +50,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: const Text('OKE'),
+                  child: const Text('OK'),
                 )
               ],
             );
           });
     }
+  }
+
+  @override
+  void initState() {
+    _presenter = ProfileScreenPresenter(this);
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    loadData();
+  }
+
+  Future<void> loadData() async {
+    await _presenter?.getData();
   }
 
   @override
@@ -64,7 +87,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        child: Column(
+        child: _isLoading ? UtilWidgets.getLoadingWidget() : Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Gap(20),
@@ -91,7 +114,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Container(
               alignment: Alignment.center,
               child: Text(
-                'Nguyen Van A',
+                _userName,
                 style: TextDecor.profileName,
               ),
             ),
@@ -302,6 +325,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               TextButton(
                                 onPressed: () {
                                   Navigator.of(dialogContext).pop();
+                                  _presenter!.signOut();
                                 },
                                 child: Text(
                                   'Cancel',
@@ -349,5 +373,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       bottomNavigationBar: const BottomBarCustom(currentIndex: 3),
     );
+  }
+
+  @override
+  void onLoadDataSucceeded() {
+    setState(() {
+      _userName = _presenter!.user!.name!;
+      _userAvatarUrl = _presenter!.user!.avatarUrl!;
+      _isLoading = false;
+    });
+  }
+
+  @override
+  void onSignOut() {
+    Navigator.of(context).pushNamed(LoginScreen.routeName);
+  }
+
+  @override
+  void onPopContext() {
+    Navigator.of(context, rootNavigator: true).pop();
+  }
+
+  @override
+  void onWaitingProgressBar() {
+    UtilWidgets.createLoadingWidget(context);
   }
 }

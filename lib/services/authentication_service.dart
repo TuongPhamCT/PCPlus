@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pcplus/services/pref_service.dart';
 // import 'package:pcplus/models/users/user_repo.dart';
 
 class AuthenticationService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final PrefService _pref = PrefService();
   // final UserRepository _repo = UserRepository();
 
   Stream<User?> get authStateChanges => _auth.authStateChanges();
@@ -14,16 +16,15 @@ class AuthenticationService {
   Future<void> signOut() async {
     try {
       await _auth.signOut();
+      await _pref.clearUserData();
     } catch (e) {
       throw Exception("Sign out failed: $e");
     }
   }
 
   // Sign in
-  Future<UserCredential> signInWithEmailAndPassword(
-      String email, String password) async {
-    return await _auth.signInWithEmailAndPassword(
-        email: email.trim(), password: password.trim());
+  Future<UserCredential> signInWithEmailAndPassword(String email, String password) async {
+    return await _auth.signInWithEmailAndPassword(email: email.trim(), password: password.trim());
   }
 
   // sign up

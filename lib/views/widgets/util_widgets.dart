@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../themes/palette/palette.dart';
+
 abstract class UtilWidgets {
 
   // const title
@@ -54,4 +56,19 @@ abstract class UtilWidgets {
     );
   }
 
+  static void createSnackBar(BuildContext context, String content){
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Palette.primaryColor,
+        content: Text(
+          content,
+          style: const TextStyle(color: Colors.red),
+        ),
+      ),
+    );
+  }
+
+  static Widget getLoadingWidget(){
+    return const Center( child: CircularProgressIndicator());
+  }
 }
