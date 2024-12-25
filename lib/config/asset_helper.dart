@@ -12,4 +12,7 @@ class AssetHelper {
 
   //no network
   static const String noNetwork = '${imgAssets}noInternet.png';
+
+  //sample image
+  static const String sampleImage = '${imgAssets}sample.png';
 }
