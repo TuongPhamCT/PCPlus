@@ -71,7 +71,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 alignment: Alignment.center,
                 child: Text(
                   'Demo@gmail.com',
-                  style: TextDecor.profileText,
+                  style: TextDecor.robo16Medi,
                 ),
               ),
               const Gap(20),
@@ -80,7 +80,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   onTapOutside: (event) {
                     FocusScope.of(context).unfocus();
                   },
-                  style: TextDecor.profileText,
+                  style: TextDecor.robo16Medi,
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
                     label: Text(
@@ -98,7 +98,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   onTapOutside: (event) {
                     FocusScope.of(context).unfocus();
                   },
-                  style: TextDecor.profileText,
+                  style: TextDecor.robo16Medi,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     label: Text(
@@ -140,7 +140,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             ),
                             Text(
                               'Male',
-                              style: TextDecor.profileText,
+                              style: TextDecor.robo16Medi,
                             ),
                           ],
                         ),
@@ -158,7 +158,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 });
                               },
                             ),
-                            Text('Female', style: TextDecor.profileText),
+                            Text('Female', style: TextDecor.robo16Medi),
                             const Gap(15),
                           ],
                         ),
@@ -173,7 +173,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   onTapOutside: (event) {
                     FocusScope.of(context).unfocus();
                   },
-                  style: TextDecor.profileText,
+                  style: TextDecor.robo16Medi,
                   keyboardType: TextInputType.datetime,
                   decoration: InputDecoration(
                     suffixIcon: IconButton(

@@ -37,7 +37,7 @@ class _ProfileInputState extends State<ProfileInput> {
         FocusScope.of(context).unfocus();
       },
       cursorColor: Palette.primaryColor,
-      style: TextDecor.profileText,
+      style: TextDecor.robo16Medi,
       obscureText: isObscure,
       decoration: InputDecoration(
         errorText: widget.errorText,
