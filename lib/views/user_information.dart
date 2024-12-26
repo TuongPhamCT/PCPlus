@@ -339,6 +339,27 @@ class _UserInformationState extends State<UserInformation> {
                   ),
                 ],
               ),
+              Visibility(
+                visible: _isShopOwner,
+                child: BackgroundContainer(
+                  child: TextField(
+                    onTapOutside: (event) {
+                      FocusScope.of(context).unfocus();
+                    },
+                    style: TextDecor.robo16Medi,
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                      label: Text(
+                        'Shop Name',
+                        style: TextDecor.profileHintText,
+                      ),
+                      hintStyle: TextDecor.profileHintText,
+                      border: InputBorder.none,
+                      contentPadding: const EdgeInsets.all(0),
+                    ),
+                  ),
+                ),
+              ),
               const Gap(20),
               ButtonProfile(
                 name: 'DONE',
