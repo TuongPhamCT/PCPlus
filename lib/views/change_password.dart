@@ -69,7 +69,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 alignment: Alignment.center,
                 child: Text(
                   'Demo@gmail.com',
-                  style: TextDecor.profileText,
+                  style: TextDecor.robo16Medi,
                 ),
               ),
               const Gap(20),
@@ -78,7 +78,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   onTapOutside: (event) {
                     FocusScope.of(context).unfocus();
                   },
-                  style: TextDecor.profileText,
+                  style: TextDecor.robo16Medi,
                   keyboardType: TextInputType.text,
                   obscureText: !_oldPasswordVisible,
                   decoration: InputDecoration(
@@ -112,7 +112,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   onTapOutside: (event) {
                     FocusScope.of(context).unfocus();
                   },
-                  style: TextDecor.profileText,
+                  style: TextDecor.robo16Medi,
                   keyboardType: TextInputType.text,
                   obscureText: !_newPasswordVisible,
                   decoration: InputDecoration(
@@ -146,7 +146,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   onTapOutside: (event) {
                     FocusScope.of(context).unfocus();
                   },
-                  style: TextDecor.profileText,
+                  style: TextDecor.robo16Medi,
                   keyboardType: TextInputType.text,
                   obscureText: !_rePasswordVisible,
                   decoration: InputDecoration(

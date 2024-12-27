@@ -109,7 +109,7 @@ class _UserInformationState extends State<UserInformation> {
                 child: TextField(
                   readOnly: true,
                   controller: _emailController,
-                  style: TextDecor.profileText,
+                  style: TextDecor.robo16Medi,
                   decoration: InputDecoration(
                     label: Text(
                       'Email',
@@ -126,7 +126,7 @@ class _UserInformationState extends State<UserInformation> {
                   onTapOutside: (event) {
                     FocusScope.of(context).unfocus();
                   },
-                  style: TextDecor.profileText,
+                  style: TextDecor.robo16Medi,
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
                     label: Text(
@@ -144,7 +144,7 @@ class _UserInformationState extends State<UserInformation> {
                   onTapOutside: (event) {
                     FocusScope.of(context).unfocus();
                   },
-                  style: TextDecor.profileText,
+                  style: TextDecor.robo16Medi,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     label: Text(
@@ -186,7 +186,7 @@ class _UserInformationState extends State<UserInformation> {
                             ),
                             Text(
                               'Male',
-                              style: TextDecor.profileText,
+                              style: TextDecor.robo16Medi,
                             ),
                           ],
                         ),
@@ -204,7 +204,7 @@ class _UserInformationState extends State<UserInformation> {
                                 });
                               },
                             ),
-                            Text('Female', style: TextDecor.profileText),
+                            Text('Female', style: TextDecor.robo16Medi),
                             const Gap(15),
                           ],
                         ),
@@ -219,7 +219,7 @@ class _UserInformationState extends State<UserInformation> {
                   onTapOutside: (event) {
                     FocusScope.of(context).unfocus();
                   },
-                  style: TextDecor.profileText,
+                  style: TextDecor.robo16Medi,
                   keyboardType: TextInputType.datetime,
                   decoration: InputDecoration(
                     suffixIcon: IconButton(
@@ -256,7 +256,7 @@ class _UserInformationState extends State<UserInformation> {
                   onTapOutside: (event) {
                     FocusScope.of(context).unfocus();
                   },
-                  style: TextDecor.profileText,
+                  style: TextDecor.robo16Medi,
                   keyboardType: TextInputType.text,
                   obscureText: !_passwordVisible,
                   decoration: InputDecoration(
@@ -290,7 +290,7 @@ class _UserInformationState extends State<UserInformation> {
                   onTapOutside: (event) {
                     FocusScope.of(context).unfocus();
                   },
-                  style: TextDecor.profileText,
+                  style: TextDecor.robo16Medi,
                   keyboardType: TextInputType.text,
                   obscureText: !_rePasswordVisible,
                   decoration: InputDecoration(
@@ -335,9 +335,30 @@ class _UserInformationState extends State<UserInformation> {
                   ),
                   Text(
                     'I am a shop owner',
-                    style: TextDecor.profileText.copyWith(color: Palette.main2),
+                    style: TextDecor.robo16Medi.copyWith(color: Palette.main2),
                   ),
                 ],
+              ),
+              Visibility(
+                visible: _isShopOwner,
+                child: BackgroundContainer(
+                  child: TextField(
+                    onTapOutside: (event) {
+                      FocusScope.of(context).unfocus();
+                    },
+                    style: TextDecor.robo16Medi,
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                      label: Text(
+                        'Shop Name',
+                        style: TextDecor.profileHintText,
+                      ),
+                      hintStyle: TextDecor.profileHintText,
+                      border: InputBorder.none,
+                      contentPadding: const EdgeInsets.all(0),
+                    ),
+                  ),
+                ),
               ),
               const Gap(20),
               ButtonProfile(

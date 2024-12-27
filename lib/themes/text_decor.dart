@@ -21,13 +21,28 @@ class TextDecor {
     letterSpacing: 1.1,
   );
 
+  static TextStyle robo11 = GoogleFonts.roboto(
+    fontSize: 11,
+    color: Colors.black,
+  );
+
+  static TextStyle robo12 = GoogleFonts.roboto(
+    fontSize: 12,
+    color: Colors.white,
+  );
+
+  static TextStyle robo14 = GoogleFonts.roboto(
+    fontSize: 14,
+    color: Colors.black,
+  );
+
   static TextStyle profileHintText = GoogleFonts.roboto(
     fontSize: 16,
     fontWeight: FontWeight.w400,
     color: Palette.hintText,
   );
 
-  static TextStyle profileText = GoogleFonts.roboto(
+  static TextStyle robo16Medi = GoogleFonts.roboto(
     fontSize: 16,
     fontWeight: FontWeight.w500,
     color: Colors.black,
@@ -88,5 +103,17 @@ class TextDecor {
     fontSize: 13,
     fontWeight: FontWeight.w300,
     color: Palette.main1,
+  );
+
+  static TextStyle robo18Bold = GoogleFonts.roboto(
+    fontSize: 18,
+    fontWeight: FontWeight.w700,
+    color: Colors.black,
+  );
+
+  static TextStyle robo24Medi = GoogleFonts.roboto(
+    fontSize: 24,
+    fontWeight: FontWeight.w500,
+    color: Colors.white,
   );
 }

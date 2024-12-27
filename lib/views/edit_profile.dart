@@ -94,7 +94,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> implements EditPr
                 alignment: Alignment.center,
                 child: Text(
                   _email,
-                  style: TextDecor.profileText,
+                  style: TextDecor.robo16Medi
                 ),
               ),
               const Gap(20),
@@ -103,7 +103,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> implements EditPr
                   onTapOutside: (event) {
                     FocusScope.of(context).unfocus();
                   },
-                  style: TextDecor.profileText,
+                  style: TextDecor.robo16Medi,
                   keyboardType: TextInputType.text,
                   controller: _fullNameController,
                   decoration: InputDecoration(
@@ -122,7 +122,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> implements EditPr
                   onTapOutside: (event) {
                     FocusScope.of(context).unfocus();
                   },
-                  style: TextDecor.profileText,
+                  style: TextDecor.robo16Medi,
                   keyboardType: TextInputType.number,
                   controller: _phoneController,
                   decoration: InputDecoration(
@@ -165,7 +165,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> implements EditPr
                             ),
                             Text(
                               'Male',
-                              style: TextDecor.profileText,
+                              style: TextDecor.robo16Medi,
                             ),
                           ],
                         ),
@@ -183,7 +183,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> implements EditPr
                                 });
                               },
                             ),
-                            Text('Female', style: TextDecor.profileText),
+                            Text('Female', style: TextDecor.robo16Medi),
                             const Gap(15),
                           ],
                         ),
@@ -198,7 +198,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> implements EditPr
                   onTapOutside: (event) {
                     FocusScope.of(context).unfocus();
                   },
-                  style: TextDecor.profileText,
+                  style: TextDecor.robo16Medi,
                   keyboardType: TextInputType.datetime,
                   decoration: InputDecoration(
                     suffixIcon: IconButton(
