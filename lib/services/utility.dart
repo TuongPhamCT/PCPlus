@@ -22,4 +22,25 @@ abstract class Utility {
     }
     return "above-10M";
   }
+
+  static String formatSoldCount(int sold) {
+    return "$sold";
+  }
+
+  static String formatCurrency(int? amount) {
+    if (amount == null){
+      return "00,000";
+    }
+
+    return amount.toStringAsFixed(2).replaceAllMapped(
+        RegExp(r'\B(?=(\d{3})+(?!\d))'), (match) => ',');
+  }
+
+  static String formatRatingValue(double? value) {
+    return value?.toStringAsFixed(1) ?? "4.5";
+  }
+}
+
+abstract class TestData {
+  static const DEMO_IMAGE_PATH = "https://product.hstatic.net/1000153276/product/fdff6b5d7e82473a866035f7964c3ff6_0ee0b6782499424ebff09bf020125ddd_grande.png";
 }

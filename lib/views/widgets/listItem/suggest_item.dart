@@ -1,16 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:gap/gap.dart';
+import 'package:pcplus/commands/command_interface.dart';
+import 'package:pcplus/services/utility.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 
 class SuggestItem extends StatelessWidget {
-  const SuggestItem({super.key});
+  final String itemName;
+  final String imagePath;
+  final String location;
+  final String description;
+  final double rating;
+  final int price;
+  final int sold;
+  final CommandInterface? command;
+
+  const SuggestItem({
+    super.key,
+    required this.itemName,
+    required this.imagePath,
+    required this.description,
+    required this.location,
+    required this.rating,
+    required this.price,
+    required this.sold,
+    this.command,
+  });
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return GestureDetector(
+      onTap: command?.execute ?? () {},
       child: Container(
         margin: const EdgeInsets.only(bottom: 10),
         padding: const EdgeInsets.all(16),
@@ -36,7 +58,7 @@ class SuggestItem extends StatelessWidget {
             ClipRRect(
               borderRadius: const BorderRadius.all(Radius.circular(10)),
               child: Image.network(
-                "https://product.hstatic.net/1000153276/product/fdff6b5d7e82473a866035f7964c3ff6_0ee0b6782499424ebff09bf020125ddd_grande.png",
+                imagePath,
                 width: 130,
                 height: 140,
                 fit: BoxFit.cover,
@@ -56,13 +78,13 @@ class SuggestItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Bose QC-700 Pham Thanh Tuong",
+                    itemName,
                     maxLines: 2,
                     textAlign: TextAlign.justify,
                     style: TextDecor.robo16Medi,
                   ),
                   Text(
-                    "Over Ear, Wireless Bluetooth Headphones with Built-In Microphone",
+                    description,
                     textAlign: TextAlign.justify,
                     maxLines: 2,
                     style: TextDecor.robo12.copyWith(
@@ -71,35 +93,35 @@ class SuggestItem extends StatelessWidget {
                   ),
                   Row(
                     children: [
-                      Icon(Icons.star, size: 18, color: Colors.amber),
+                      const Icon(Icons.star, size: 18, color: Colors.amber),
                       Text(
                         "4.5",
                         style: TextDecor.robo14,
                       ),
                       Expanded(child: Container()),
-                      Icon(Icons.location_on, size: 18, color: Colors.black),
+                      const Icon(Icons.location_on, size: 18, color: Colors.black),
                       Text(
-                        "Hồ Chí Minh",
+                        location,
                         style: TextDecor.robo14,
                       ),
                     ],
                   ),
                   Row(
                     children: [
-                      Icon(
+                      const Icon(
                         FontAwesomeIcons.sackDollar,
                         size: 14,
                         color: Colors.red,
                       ),
                       Text(
-                        "1.000.000",
+                        Utility.formatCurrency(price),
                         style: TextDecor.robo16Medi.copyWith(
                           color: Colors.red,
                         ),
                       ),
                       Expanded(child: Container()),
                       Text(
-                        "Sold: 100k",
+                        "Sold: ${Utility.formatSoldCount(sold)}",
                         style: TextDecor.robo11,
                       ),
                     ],

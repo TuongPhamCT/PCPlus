@@ -4,11 +4,14 @@ import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pcplus/config/asset_helper.dart';
+import 'package:pcplus/contract/user_information_contract.dart';
+import 'package:pcplus/presenter/user_information_presenter.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 import 'package:pcplus/views/home.dart';
 import 'package:pcplus/views/widgets/profile/background_container.dart';
 import 'package:pcplus/views/widgets/profile/button_profile.dart';
+import 'package:pcplus/views/widgets/util_widgets.dart';
 
 class UserInformation extends StatefulWidget {
   const UserInformation({super.key});
@@ -18,7 +21,9 @@ class UserInformation extends StatefulWidget {
   State<UserInformation> createState() => _UserInformationState();
 }
 
-class _UserInformationState extends State<UserInformation> {
+class _UserInformationState extends State<UserInformation> implements UserInformationContract {
+  UserInformationPresenter? _presenter;
+
   String _imageFile = "";
 
   bool _isMale = true;
@@ -30,13 +35,17 @@ class _UserInformationState extends State<UserInformation> {
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _birthDateController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _rePasswordController = TextEditingController();
+  final TextEditingController _shopNameController = TextEditingController();
 
   DateTime? _birthDate;
 
   @override
   void initState() {
+    _presenter = UserInformationPresenter(this);
+    _emailController.text = _presenter!.getEmail();
     super.initState();
-    _emailController.text = 'demo@gmail.com';
   }
 
   void selectImageFromGallery() async {
@@ -44,6 +53,7 @@ class _UserInformationState extends State<UserInformation> {
     final XFile? pickedImage =
         await picker.pickImage(source: ImageSource.gallery);
     if (pickedImage != null) {
+      _presenter!.pickedImage = pickedImage;
       setState(() {
         _imageFile = pickedImage.path;
       });
@@ -127,6 +137,7 @@ class _UserInformationState extends State<UserInformation> {
                     FocusScope.of(context).unfocus();
                   },
                   style: TextDecor.robo16Medi,
+                  controller: _fullNameController,
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
                     label: Text(
@@ -144,6 +155,7 @@ class _UserInformationState extends State<UserInformation> {
                   onTapOutside: (event) {
                     FocusScope.of(context).unfocus();
                   },
+                  controller: _phoneNumberController,
                   style: TextDecor.robo16Medi,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
@@ -200,7 +212,7 @@ class _UserInformationState extends State<UserInformation> {
                               value: !_isMale,
                               onChanged: (value) {
                                 setState(() {
-                                  _isMale = !value!;
+                                  _isMale = value!;
                                 });
                               },
                             ),
@@ -258,6 +270,7 @@ class _UserInformationState extends State<UserInformation> {
                   },
                   style: TextDecor.robo16Medi,
                   keyboardType: TextInputType.text,
+                  controller: _passwordController,
                   obscureText: !_passwordVisible,
                   decoration: InputDecoration(
                     label: Text(
@@ -291,6 +304,7 @@ class _UserInformationState extends State<UserInformation> {
                     FocusScope.of(context).unfocus();
                   },
                   style: TextDecor.robo16Medi,
+                  controller: _rePasswordController,
                   keyboardType: TextInputType.text,
                   obscureText: !_rePasswordVisible,
                   decoration: InputDecoration(
@@ -364,7 +378,18 @@ class _UserInformationState extends State<UserInformation> {
               ButtonProfile(
                 name: 'DONE',
                 onPressed: () {
-                  Navigator.of(context).pushNamed(HomeScreen.routeName);
+                  _presenter!.handleConfirm(
+                    name: _fullNameController.text.trim(),
+                    email: _emailController.text.trim(),
+                    avatarUrl: _imageFile,
+                    phone: _phoneNumberController.text.trim(),
+                    isMale: _isMale,
+                    birthDate: _birthDate,
+                    password: _passwordController.text.trim(),
+                    rePassword: _rePasswordController.text.trim(),
+                    isSeller: _isShopOwner,
+                    shopName: _shopNameController.text.trim()
+                  );
                 },
               ),
               const Gap(30),
@@ -373,5 +398,25 @@ class _UserInformationState extends State<UserInformation> {
         ),
       ),
     );
+  }
+
+  @override
+  void onConfirmFailed(String message) {
+    UtilWidgets.createSnackBar(context, message);
+  }
+
+  @override
+  void onConfirmSucceeded() {
+    Navigator.of(context).pushNamed(HomeScreen.routeName);
+  }
+
+  @override
+  void onPopContext() {
+    Navigator.of(context, rootNavigator: true).pop();
+  }
+
+  @override
+  void onWaitingProgressBar() {
+    UtilWidgets.createLoadingWidget(context);
   }
 }

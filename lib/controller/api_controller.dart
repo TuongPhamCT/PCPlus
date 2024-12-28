@@ -49,8 +49,14 @@ class ApiController {
     }
   }
 
-  Future<List<String>> callApiRecommend(String userId) async {
-    Map<String, dynamic> response = await _getRequest('/recommend', {'userId': userId});
+  Future<List<String>> callApiRecommend(String userId, int amount) async {
+    Map<String, dynamic> response = await _getRequest(
+        '/recommend',
+        {
+          'user_id': userId,
+          'amount': amount.toString()
+        }
+    );
     return List.castFrom(response["recommends"]);
   }
 

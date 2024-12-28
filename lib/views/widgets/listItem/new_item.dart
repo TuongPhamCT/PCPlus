@@ -1,15 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
+import 'package:pcplus/commands/command_interface.dart';
+import 'package:pcplus/services/utility.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 
 class NewItem extends StatelessWidget {
-  const NewItem({super.key});
+  final String itemName;
+  final String imagePath;
+  final String location;
+  final double rating;
+  final int price;
+  final int sold;
+  final CommandInterface? command;
+
+  const NewItem({
+    super.key,
+    required this.itemName,
+    required this.imagePath,
+    required this.location,
+    required this.rating,
+    required this.price,
+    required this.sold,
+    this.command
+  });
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return GestureDetector(
+      onTap: command?.execute ?? () {},
       child: Container(
         margin: const EdgeInsets.only(right: 10),
         height: 285,
@@ -37,7 +57,7 @@ class NewItem extends StatelessWidget {
                 topRight: Radius.circular(10),
               ),
               child: Image.network(
-                "https://product.hstatic.net/1000153276/product/fdff6b5d7e82473a866035f7964c3ff6_0ee0b6782499424ebff09bf020125ddd_grande.png",
+                imagePath,
                 width: double.infinity,
                 height: 165,
                 fit: BoxFit.cover,
@@ -58,42 +78,42 @@ class NewItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Bose QC-700 Pham Thanh Tuong",
+                    itemName,
                     maxLines: 2,
                     textAlign: TextAlign.justify,
                     style: TextDecor.robo16Medi,
                   ),
                   Row(
                     children: [
-                      Icon(Icons.star, size: 18, color: Colors.amber),
+                      const Icon(Icons.star, size: 18, color: Colors.amber),
                       Text(
-                        "4.5",
+                        Utility.formatRatingValue(rating),
                         style: TextDecor.robo14,
                       ),
                       Expanded(child: Container()),
-                      Icon(Icons.location_on, size: 18, color: Colors.black),
+                      const Icon(Icons.location_on, size: 18, color: Colors.black),
                       Text(
-                        "Hồ Chí Minh",
+                        location,
                         style: TextDecor.robo14,
                       ),
                     ],
                   ),
                   Row(
                     children: [
-                      Icon(
+                      const Icon(
                         FontAwesomeIcons.sackDollar,
                         size: 14,
                         color: Colors.red,
                       ),
                       Text(
-                        "1.000.000",
+                        Utility.formatCurrency(price),
                         style: TextDecor.robo16Medi.copyWith(
                           color: Colors.red,
                         ),
                       ),
                       Expanded(child: Container()),
                       Text(
-                        "Sold: 100k",
+                        "Sold: ${Utility.formatSoldCount(sold)}",
                         style: TextDecor.robo11,
                       ),
                     ],

@@ -9,6 +9,7 @@ class UserModel {
   bool? isSeller;
   String? avatarUrl;
   int? money = 0;
+  Map<String, Object?>? shopInfo = {};
 
   static String collectionName = 'Users';
 
@@ -21,7 +22,8 @@ class UserModel {
     required this.gender,
     required this.isSeller,
     this.avatarUrl,
-    this.money
+    this.money,
+    this.shopInfo
   });
 
   Map<String, dynamic> toJson() => {
@@ -33,10 +35,13 @@ class UserModel {
     'gender': gender,
     'isSeller': isSeller,
     'avatarUrl': avatarUrl,
-    'money': money
+    'money': money,
+    'shopInfo': shopInfo
   };
 
   static UserModel fromJson(Map<String, dynamic> json) {
+    final shopInfo = json['shopInfo'] as Map<String, Object?>?;
+
     return UserModel(
       userID: json['userID'] as String,
       name: json['name'] as String,
@@ -47,6 +52,28 @@ class UserModel {
       isSeller: json['isSeller'] as bool,
       avatarUrl: json['avatarUrl'] as String,
       money: json['money'] as int,
+      shopInfo: shopInfo
     );
   }
+
+  void setLocation(String location) {
+    shopInfo![ShopInfo.LOCATION] = location;
+  }
+
+  String getLocation() {
+    return shopInfo![ShopInfo.LOCATION] as String;
+  }
+
+  void setShopName(String shopName) {
+    shopInfo![ShopInfo.SHOP_NAME] = shopName;
+  }
+
+  String getShopName() {
+    return shopInfo![ShopInfo.SHOP_NAME] as String;
+  }
+}
+
+abstract class ShopInfo {
+  static const LOCATION = "location";
+  static const SHOP_NAME = "shopName";
 }
