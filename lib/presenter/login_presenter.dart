@@ -6,7 +6,7 @@ import '../models/users/user_model.dart';
 import '../models/users/user_repo.dart';
 
 class LoginPresenter {
-  final LoginViewContract? _view;
+  final LoginViewContract _view;
   LoginPresenter(this._view);
   final AuthenticationService _authService = AuthenticationService();
   final UserRepository _userRepo = UserRepository();
@@ -14,16 +14,16 @@ class LoginPresenter {
 
   Future<void> login(String email, String password) async {
     try {
-      _view?.onWaitingProgressBar();
+      _view.onWaitingProgressBar();
       UserCredential userCredential = await _authService.signInWithEmailAndPassword(email, password);
       UserModel userData = await _userRepo.getUserById(userCredential.user!.uid);
       _prefService.saveUserData(userData);
     } catch (e) {
-      _view?.onPopContext();
-      _view?.onLoginFailed();
+      _view.onPopContext();
+      _view.onLoginFailed();
       return;
     }
-    _view?.onPopContext();
-    _view?.onLoginSucceeded();
+    _view.onPopContext();
+    _view.onLoginSucceeded();
   }
 }

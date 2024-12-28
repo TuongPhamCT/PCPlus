@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:pcplus/models/interactions/interaction_model.dart';
 import 'package:pcplus/models/items/item_model.dart';
+import 'package:pcplus/services/utility.dart';
 
 import '../models/users/user_model.dart';
 
@@ -48,8 +49,14 @@ class ApiController {
     }
   }
 
-  Future<List<String>> callApiRecommend(String userId) async {
-    Map<String, dynamic> response = await _getRequest('/recommend', {'userId': userId});
+  Future<List<String>> callApiRecommend(String userId, int amount) async {
+    Map<String, dynamic> response = await _getRequest(
+        '/recommend',
+        {
+          'user_id': userId,
+          'amount': amount.toString()
+        }
+    );
     return List.castFrom(response["recommends"]);
   }
 
@@ -58,7 +65,9 @@ class ApiController {
       await _postRequest(
         '/add_user',
         {
-          'userId': '1'
+          'user_id': model.userID,
+          'age_range': Utility.getAgeRange(model.dateOfBirth!.year),
+          'gender': model.gender,
         }
       );
     return response["result"] as String;
@@ -69,7 +78,9 @@ class ApiController {
       await _postRequest(
         '/add_item',
         {
-          'itemId': '1'
+          'item_id': model.itemID,
+          'item_type': model.itemType,
+          'price_range': Utility.getPriceRange(model.price!),
         }
       );
     return response["result"] as String;
@@ -80,14 +91,20 @@ class ApiController {
       await _postRequest(
         '/add_interaction',
         {
-          'key': '1'
+          // 'key': model.key,
+          'user_id': model.userID,
+          'item_id': model.itemID,
+          'click_times': model.clickTimes,
+          'rating': model.rating,
+          'purchase_times': model.buyTimes,
+          'is_favorite': model.isFavor,
         }
       );
     return response["result"] as String;
   }
 
   Future<String> callApiDeleteItem(String itemId) async {
-    Map<String, dynamic> response = await _postRequest('/delete_item', {'userId': '1'});
+    Map<String, dynamic> response = await _postRequest('/delete_item', {'item_id': itemId});
     return response["result"] as String;
   }
 }

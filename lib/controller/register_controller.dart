@@ -1,3 +1,5 @@
+import 'package:pcplus/builders/model_builders/user_builder.dart';
+
 class RegisterController {
   static RegisterController? _registerController;
   static getInstance() {
@@ -5,7 +7,16 @@ class RegisterController {
     return _registerController;
   }
 
-  String? email;
-
   RegisterController();
+
+  String? email;
+  final UserBuilder _builder = UserBuilder();
+
+  void reset() {
+    _builder.reset();
+  }
+
+  UserBuilder getBuilder() {
+    return _builder;
+  }
 }

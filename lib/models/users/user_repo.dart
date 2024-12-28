@@ -32,4 +32,29 @@ class UserRepository {
     final UserModel user = UserModel.fromJson(documentSnapshot.data() as Map<String, dynamic>);
     return user;
   }
+
+  Future<List<UserModel>> getAllUsers() async {
+    final QuerySnapshot querySnapshot = await _storage.collection(UserModel.collectionName).get();
+    final users = querySnapshot
+        .docs
+        .map((doc) => UserModel.fromJson(doc as Map<String, dynamic>))
+        .toList();
+    return users;
+  }
+
+  Future<List<UserModel>> getAllShops() async {
+    final QuerySnapshot querySnapshot = await _storage.collection(UserModel.collectionName)
+        .where('isSeller', isEqualTo: true).get();
+    final shops = querySnapshot
+        .docs
+        .map((doc) => UserModel.fromJson(doc as Map<String, dynamic>))
+        .toList();
+    return shops;
+  }
+
+  Future<String> generateUserID() async {
+    List<UserModel> users = await getAllUsers();
+    int count = users.length;
+    return count.toString().padLeft(8, '0');
+  }
 }

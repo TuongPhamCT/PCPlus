@@ -35,9 +35,11 @@ class ItemRepository {
     return item;
   }
 
-  Future<List<ItemModel>> getAllItemsBySellerID(String id) async {
+  Future<List<ItemModel>> getTopItems(int limit) async {
     final QuerySnapshot querySnapshot = await _storage.collection(ItemModel.collectionName)
-        .where('sellerID', isEqualTo: id).get();
+        .orderBy('addDate', descending: true)
+        .limit(limit)
+        .get();
     final items = querySnapshot
         .docs
         .map((doc) => ItemModel.fromJson(doc as Map<String, dynamic>))

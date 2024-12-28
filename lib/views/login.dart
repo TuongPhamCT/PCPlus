@@ -12,6 +12,7 @@ import 'package:pcplus/views/widgets/profile/profile_input.dart';
 import 'package:pcplus/views/widgets/util_widgets.dart';
 
 import '../presenter/login_presenter.dart';
+import 'home.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -131,27 +132,13 @@ class _LoginScreenState extends State<LoginScreen> implements LoginViewContract 
     setState(() {
       error = "Email or password is invalid";
     });
-    UtilWidgets.createDialog(
-        context,
-        UtilWidgets.NOTIFICATION,
-        "Login failed!",
-        () {
-          Navigator.pop(context);
-        }
-    );
+    UtilWidgets.createSnackBar(context, "Login failed!");
   }
 
   @override
   void onLoginSucceeded() {
     // TODO: implement onLoginSucceeded
-    UtilWidgets.createDialog(
-        context,
-        UtilWidgets.NOTIFICATION,
-        "Login successfully!",
-        () {
-          Navigator.of(context, rootNavigator: true).pop();
-        }
-    );
+    Navigator.of(context).pushNamed(HomeScreen.routeName);
   }
 
   @override

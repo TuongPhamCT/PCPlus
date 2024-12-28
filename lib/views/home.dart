@@ -1,12 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:gap/gap.dart';
+import 'package:pcplus/builders/widget_builders/new_item_builder.dart';
+import 'package:pcplus/builders/widget_builders/suggest_item_builder.dart';
+import 'package:pcplus/builders/widget_builders/widget_builder_director.dart';
+import 'package:pcplus/commands/home_command.dart';
 import 'package:pcplus/config/asset_helper.dart';
+import 'package:pcplus/contract/home_contract.dart';
+import 'package:pcplus/models/items/item_model.dart';
+import 'package:pcplus/services/utility.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 import 'package:pcplus/views/widgets/bottom/bottom_bar_custom.dart';
 import 'package:pcplus/views/widgets/listItem/new_item.dart';
 import 'package:pcplus/views/widgets/listItem/suggest_item.dart';
+import 'package:pcplus/views/widgets/util_widgets.dart';
+
+import '../presenter/home_presenter.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,8 +26,30 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> implements HomeContract {
+  HomePresenter? _presenter;
+  WidgetBuilderDirector director = WidgetBuilderDirector();
   bool isShop = false;
+  bool isLoading = true;
+  List<Widget> newProducts = [];
+  List<Widget> recommendedProducts = [];
+
+  @override
+  void initState() {
+    _presenter = HomePresenter(this);
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    loadData();
+  }
+
+  Future<void> loadData() async {
+    await _presenter?.getData();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -25,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 45),
-          child: Column(
+          child: isLoading ? UtilWidgets.getLoadingWidget() : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
@@ -108,9 +140,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: size.width,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
-                  itemCount: 5,
+                  itemCount: newProducts.length,
                   itemBuilder: (context, index) {
-                    return NewItem();
+                    return newProducts[index];
                   },
                 ),
               ),
@@ -120,11 +152,11 @@ class _HomeScreenState extends State<HomeScreen> {
               ListView.builder(
                 shrinkWrap: true,
                 padding: EdgeInsets.zero,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 scrollDirection: Axis.vertical,
                 itemCount: 8,
                 itemBuilder: (context, index) {
-                  return SuggestItem();
+                  return recommendedProducts[index];
                 },
               ),
             ],
@@ -133,5 +165,37 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       bottomNavigationBar: BottomBarCustom(currentIndex: 0),
     );
+  }
+
+  @override
+  Future<void> onLoadDataSucceed() async {
+    NewItemBuilder newItemBuilder = NewItemBuilder();
+    for (ItemModel item in _presenter!.newestItems) {
+      await director.makeNewItem(
+        builder: newItemBuilder,
+        product: item,
+        command: HomeItemPressedCommand(presenter: _presenter!, itemModel: item),
+      );
+      newProducts.add(newItemBuilder.createWidget()!);
+    }
+
+    SuggestItemBuilder suggestItemBuilder = SuggestItemBuilder();
+    for (ItemModel item in _presenter!.recommendedItems) {
+      await director.makeSuggestItem(
+          builder: suggestItemBuilder,
+          product: item,
+          command: HomeItemPressedCommand(presenter: _presenter!, itemModel: item),
+      );
+      newProducts.add(newItemBuilder.createWidget()!);
+    }
+
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  @override
+  void onItemPressed() {
+    // TODO: implement onItemPressed
   }
 }

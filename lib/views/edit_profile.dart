@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:gap/gap.dart';
+import 'package:pcplus/contract/edit_profile_screen_contract.dart';
+import 'package:pcplus/presenter/edit_profile_screen_presenter.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 import 'package:pcplus/views/change_password.dart';
 import 'package:pcplus/views/widgets/button/accept_button.dart';
 import 'package:pcplus/views/widgets/button/cancel_button.dart';
 import 'package:pcplus/views/widgets/profile/background_container.dart';
+import 'package:pcplus/views/widgets/util_widgets.dart';
 
 import '../config/asset_helper.dart';
 
@@ -18,12 +21,35 @@ class EditProfileScreen extends StatefulWidget {
   State<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
-class _EditProfileScreenState extends State<EditProfileScreen> {
-  final String _userAvatarUrl = "";
+class _EditProfileScreenState extends State<EditProfileScreen> implements EditProfileScreenContract {
+  EditProfileScreenPresenter? _presenter;
+
+  String _userName = "";
+  String _userAvatarUrl = "";
+  String _email = "";
   bool _isMale = true;
   DateTime? _birthDate;
+  bool isLoading = true;
 
+  final TextEditingController _fullNameController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _birthDateController = TextEditingController();
+
+  @override
+  void initState() {
+    _presenter = EditProfileScreenPresenter(this);
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    loadData();
+  }
+
+  Future<void> loadData() async {
+    await _presenter?.getData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,26 +62,23 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        child: Container(
+        child: isLoading ? UtilWidgets.getLoadingWidget() : Container(
           padding: const EdgeInsets.all(40),
           child: Column(
             children: [
               Container(
                 alignment: Alignment.center,
-                child: Container(
-                  height: 132,
-                  width: 132,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: _userAvatarUrl.isNotEmpty
-                        ? DecorationImage(
-                            image: NetworkImage(_userAvatarUrl),
-                            fit: BoxFit.cover,
-                          )
-                        : const DecorationImage(
-                            image: AssetImage(AssetHelper.defaultAvt),
-                            fit: BoxFit.cover,
-                          ),
+                child: GestureDetector(
+                  onTap: () async {
+                    await _presenter!.handlePickAvatar();
+                  },
+                  child: Container(
+                    height: 132,
+                    width: 132,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: getAvatarImage(),
+                    ),
                   ),
                 ),
               ),
@@ -63,15 +86,15 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               Container(
                 alignment: Alignment.center,
                 child: Text(
-                  'Nguyen Van A',
+                  _userName,
                   style: TextDecor.profileName,
                 ),
               ),
               Container(
                 alignment: Alignment.center,
                 child: Text(
-                  'Demo@gmail.com',
-                  style: TextDecor.robo16Medi,
+                  _email,
+                  style: TextDecor.robo16Medi
                 ),
               ),
               const Gap(20),
@@ -82,6 +105,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   },
                   style: TextDecor.robo16Medi,
                   keyboardType: TextInputType.text,
+                  controller: _fullNameController,
                   decoration: InputDecoration(
                     label: Text(
                       'Full Name',
@@ -100,6 +124,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   },
                   style: TextDecor.robo16Medi,
                   keyboardType: TextInputType.number,
+                  controller: _phoneController,
                   decoration: InputDecoration(
                     label: Text(
                       'Phone Number',
@@ -207,7 +232,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ),
               const Gap(15),
               AcceptButton(
-                onPressed: () {},
+                onPressed: () async {
+                  await _presenter?.handleSave(
+                      fullName: _fullNameController.text.trim(),
+                      phone: _phoneController.text,
+                      birthDate: _birthDate!,
+                      isMale: _isMale
+                  );
+                },
                 name: 'Save',
               ),
               const Gap(10),
@@ -236,5 +268,66 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         ),
       ),
     );
+  }
+
+  DecorationImage getAvatarImage() {
+    if (_presenter != null && _presenter!.avatarFile != null) {
+      return DecorationImage(
+        image: FileImage(_presenter!.avatarFile!),
+        fit: BoxFit.cover,
+      );
+    }
+
+    if (_userAvatarUrl.isNotEmpty) {
+      return DecorationImage(
+        image: NetworkImage(_userAvatarUrl),
+        fit: BoxFit.cover,
+      );
+    } else {
+      return const DecorationImage(
+        image: AssetImage(AssetHelper.defaultAvt),
+        fit: BoxFit.cover,
+      );
+    }
+  }
+
+  @override
+  void onLoadDataSucceeded() {
+    setState(() {
+      _userAvatarUrl = _presenter!.user!.avatarUrl!;
+      _birthDate = _presenter!.user!.dateOfBirth;
+      _email = _presenter!.user!.email!;
+      _userName = _presenter!.user!.name!;
+      isLoading = false;
+    });
+  }
+
+  @override
+  void onSaveFailed(String message) {
+    UtilWidgets.createSnackBar(context, message);
+  }
+
+  @override
+  void onSaveSucceeded() {
+    setState(() {
+      _birthDate = _presenter!.user!.dateOfBirth;
+      _userName = _presenter!.user!.name!;
+    });
+    UtilWidgets.createSnackBar(context, "Save successfully!");
+  }
+
+  @override
+  void onPopContext() {
+    Navigator.of(context, rootNavigator: true).pop();
+  }
+
+  @override
+  void onWaitingProgressBar() {
+    UtilWidgets.createLoadingWidget(context);
+  }
+
+  @override
+  void onPickAvatar() {
+    setState(() {});
   }
 }
