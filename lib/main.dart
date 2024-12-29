@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:pcplus/component/dependency_injection.dart';
 import 'package:pcplus/firebase_options.dart';
 import 'package:pcplus/route.dart';
+import 'package:pcplus/views/OTP.dart';
 import 'package:pcplus/views/home.dart';
 import 'package:pcplus/views/splash.dart';
 
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const HomeScreen(),
+      home: const SplashScreen(),
       routes: routes,
       debugShowCheckedModeBanner: false,
     );
