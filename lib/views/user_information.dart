@@ -21,7 +21,8 @@ class UserInformation extends StatefulWidget {
   State<UserInformation> createState() => _UserInformationState();
 }
 
-class _UserInformationState extends State<UserInformation> implements UserInformationContract {
+class _UserInformationState extends State<UserInformation>
+    implements UserInformationContract {
   UserInformationPresenter? _presenter;
 
   String _imageFile = "";
@@ -374,22 +375,42 @@ class _UserInformationState extends State<UserInformation> implements UserInform
                   ),
                 ),
               ),
+              Visibility(
+                visible: _isShopOwner,
+                child: BackgroundContainer(
+                  child: TextField(
+                    onTapOutside: (event) {
+                      FocusScope.of(context).unfocus();
+                    },
+                    style: TextDecor.robo16Medi,
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                      label: Text(
+                        'Shop Address',
+                        style: TextDecor.profileHintText,
+                      ),
+                      hintStyle: TextDecor.profileHintText,
+                      border: InputBorder.none,
+                      contentPadding: const EdgeInsets.all(0),
+                    ),
+                  ),
+                ),
+              ),
               const Gap(20),
               ButtonProfile(
                 name: 'DONE',
                 onPressed: () {
                   _presenter!.handleConfirm(
-                    name: _fullNameController.text.trim(),
-                    email: _emailController.text.trim(),
-                    avatarUrl: _imageFile,
-                    phone: _phoneNumberController.text.trim(),
-                    isMale: _isMale,
-                    birthDate: _birthDate,
-                    password: _passwordController.text.trim(),
-                    rePassword: _rePasswordController.text.trim(),
-                    isSeller: _isShopOwner,
-                    shopName: _shopNameController.text.trim()
-                  );
+                      name: _fullNameController.text.trim(),
+                      email: _emailController.text.trim(),
+                      avatarUrl: _imageFile,
+                      phone: _phoneNumberController.text.trim(),
+                      isMale: _isMale,
+                      birthDate: _birthDate,
+                      password: _passwordController.text.trim(),
+                      rePassword: _rePasswordController.text.trim(),
+                      isSeller: _isShopOwner,
+                      shopName: _shopNameController.text.trim());
                 },
               ),
               const Gap(30),
