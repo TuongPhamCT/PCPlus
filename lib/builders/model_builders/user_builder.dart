@@ -51,6 +51,13 @@ class UserBuilder implements ModelBuilderInterface<UserModel> {
     _model.setLocation(location);
   }
 
+  void setShopName(String shopName) {
+    if (_model.isSeller == false) {
+      return;
+    }
+    _model.setShopName(shopName);
+  }
+
   @override
   UserModel createModel() {
     return _model;

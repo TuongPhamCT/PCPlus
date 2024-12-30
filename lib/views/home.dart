@@ -54,10 +54,10 @@ class _HomeScreenState extends State<HomeScreen> implements HomeContract {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      body: SingleChildScrollView(
+      body: isLoading ? UtilWidgets.getLoadingWidget() : SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 45),
-          child: isLoading ? UtilWidgets.getLoadingWidget() : Column(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(

@@ -54,7 +54,7 @@ class OtpPresenter {
     try {
       final sendReport = await send(message, smtpServer);
       if (kDebugMode) {
-        print('Message sent: $sendReport');
+        print('Message sent to $email: $sendReport');
       }
     } catch (e) {
       if (kDebugMode) {
