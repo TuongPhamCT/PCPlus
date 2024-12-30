@@ -67,7 +67,7 @@ class ApiController {
         {
           'user_id': model.userID,
           'age_range': Utility.getAgeRange(model.dateOfBirth!.year),
-          'gender': model.gender,
+          'gender': model.gender == "male" ? 1 : 0,
         }
       );
     return response["result"] as String;
@@ -80,7 +80,7 @@ class ApiController {
         {
           'item_id': model.itemID,
           'item_type': model.itemType,
-          'price_range': Utility.getPriceRange(model.price!),
+          'price_range': Utility.getPriceRangeIndex(model.price!),
         }
       );
     return response["result"] as String;
@@ -97,7 +97,7 @@ class ApiController {
           'click_times': model.clickTimes,
           'rating': model.rating,
           'purchase_times': model.buyTimes,
-          'is_favorite': model.isFavor,
+          'is_favorite': model.isFavor == null ? "0" : model.isFavor! ? "1" : "0",
         }
       );
     return response["result"] as String;

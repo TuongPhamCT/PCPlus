@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:gap/gap.dart';
@@ -37,6 +36,7 @@ class _OTPScreenState extends State<OTPScreen> implements OtpViewContract {
   @override
   void initState() {
     _otpPresenter = OtpPresenter(this, _registerController.email);
+    _otpPresenter!.initSendPinCode();
     super.initState();
   }
 
@@ -191,14 +191,7 @@ class _OTPScreenState extends State<OTPScreen> implements OtpViewContract {
 
   @override
   void onResendPinCode() {
-    UtilWidgets.createDismissibleDialog(
-        context,
-        UtilWidgets.NOTIFICATION,
-        "OTP code has been resent.",
-        () {
-          Navigator.of(context, rootNavigator: true).pop();
-        }
-    );
+    UtilWidgets.createSnackBar(context, "OTP code has been resent.");
   }
 
   @override

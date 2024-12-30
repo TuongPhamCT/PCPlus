@@ -4,6 +4,7 @@ import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pcplus/config/asset_helper.dart';
+import 'package:pcplus/const/shop_location.dart';
 import 'package:pcplus/contract/user_information_contract.dart';
 import 'package:pcplus/presenter/user_information_presenter.dart';
 import 'package:pcplus/themes/palette/palette.dart';
@@ -39,6 +40,8 @@ class _UserInformationState extends State<UserInformation>
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _rePasswordController = TextEditingController();
   final TextEditingController _shopNameController = TextEditingController();
+  final TextEditingController _locationController = TextEditingController();
+  List<String> locations = [];
 
   DateTime? _birthDate;
 
@@ -232,25 +235,13 @@ class _UserInformationState extends State<UserInformation>
                   onTapOutside: (event) {
                     FocusScope.of(context).unfocus();
                   },
+                  readOnly: true,
+                  onTap: _datePicker,
                   style: TextDecor.robo16Medi,
                   keyboardType: TextInputType.datetime,
                   decoration: InputDecoration(
                     suffixIcon: IconButton(
-                      onPressed: () async {
-                        final DateTime? picked = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(1900),
-                          lastDate: DateTime.now(),
-                        );
-                        if (picked != null && picked != _birthDate) {
-                          setState(() {
-                            _birthDate = picked;
-                            _birthDateController.text =
-                                '${picked.day}/${picked.month}/${picked.year}';
-                          });
-                        }
-                      },
+                      onPressed: _datePicker,
                       icon: const Icon(FontAwesomeIcons.calendarDays),
                       color: Palette.hintText,
                     ),
@@ -361,6 +352,7 @@ class _UserInformationState extends State<UserInformation>
                     onTapOutside: (event) {
                       FocusScope.of(context).unfocus();
                     },
+                    controller: _shopNameController,
                     style: TextDecor.robo16Medi,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
@@ -382,6 +374,9 @@ class _UserInformationState extends State<UserInformation>
                     onTapOutside: (event) {
                       FocusScope.of(context).unfocus();
                     },
+                    readOnly: true,
+                    onTap: _showLocationPicker,
+                    controller: _locationController,
                     style: TextDecor.robo16Medi,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
@@ -410,7 +405,9 @@ class _UserInformationState extends State<UserInformation>
                       password: _passwordController.text.trim(),
                       rePassword: _rePasswordController.text.trim(),
                       isSeller: _isShopOwner,
-                      shopName: _shopNameController.text.trim());
+                      shopName: _shopNameController.text.trim(),
+                      location: _locationController.text
+                  );
                 },
               ),
               const Gap(30),
@@ -419,6 +416,43 @@ class _UserInformationState extends State<UserInformation>
         ),
       ),
     );
+  }
+
+  void _showLocationPicker() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return ListView(
+          children: LOCATIONS.map((location) {
+            return ListTile(
+              title: Text(location),
+              onTap: () {
+                setState(() {
+                  _locationController.text = location;
+                });
+                Navigator.pop(context); // Đóng bottom sheet
+              },
+            );
+          }).toList(),
+        );
+      },
+    );
+  }
+
+  Future<void> _datePicker() async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+    if (picked != null && picked != _birthDate) {
+      setState(() {
+        _birthDate = picked;
+        _birthDateController.text =
+        '${picked.day}/${picked.month}/${picked.year}';
+      });
+    }
   }
 
   @override
