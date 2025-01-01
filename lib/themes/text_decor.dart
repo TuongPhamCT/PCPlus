@@ -36,6 +36,12 @@ class TextDecor {
     color: Colors.black,
   );
 
+  static TextStyle robo15Medi = GoogleFonts.roboto(
+    fontSize: 15,
+    fontWeight: FontWeight.w500,
+    color: Colors.black,
+  );
+
   static TextStyle profileHintText = GoogleFonts.roboto(
     fontSize: 16,
     fontWeight: FontWeight.w400,
@@ -46,6 +52,25 @@ class TextDecor {
     fontSize: 16,
     fontWeight: FontWeight.w500,
     color: Colors.black,
+  );
+
+  static TextStyle robo16Semi = GoogleFonts.roboto(
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+    color: Colors.white,
+    shadows: [
+      Shadow(
+        color: Colors.black.withOpacity(0.25),
+        offset: const Offset(2, 4),
+        blurRadius: 4,
+      ),
+    ],
+  );
+
+  static TextStyle robo17Medi = GoogleFonts.roboto(
+    fontSize: 17,
+    fontWeight: FontWeight.w500,
+    color: Palette.primaryColor,
   );
 
   static TextStyle profileButtonText = GoogleFonts.roboto(
