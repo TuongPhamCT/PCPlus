@@ -15,7 +15,8 @@ class UserInformationPresenter {
   final UserInformationContract _view;
   UserInformationPresenter(this._view);
 
-  final RegisterController _registerController = RegisterController.getInstance();
+  final RegisterController _registerController =
+      RegisterController.getInstance();
   final ApiController _apiController = ApiController();
   final ImageStorageService _imageStorageService = ImageStorageService();
   final UserRepository _userRepo = UserRepository();
@@ -27,28 +28,26 @@ class UserInformationPresenter {
     return _registerController.email!;
   }
 
-  Future<void> handleConfirm({
-    required String name,
-    required String email,
-    required String avatarUrl,
-    required String phone,
-    required bool isMale,
-    required DateTime? birthDate,
-    required String password,
-    required String rePassword,
-    required bool isSeller,
-    required String shopName,
-    required String location
-  }) async {
+  Future<void> handleConfirm(
+      {required String name,
+      required String email,
+      required String avatarUrl,
+      required String phone,
+      required bool isMale,
+      required DateTime? birthDate,
+      required String password,
+      required String rePassword,
+      required bool isSeller,
+      required String shopName,
+      required String location}) async {
     _view.onWaitingProgressBar();
 
-    if (name.isEmpty
-      || avatarUrl.isEmpty
-      || phone.isEmpty
-      || password.isEmpty
-      || rePassword.isEmpty
-      || birthDate == null
-    ) {
+    if (name.isEmpty ||
+        avatarUrl.isEmpty ||
+        phone.isEmpty ||
+        password.isEmpty ||
+        rePassword.isEmpty ||
+        birthDate == null) {
       _view.onPopContext();
       _view.onConfirmFailed("Please complete all required fields");
       return;
@@ -67,13 +66,14 @@ class UserInformationPresenter {
       return;
     }
 
-    if (password == rePassword) {
+    if (password != rePassword) {
       _view.onPopContext();
       _view.onConfirmFailed("Passwords do not match");
       return;
     }
 
-    String? imagePath = await _imageStorageService.uploadImage(StorageFolderNames.AVATARS, File(pickedImage!.path));
+    String? imagePath = await _imageStorageService.uploadImage(
+        StorageFolderNames.AVATARS, File(pickedImage!.path));
     if (imagePath == null) {
       _view.onPopContext();
       _view.onConfirmFailed("Something was wrong. Please try again.");
@@ -102,7 +102,7 @@ class UserInformationPresenter {
 
       _view.onPopContext();
       _view.onConfirmSucceeded();
-    } catch(e) {
+    } catch (e) {
       _view.onPopContext();
       _view.onConfirmFailed("Something was wrong. Please try again.");
     }
