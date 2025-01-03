@@ -31,8 +31,19 @@ class TextDecor {
     color: Colors.white,
   );
 
+  static TextStyle robo13Medi = GoogleFonts.roboto(
+    fontSize: 13,
+    fontWeight: FontWeight.w500,
+    color: Colors.black,
+  );
+
   static TextStyle robo14 = GoogleFonts.roboto(
     fontSize: 14,
+    color: Colors.black,
+  );
+
+  static TextStyle robo15 = GoogleFonts.roboto(
+    fontSize: 15,
     color: Colors.black,
   );
 
@@ -46,6 +57,11 @@ class TextDecor {
     fontSize: 16,
     fontWeight: FontWeight.w400,
     color: Palette.hintText,
+  );
+
+  static TextStyle robo16 = GoogleFonts.roboto(
+    fontSize: 16,
+    color: Colors.black,
   );
 
   static TextStyle robo16Medi = GoogleFonts.roboto(
@@ -91,6 +107,18 @@ class TextDecor {
     color: Palette.main2,
   );
 
+  static TextStyle robo18Semi = GoogleFonts.roboto(
+    fontSize: 18,
+    fontWeight: FontWeight.w600,
+    color: Colors.black,
+  );
+
+  static TextStyle robo18Bold = GoogleFonts.roboto(
+    fontSize: 18,
+    fontWeight: FontWeight.w700,
+    color: Colors.black,
+  );
+
   static TextStyle otpEmailText = GoogleFonts.roboto(
     fontSize: 20,
     fontWeight: FontWeight.w500,
@@ -130,15 +158,15 @@ class TextDecor {
     color: Palette.main1,
   );
 
-  static TextStyle robo18Bold = GoogleFonts.roboto(
-    fontSize: 18,
-    fontWeight: FontWeight.w700,
-    color: Colors.black,
-  );
-
   static TextStyle robo24Medi = GoogleFonts.roboto(
     fontSize: 24,
     fontWeight: FontWeight.w500,
     color: Colors.white,
+  );
+
+  static TextStyle robo24Bold = GoogleFonts.roboto(
+    fontSize: 24,
+    fontWeight: FontWeight.w700,
+    color: Colors.black,
   );
 }
