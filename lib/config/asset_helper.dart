@@ -15,4 +15,5 @@ class AssetHelper {
 
   //sample image
   static const String sampleImage = '${imgAssets}sample.png';
+  static const String shopAvt = '${imgAssets}shopAVT.jpg';
 }

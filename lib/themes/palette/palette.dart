@@ -13,4 +13,9 @@ class Palette {
   static const Color containerBackground = Color(0xffF5F6F9);
 
   static const Color bottomBarUnSelect = Color(0xffCCCCCC);
+
+  static const Color borderBackBtn = Color(0xffE6E6E6);
+
+  static const Color star = Color(0xffF2CF63);
 }
+

@@ -8,6 +8,7 @@ import 'package:pcplus/views/home.dart';
 import 'package:pcplus/views/login.dart';
 import 'package:pcplus/views/no_network.dart';
 import 'package:pcplus/views/notification.dart';
+import 'package:pcplus/views/product/detail_product.dart';
 import 'package:pcplus/views/profile.dart';
 import 'package:pcplus/views/register.dart';
 import 'package:pcplus/views/splash.dart';
@@ -27,4 +28,5 @@ final Map<String, WidgetBuilder> routes = {
   ProfileScreen.routeName: (context) => const ProfileScreen(),
   EditProfileScreen.routeName: (context) => const EditProfileScreen(),
   ChangePasswordScreen.routeName: (context) => const ChangePasswordScreen(),
+  DetailProduct.routeName: (context) => const DetailProduct(),
 };
