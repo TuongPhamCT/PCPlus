@@ -9,6 +9,7 @@ import 'package:gap/gap.dart';
 import 'package:pcplus/config/asset_helper.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
+import 'package:pcplus/views/bill/bill_product.dart';
 import 'package:pcplus/views/widgets/listItem/review_item.dart';
 
 class DetailProduct extends StatefulWidget {
@@ -493,7 +494,7 @@ class _DetailProductState extends State<DetailProduct> {
         ),
       ),
       bottomNavigationBar: Container(
-        height: 68,
+        height: 55,
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20),
@@ -514,7 +515,7 @@ class _DetailProductState extends State<DetailProduct> {
               },
               child: Container(
                 width: size.width / 2,
-                height: 68,
+                height: 55,
                 alignment: Alignment.center,
                 decoration: const BoxDecoration(
                   color: Colors.blueGrey,
@@ -528,7 +529,7 @@ class _DetailProductState extends State<DetailProduct> {
                     const Icon(
                       Icons.shopping_cart_outlined,
                       color: Colors.white,
-                      size: 30,
+                      size: 24,
                     ),
                     Text(
                       'Add to Cart',
@@ -936,6 +937,8 @@ class _DetailProductState extends State<DetailProduct> {
                               child: InkWell(
                                 onTap: () {
                                   //Go to Payment View
+                                  Navigator.of(context)
+                                      .pushNamed(BillProduct.routeName);
                                 },
                                 child: Container(
                                   height: 45,
@@ -963,7 +966,7 @@ class _DetailProductState extends State<DetailProduct> {
               },
               child: Container(
                 width: size.width / 2,
-                height: 68,
+                height: 55,
                 alignment: Alignment.center,
                 decoration: const BoxDecoration(
                   color: Colors.red,
