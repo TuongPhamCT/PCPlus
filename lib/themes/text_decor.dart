@@ -107,6 +107,11 @@ class TextDecor {
     color: Palette.main2,
   );
 
+  static TextStyle robo18 = GoogleFonts.roboto(
+    fontSize: 18,
+    color: Colors.black,
+  );
+
   static TextStyle robo18Semi = GoogleFonts.roboto(
     fontSize: 18,
     fontWeight: FontWeight.w600,

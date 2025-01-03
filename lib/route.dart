@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pcplus/views/OTP.dart';
+import 'package:pcplus/views/bill/bill_product.dart';
+import 'package:pcplus/views/bill/delivery_choice.dart';
 import 'package:pcplus/views/cart_shopping.dart';
 import 'package:pcplus/views/change_password.dart';
 import 'package:pcplus/views/edit_profile.dart';
@@ -29,4 +31,6 @@ final Map<String, WidgetBuilder> routes = {
   EditProfileScreen.routeName: (context) => const EditProfileScreen(),
   ChangePasswordScreen.routeName: (context) => const ChangePasswordScreen(),
   DetailProduct.routeName: (context) => const DetailProduct(),
+  BillProduct.routeName: (context) => const BillProduct(),
+  DeliveryChoice.routeName: (context) => const DeliveryChoice(),
 };

@@ -17,5 +17,7 @@ class Palette {
   static const Color borderBackBtn = Color(0xffE6E6E6);
 
   static const Color star = Color(0xffF2CF63);
-}
 
+  static const Color billBlue = Color(0xff6CAEFA);
+  static const Color billOrange = Color(0xffFE6D50);
+}
