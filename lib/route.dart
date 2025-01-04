@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:pcplus/views/OTP.dart';
+import 'package:pcplus/views/add_product.dart';
 import 'package:pcplus/views/bill/bill_product.dart';
 import 'package:pcplus/views/bill/delivery_choice.dart';
 import 'package:pcplus/views/cart_shopping.dart';
 import 'package:pcplus/views/change_password.dart';
 import 'package:pcplus/views/delivery/delivery_infor.dart';
+import 'package:pcplus/views/edit_product.dart';
 import 'package:pcplus/views/edit_profile.dart';
 import 'package:pcplus/views/forgot_password.dart';
 import 'package:pcplus/views/home.dart';
@@ -45,4 +47,6 @@ final Map<String, WidgetBuilder> routes = {
   RatingScreen.routeName: (context) => const RatingScreen(),
   ShopHome.routeName: (context) => const ShopHome(),
   Statistic.routeName: (context) => const Statistic(),
+  AddProduct.routeName: (context) => const AddProduct(),
+  EditProduct.routeName: (context) => const EditProduct(),
 };

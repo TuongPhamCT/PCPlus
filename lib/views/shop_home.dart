@@ -110,6 +110,17 @@ class _ShopHomeState extends State<ShopHome> {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          setState(() {
+            isShop = !isShop;
+          });
+        },
+        child: const Icon(
+          Icons.add,
+          size: 36,
+        ),
+      ),
     );
   }
 }
