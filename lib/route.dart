@@ -11,6 +11,8 @@ import 'package:pcplus/views/home.dart';
 import 'package:pcplus/views/login.dart';
 import 'package:pcplus/views/no_network.dart';
 import 'package:pcplus/views/notification.dart';
+import 'package:pcplus/views/order/history_oder.dart';
+import 'package:pcplus/views/order/rating.dart';
 import 'package:pcplus/views/product/detail_product.dart';
 import 'package:pcplus/views/profile.dart';
 import 'package:pcplus/views/register.dart';
@@ -37,4 +39,6 @@ final Map<String, WidgetBuilder> routes = {
   DeliveryChoice.routeName: (context) => const DeliveryChoice(),
   DeliveryInfor.routeName: (context) => const DeliveryInfor(),
   SearchScreen.routeName: (context) => const SearchScreen(),
+  HistoryOrder.routeName: (context) => const HistoryOrder(),
+  RatingScreen.routeName: (context) => const RatingScreen(),
 };
