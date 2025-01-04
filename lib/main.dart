@@ -9,6 +9,7 @@ import 'package:pcplus/views/cart_shopping.dart';
 import 'package:pcplus/views/home.dart';
 import 'package:pcplus/views/notification.dart';
 import 'package:pcplus/views/product/detail_product.dart';
+import 'package:pcplus/views/search/search_screen.dart';
 import 'package:pcplus/views/splash.dart';
 
 Future<void> main() async {
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const NotificationScreen(),
+      home: const SearchScreen(),
       routes: routes,
       debugShowCheckedModeBanner: false,
     );
