@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
+import 'package:pcplus/views/delivery/delivery_infor.dart';
 import 'package:pcplus/views/widgets/listItem/payment_product.dart';
 
 class BillProduct extends StatefulWidget {
@@ -17,6 +18,13 @@ class BillProduct extends StatefulWidget {
 
 class _BillProductState extends State<BillProduct> {
   int productCount = 2;
+  bool isFirst = true;
+  Map<String, String> address = {
+    "name": "Nguyễn Văn A",
+    "phone": "0123456789",
+    "address1": "123 Đường ABC",
+    "address2": "Phường XYZ, Quận TUV, TP. HCM",
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -46,8 +54,24 @@ class _BillProductState extends State<BillProduct> {
               thickness: 1,
             ),
             InkWell(
-              onTap: () {
+              onTap: () async {
                 //Go to Address Edit
+                final updatedAddress = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DeliveryInfor(
+                      currentAddress: address,
+                    ),
+                  ),
+                );
+
+                // Nếu có địa chỉ mới, cập nhật lại thông tin
+                if (updatedAddress != null) {
+                  setState(() {
+                    address = updatedAddress;
+                    isFirst = false;
+                  });
+                }
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -62,43 +86,49 @@ class _BillProductState extends State<BillProduct> {
                     const Gap(8),
                     SizedBox(
                       width: size.width * 0.847,
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: size.width * 0.75,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                      child: !isFirst
+                          ? Row(
                               children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Pham Thanh Tuong',
-                                      style: TextDecor.robo18Semi,
-                                    ),
-                                    const Gap(10),
-                                    Text(
-                                      '(+84)123456789',
-                                      style: TextDecor.robo16.copyWith(
-                                        color: Palette.hintText,
+                                SizedBox(
+                                  width: size.width * 0.75,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                            '${address["name"]}',
+                                            style: TextDecor.robo18Semi,
+                                          ),
+                                          const Gap(10),
+                                          Text(
+                                            '${address["phone"]}',
+                                            style: TextDecor.robo16.copyWith(
+                                              color: Palette.hintText,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                  ],
+                                      Text('${address["address1"]}',
+                                          style: TextDecor.robo15),
+                                      Text('${address["address2"]}',
+                                          style: TextDecor.robo15),
+                                    ],
+                                  ),
                                 ),
-                                Text('Dia chi chi tiet den so nha',
-                                    style: TextDecor.robo15),
-                                Text('Phuong, Quan, Thanh Pho Pham Thanh Tuong',
-                                    style: TextDecor.robo15),
+                                Expanded(child: Container()),
+                                const Icon(
+                                  FontAwesomeIcons.angleRight,
+                                  color: Colors.grey,
+                                  size: 30,
+                                ),
                               ],
+                            )
+                          : Text(
+                              'Vui lòng chọn địa chỉ giao hàng!!!',
+                              style: TextDecor.robo18Semi,
                             ),
-                          ),
-                          Expanded(child: Container()),
-                          const Icon(
-                            FontAwesomeIcons.angleRight,
-                            color: Colors.grey,
-                            size: 30,
-                          ),
-                        ],
-                      ),
                     ),
                   ],
                 ),

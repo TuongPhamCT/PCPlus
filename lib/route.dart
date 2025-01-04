@@ -4,6 +4,7 @@ import 'package:pcplus/views/bill/bill_product.dart';
 import 'package:pcplus/views/bill/delivery_choice.dart';
 import 'package:pcplus/views/cart_shopping.dart';
 import 'package:pcplus/views/change_password.dart';
+import 'package:pcplus/views/delivery/delivery_infor.dart';
 import 'package:pcplus/views/edit_profile.dart';
 import 'package:pcplus/views/forgot_password.dart';
 import 'package:pcplus/views/home.dart';
@@ -33,4 +34,5 @@ final Map<String, WidgetBuilder> routes = {
   DetailProduct.routeName: (context) => const DetailProduct(),
   BillProduct.routeName: (context) => const BillProduct(),
   DeliveryChoice.routeName: (context) => const DeliveryChoice(),
+  DeliveryInfor.routeName: (context) => const DeliveryInfor(),
 };
