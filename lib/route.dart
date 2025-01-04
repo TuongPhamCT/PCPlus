@@ -14,6 +14,7 @@ import 'package:pcplus/views/notification.dart';
 import 'package:pcplus/views/product/detail_product.dart';
 import 'package:pcplus/views/profile.dart';
 import 'package:pcplus/views/register.dart';
+import 'package:pcplus/views/search/search_screen.dart';
 import 'package:pcplus/views/splash.dart';
 import 'package:pcplus/views/user_information.dart';
 
@@ -35,4 +36,5 @@ final Map<String, WidgetBuilder> routes = {
   BillProduct.routeName: (context) => const BillProduct(),
   DeliveryChoice.routeName: (context) => const DeliveryChoice(),
   DeliveryInfor.routeName: (context) => const DeliveryInfor(),
+  SearchScreen.routeName: (context) => const SearchScreen(),
 };
