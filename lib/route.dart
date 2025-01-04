@@ -17,7 +17,9 @@ import 'package:pcplus/views/product/detail_product.dart';
 import 'package:pcplus/views/profile.dart';
 import 'package:pcplus/views/register.dart';
 import 'package:pcplus/views/search/search_screen.dart';
+import 'package:pcplus/views/shop_home.dart';
 import 'package:pcplus/views/splash.dart';
+import 'package:pcplus/views/statistic.dart';
 import 'package:pcplus/views/user_information.dart';
 
 final Map<String, WidgetBuilder> routes = {
@@ -41,4 +43,6 @@ final Map<String, WidgetBuilder> routes = {
   SearchScreen.routeName: (context) => const SearchScreen(),
   HistoryOrder.routeName: (context) => const HistoryOrder(),
   RatingScreen.routeName: (context) => const RatingScreen(),
+  ShopHome.routeName: (context) => const ShopHome(),
+  Statistic.routeName: (context) => const Statistic(),
 };
