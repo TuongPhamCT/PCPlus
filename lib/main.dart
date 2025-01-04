@@ -7,6 +7,7 @@ import 'package:pcplus/route.dart';
 import 'package:pcplus/views/OTP.dart';
 import 'package:pcplus/views/cart_shopping.dart';
 import 'package:pcplus/views/home.dart';
+import 'package:pcplus/views/login.dart';
 import 'package:pcplus/views/notification.dart';
 import 'package:pcplus/views/product/detail_product.dart';
 import 'package:pcplus/views/splash.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const NotificationScreen(),
+      home: const SplashScreen(),
       routes: routes,
       debugShowCheckedModeBanner: false,
     );

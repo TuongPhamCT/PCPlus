@@ -138,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> implements HomeContract {
               Container(
                 height: 285,
                 width: size.width,
-                child: ListView.builder(
+                child: newProducts.isEmpty ? null : ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: newProducts.length,
                   itemBuilder: (context, index) {
@@ -149,12 +149,12 @@ class _HomeScreenState extends State<HomeScreen> implements HomeContract {
               const Gap(30),
               Text('Suggestions for you', style: TextDecor.robo18Bold),
               const Gap(10),
-              ListView.builder(
+              recommendedProducts.isEmpty ? const Gap(30) : ListView.builder(
                 shrinkWrap: true,
                 padding: EdgeInsets.zero,
                 physics: const NeverScrollableScrollPhysics(),
                 scrollDirection: Axis.vertical,
-                itemCount: 8,
+                itemCount: recommendedProducts.length,
                 itemBuilder: (context, index) {
                   return recommendedProducts[index];
                 },

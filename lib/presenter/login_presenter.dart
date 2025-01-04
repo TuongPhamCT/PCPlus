@@ -15,10 +15,16 @@ class LoginPresenter {
   Future<void> login(String email, String password) async {
     try {
       _view.onWaitingProgressBar();
-      UserCredential userCredential = await _authService.signInWithEmailAndPassword(email, password);
+      UserCredential? userCredential = await _authService.signInWithEmailAndPassword(email, password);
+      if (userCredential == null) {
+        _view.onPopContext();
+        _view.onLoginFailed();
+        return;
+      }
       UserModel userData = await _userRepo.getUserById(userCredential.user!.uid);
-      _prefService.saveUserData(userData);
+      await _prefService.saveUserData(userData: userData, password: password);
     } catch (e) {
+      print(e);
       _view.onPopContext();
       _view.onLoginFailed();
       return;

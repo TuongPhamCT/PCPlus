@@ -3,10 +3,13 @@ import '../models/users/user_model.dart';
 
 class PrefService {
 
-  Future<void> saveUserData(UserModel userData) async {
+  Future<void> saveUserData({required UserModel userData, String? password}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     prefs.setString('userID', userData.userID!);
+    if (password != null) {
+      prefs.setString('password', password);
+    }
     prefs.setString('name', userData.name!);
     prefs.setString('email', userData.email!);
     prefs.setString('gender', userData.gender!);
@@ -22,9 +25,11 @@ class PrefService {
     await prefs.clear();
   }
 
-  Future<UserModel> loadUserData() async {
+  Future<UserModel?> loadUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
+    if (prefs.getString('dateOfBirth') == null) {
+      return null;
+    }
     return UserModel(
       userID: prefs.getString('userID'),
       name: prefs.getString('name'),
@@ -36,5 +41,10 @@ class PrefService {
       avatarUrl: prefs.getString('avatarUrl'),
       money: prefs.getInt('money')
     );
+  }
+
+  Future<String> getPassword() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('password') ?? "";
   }
 }

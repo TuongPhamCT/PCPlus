@@ -20,10 +20,13 @@ class HomePresenter {
 
   Future<void> getData() async {
     newestItems = await _itemRepo.getTopItems(MAX_NEWEST_ITEMS);
-    List<String> itemIds = await _apiController.callApiRecommend(_auth.userId!, MAX_RECOMMENDED_ITEMS);
-    for (String itemId in itemIds) {
-      recommendedItems.add(await _itemRepo.getItemById(itemId));
-    }
+    List<String> itemIds = await _apiController.callApiRecommend("5235448", MAX_RECOMMENDED_ITEMS);
+
+    print(itemIds);
+    // for (String itemId in itemIds) {
+    //   recommendedItems.add(await _itemRepo.getItemById(itemId));
+    // }
+
     _view.onLoadDataSucceed();
   }
 

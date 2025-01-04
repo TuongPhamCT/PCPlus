@@ -7,7 +7,7 @@ import 'package:pcplus/services/utility.dart';
 import '../models/users/user_model.dart';
 
 class ApiController {
-  static const String baseUrl = "/";
+  static const String baseUrl = "http://192.168.1.35:8000";
 
   // Constructor
   ApiController();
@@ -50,14 +50,19 @@ class ApiController {
   }
 
   Future<List<String>> callApiRecommend(String userId, int amount) async {
-    Map<String, dynamic> response = await _getRequest(
-        '/recommend',
-        {
-          'user_id': userId,
-          'amount': amount.toString()
-        }
-    );
-    return List.castFrom(response["recommends"]);
+    try {
+      Map<String, dynamic> response = await _getRequest(
+          '/recommend',
+          {
+            'user_id': userId,
+            'amount': amount.toString()
+          }
+      );
+      return List.castFrom(response["recommends"]);
+    } catch (e) {
+      print(e);
+      return [];
+    }
   }
 
   Future<String> callApiAddUserData(UserModel model) async {

@@ -36,14 +36,18 @@ class ItemRepository {
   }
 
   Future<List<ItemModel>> getTopItems(int limit) async {
-    final QuerySnapshot querySnapshot = await _storage.collection(ItemModel.collectionName)
-        .orderBy('addDate', descending: true)
-        .limit(limit)
-        .get();
-    final items = querySnapshot
-        .docs
-        .map((doc) => ItemModel.fromJson(doc as Map<String, dynamic>))
-        .toList();
-    return items;
+    try {
+      final QuerySnapshot querySnapshot = await _storage.collection(ItemModel.collectionName)
+          .orderBy('addDate', descending: true)
+          .limit(limit)
+          .get();
+      final items = querySnapshot
+          .docs
+          .map((doc) => ItemModel.fromJson(doc as Map<String, dynamic>))
+          .toList();
+      return items;
+    } catch (e) {
+      return [];
+    }
   }
 }
