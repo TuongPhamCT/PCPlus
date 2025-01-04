@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
@@ -12,6 +13,8 @@ class ConfirmNoti extends StatefulWidget {
 
 class _ConfirmNotiState extends State<ConfirmNoti> {
   bool isViewed = false;
+  bool isDelivery = true;
+  bool isTake = false;
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -53,7 +56,7 @@ class _ConfirmNotiState extends State<ConfirmNoti> {
               ),
             ),
             const Gap(10),
-            Container(
+            SizedBox(
               width: size.width - 80,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,6 +75,50 @@ class _ConfirmNotiState extends State<ConfirmNoti> {
                     '10:00 20/10/2022',
                     style: TextDecor.robo14.copyWith(color: Colors.grey),
                   ),
+                  if (isDelivery)
+                    Container(
+                      width: size.width - 80,
+                      alignment: Alignment.centerRight,
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            isTake = true;
+                          });
+                        },
+                        child: !isTake
+                            ? Container(
+                                alignment: Alignment.center,
+                                height: 45,
+                                width: 160,
+                                decoration: BoxDecoration(
+                                  color: Palette.primaryColor,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Text(
+                                  'Đã nhận được hàng',
+                                  style: TextDecor.robo16Semi,
+                                ),
+                              )
+                            : Container(
+                                alignment: Alignment.center,
+                                height: 45,
+                                width: 160,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Palette.primaryColor,
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Text(
+                                  'Đã nhận được hàng',
+                                  style: TextDecor.robo16Semi.copyWith(
+                                    color: Palette.primaryColor,
+                                  ),
+                                ),
+                              ),
+                      ),
+                    ),
                 ],
               ),
             ),
