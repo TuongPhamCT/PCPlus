@@ -83,6 +83,11 @@ class TextDecor {
     ],
   );
 
+  static TextStyle robo17 = GoogleFonts.roboto(
+    fontSize: 17,
+    color: Colors.black,
+  );
+
   static TextStyle robo17Medi = GoogleFonts.roboto(
     fontSize: 17,
     fontWeight: FontWeight.w500,
