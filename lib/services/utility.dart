@@ -38,6 +38,16 @@ abstract class Utility {
   static String formatRatingValue(double? value) {
     return value?.toStringAsFixed(1) ?? "4.5";
   }
+
+  static String extractDigits(String input) {
+    // Sử dụng biểu thức chính quy để tìm tất cả các chữ số
+    RegExp regExp = RegExp(r'\d+'); // \d là ký tự đại diện cho chữ số
+    Iterable<Match> matches = regExp.allMatches(input);
+
+    // Lấy tất cả các chữ số tìm được và nối chúng lại thành một chuỗi
+    String result = matches.map((match) => match.group(0)).join();
+    return result;
+  }
 }
 
 abstract class TestData {

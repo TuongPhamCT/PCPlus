@@ -15,5 +15,4 @@ class HomeItemPressedCommand implements CommandInterface {
   void execute() {
     presenter.handleItemPressed(itemModel);
   }
-
 }

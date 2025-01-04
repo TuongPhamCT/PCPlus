@@ -16,6 +16,7 @@ import 'package:pcplus/views/widgets/listItem/new_item.dart';
 import 'package:pcplus/views/widgets/listItem/suggest_item.dart';
 import 'package:pcplus/views/widgets/util_widgets.dart';
 
+import '../objects/suggest_item_data.dart';
 import '../presenter/home_presenter.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -170,21 +171,21 @@ class _HomeScreenState extends State<HomeScreen> implements HomeContract {
   @override
   Future<void> onLoadDataSucceed() async {
     NewItemBuilder newItemBuilder = NewItemBuilder();
-    for (ItemModel item in _presenter!.newestItems) {
+    for (ItemData item in _presenter!.newestItems) {
       await director.makeNewItem(
         builder: newItemBuilder,
-        product: item,
-        command: HomeItemPressedCommand(presenter: _presenter!, itemModel: item),
+        data: item,
+        command: HomeItemPressedCommand(presenter: _presenter!, itemModel: item.product!),
       );
       newProducts.add(newItemBuilder.createWidget()!);
     }
 
     SuggestItemBuilder suggestItemBuilder = SuggestItemBuilder();
-    for (ItemModel item in _presenter!.recommendedItems) {
+    for (ItemData item in _presenter!.recommendedItems) {
       await director.makeSuggestItem(
           builder: suggestItemBuilder,
-          product: item,
-          command: HomeItemPressedCommand(presenter: _presenter!, itemModel: item),
+          data: item,
+          command: HomeItemPressedCommand(presenter: _presenter!, itemModel: item.product!),
       );
       newProducts.add(newItemBuilder.createWidget()!);
     }

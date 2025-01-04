@@ -65,17 +65,23 @@ class InteractionRepository {
   }
 
   Future<double> getRatingByItemID(String id) async {
-    final QuerySnapshot querySnapshot = await _storage.collection(InteractionModel.collectionName)
-        .where('itemID', isEqualTo: id).get();
-    final items = querySnapshot
-        .docs
-        .map((doc) => InteractionModel.fromJson(doc as Map<String, dynamic>))
-        .toList();
-    double rating = 0;
-    for (InteractionModel item in items) {
-      rating = item.rating! as double;
+    try {
+      final QuerySnapshot querySnapshot = await _storage.collection(InteractionModel.collectionName)
+          .where('itemID', isEqualTo: id).get();
+      final items = querySnapshot
+          .docs
+          .map((doc) => InteractionModel.fromJson(doc as Map<String, dynamic>))
+          .toList();
+      double rating = 0;
+      for (InteractionModel item in items) {
+        rating = item.rating! as double;
+      }
+      rating = rating / items.length;
+      return rating;
+    } catch (e) {
+      print(e);
+      return 0;
     }
-    rating = rating / items.length;
-    return rating;
+
   }
 }

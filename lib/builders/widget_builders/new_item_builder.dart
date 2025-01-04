@@ -13,7 +13,6 @@ class NewItemBuilder implements WidgetBuilderInterface {
   ItemModel? _product;
   UserModel? _shop;
   CommandInterface? _command;
-  int? _sold = 0;
   double? _rating = 4.5;
 
   void setProduct(ItemModel product) {
@@ -24,29 +23,12 @@ class NewItemBuilder implements WidgetBuilderInterface {
     _command = command;
   }
 
-  Future<void> loadShop() async {
-    if (_product == null) {
-      return;
-    }
-    UserRepository repo = UserRepository();
-    _shop = await repo.getUserById(_product!.sellerID!);
+  void setShop(UserModel shop) {
+    _shop = shop;
   }
 
-  Future<void> loadSoldCount() async {
-    if (_product == null) {
-      return;
-    }
-    InteractionRepository repo = InteractionRepository();
-    _sold = await repo.getSoldCountByItemID(_product!.itemID!);
-  }
-
-  Future<void> loadRating() async {
-    if (_product == null) {
-      return;
-    }
-
-    InteractionRepository repo = InteractionRepository();
-    _rating = await repo.getRatingByItemID(_product!.itemID!);
+  void setRating(double rating) {
+    _rating = rating;
   }
 
   @override
@@ -61,7 +43,7 @@ class NewItemBuilder implements WidgetBuilderInterface {
         location: _shop!.getLocation(),
         rating: _rating!,
         price: _product!.price!,
-        sold: _sold!
+        sold: _product!.sold!
     );
   }
 
@@ -69,7 +51,6 @@ class NewItemBuilder implements WidgetBuilderInterface {
   void reset() {
     _product = null;
     _shop = null;
-    _sold = 0;
     _rating = 4.5;
     _command = null;
   }
