@@ -38,6 +38,9 @@ class _DetailProductState extends State<DetailProduct> {
   int color = 1;
   int soluong = 1;
 
+  late AnimationController _controller;
+  late Animation<double> _rotationAnimation;
+
   void _onPageChanged(int index) {
     setState(() {
       _selectedIndex = index;
@@ -50,6 +53,43 @@ class _DetailProductState extends State<DetailProduct> {
       index * 80.0,
       duration: Duration(milliseconds: 300),
       curve: Curves.easeInOut,
+    );
+  }
+
+  void _showSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        Future.delayed(const Duration(seconds: 1), () {
+          Navigator.of(context).pop(); // Đóng dialog
+        });
+        return AlertDialog(
+          alignment: Alignment.center,
+          content: Container(
+            alignment: Alignment.center,
+            height: 120,
+            child: Column(
+              children: [
+                Expanded(child: Container()),
+                const Icon(
+                  Icons.check_circle,
+                  color: Colors.white,
+                  size: 50,
+                ),
+                const Gap(10),
+                Text(
+                  'Add to cart successfully!',
+                  style: TextDecor.robo18Semi.copyWith(
+                    color: Colors.white,
+                  ),
+                ),
+                Expanded(child: Container()),
+              ],
+            ),
+          ),
+          backgroundColor: Colors.black.withOpacity(0.45),
+        );
+      },
     );
   }
 
@@ -69,9 +109,7 @@ class _DetailProductState extends State<DetailProduct> {
                   child: Column(
                     children: [
                       InkWell(
-                        onTap: () {
-                          // Navigator.pop(context);
-                        },
+                        onTap: () {},
                         child: Container(
                           height: 42,
                           width: 42,
@@ -511,7 +549,20 @@ class _DetailProductState extends State<DetailProduct> {
           children: [
             InkWell(
               onTap: () {
-                //Add one product to Cart
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (context) {
+                    // Tự động đóng dialog sau 3 giây
+                    Future.delayed(const Duration(seconds: 1), () {
+                      Navigator.of(context).pop(); // Đóng dialog
+                      // Hiển thị dialog thông báo thành công
+                      _showSuccessDialog(context);
+                    });
+
+                    return const Center(child: CircularProgressIndicator());
+                  },
+                );
               },
               child: Container(
                 width: size.width / 2,
