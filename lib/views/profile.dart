@@ -30,6 +30,7 @@ class _ProfileScreenState extends State<ProfileScreen>
   String _userAvatarUrl = "";
   String _userName = "";
   bool _isLoading = false;
+  bool isShop = true;
 
   Future<void> launchEmailApp() async {
     final Uri emailLaunchUri = Uri(
@@ -133,7 +134,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Đơn mua',
+                              'Đơn hàng',
                               style: TextDecor.profileIntroText,
                             ),
                             InkWell(
@@ -142,7 +143,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     .pushNamed(HistoryOrder.routeName);
                               },
                               child: Text(
-                                'Xem lịch sử mua hàng',
+                                'Xem lịch sử đơn hàng',
                                 style: TextDecor.profileIntroText.copyWith(
                                   color: Palette.main1,
                                 ),
@@ -152,7 +153,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                         ),
                         const Gap(10),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             InkWell(
                               onTap: () {},
@@ -202,54 +203,56 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 ],
                               ),
                             ),
-                            InkWell(
-                              onTap: () {},
-                              child: Column(
-                                children: [
-                                  SizedBox(
-                                    width: 40,
-                                    height: 40,
-                                    child: Stack(
-                                      children: [
-                                        const Padding(
-                                          padding:
-                                              EdgeInsets.only(top: 5, right: 6),
-                                          child: Icon(
-                                            FontAwesomeIcons.boxesPacking,
-                                            size: 30,
-                                            color: Palette.main1,
-                                          ),
-                                        ),
-                                        Positioned(
-                                          right: 0,
-                                          top: 0,
-                                          child: Container(
-                                            width: 20,
-                                            height: 20,
-                                            alignment: Alignment.center,
-                                            decoration: const BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: Palette.primaryColor,
+                            if (!isShop)
+                              InkWell(
+                                onTap: () {},
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      width: 40,
+                                      height: 40,
+                                      child: Stack(
+                                        children: [
+                                          const Padding(
+                                            padding: EdgeInsets.only(
+                                                top: 5, right: 6),
+                                            child: Icon(
+                                              FontAwesomeIcons.boxesPacking,
+                                              size: 30,
+                                              color: Palette.main1,
                                             ),
-                                            child: Text(
-                                              '1',
-                                              style: TextDecor.robo16.copyWith(
-                                                color: Colors.white,
+                                          ),
+                                          Positioned(
+                                            right: 0,
+                                            top: 0,
+                                            child: Container(
+                                              width: 20,
+                                              height: 20,
+                                              alignment: Alignment.center,
+                                              decoration: const BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: Palette.primaryColor,
+                                              ),
+                                              child: Text(
+                                                '1',
+                                                style:
+                                                    TextDecor.robo16.copyWith(
+                                                  color: Colors.white,
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  const Gap(3),
-                                  Text(
-                                    'Chờ lấy hàng',
-                                    style: TextDecor.orderProfile,
-                                  ),
-                                ],
+                                    const Gap(3),
+                                    Text(
+                                      'Chờ lấy hàng',
+                                      style: TextDecor.orderProfile,
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
                             InkWell(
                               onTap: () {},
                               child: Column(
@@ -292,60 +295,62 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   ),
                                   const Gap(3),
                                   Text(
-                                    'Chờ giao hàng',
+                                    isShop ? 'Chờ gửi hàng' : 'Chờ giao hàng',
                                     style: TextDecor.orderProfile,
                                   ),
                                 ],
                               ),
                             ),
-                            InkWell(
-                              onTap: () {},
-                              child: Column(
-                                children: [
-                                  SizedBox(
-                                    width: 40,
-                                    height: 40,
-                                    child: Stack(
-                                      children: [
-                                        const Padding(
-                                          padding:
-                                              EdgeInsets.only(top: 5, right: 3),
-                                          child: Icon(
-                                            FontAwesomeIcons.rankingStar,
-                                            size: 30,
-                                            color: Palette.main1,
-                                          ),
-                                        ),
-                                        Positioned(
-                                          right: 0,
-                                          top: 0,
-                                          child: Container(
-                                            width: 20,
-                                            height: 20,
-                                            alignment: Alignment.center,
-                                            decoration: const BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: Palette.primaryColor,
+                            if (!isShop)
+                              InkWell(
+                                onTap: () {},
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      width: 40,
+                                      height: 40,
+                                      child: Stack(
+                                        children: [
+                                          const Padding(
+                                            padding: EdgeInsets.only(
+                                                top: 5, right: 3),
+                                            child: Icon(
+                                              FontAwesomeIcons.rankingStar,
+                                              size: 30,
+                                              color: Palette.main1,
                                             ),
-                                            child: Text(
-                                              '1',
-                                              style: TextDecor.robo16.copyWith(
-                                                color: Colors.white,
+                                          ),
+                                          Positioned(
+                                            right: 0,
+                                            top: 0,
+                                            child: Container(
+                                              width: 20,
+                                              height: 20,
+                                              alignment: Alignment.center,
+                                              decoration: const BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: Palette.primaryColor,
+                                              ),
+                                              child: Text(
+                                                '1',
+                                                style:
+                                                    TextDecor.robo16.copyWith(
+                                                  color: Colors.white,
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  const Gap(3),
-                                  Text(
-                                    'Đánh giá',
-                                    style: TextDecor.orderProfile,
-                                  ),
-                                ],
+                                    const Gap(3),
+                                    Text(
+                                      'Đánh giá',
+                                      style: TextDecor.orderProfile,
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
                           ],
                         ),
                       ],
