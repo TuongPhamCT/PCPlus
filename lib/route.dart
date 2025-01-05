@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:pcplus/views/OTP.dart';
+import 'package:pcplus/views/add_product.dart';
 import 'package:pcplus/views/bill/bill_product.dart';
 import 'package:pcplus/views/bill/delivery_choice.dart';
 import 'package:pcplus/views/cart_shopping.dart';
 import 'package:pcplus/views/change_password.dart';
 import 'package:pcplus/views/delivery/delivery_infor.dart';
+import 'package:pcplus/views/edit_product.dart';
 import 'package:pcplus/views/edit_profile.dart';
 import 'package:pcplus/views/forgot_password.dart';
 import 'package:pcplus/views/home.dart';
 import 'package:pcplus/views/login.dart';
 import 'package:pcplus/views/no_network.dart';
 import 'package:pcplus/views/notification.dart';
+import 'package:pcplus/views/order/history_oder.dart';
+import 'package:pcplus/views/order/rating.dart';
 import 'package:pcplus/views/product/detail_product.dart';
 import 'package:pcplus/views/profile.dart';
 import 'package:pcplus/views/register.dart';
 import 'package:pcplus/views/search/search_screen.dart';
+import 'package:pcplus/views/shop_home.dart';
 import 'package:pcplus/views/splash.dart';
+import 'package:pcplus/views/statistic.dart';
 import 'package:pcplus/views/user_information.dart';
 
 final Map<String, WidgetBuilder> routes = {
@@ -37,4 +43,10 @@ final Map<String, WidgetBuilder> routes = {
   DeliveryChoice.routeName: (context) => const DeliveryChoice(),
   DeliveryInfor.routeName: (context) => const DeliveryInfor(),
   SearchScreen.routeName: (context) => const SearchScreen(),
+  HistoryOrder.routeName: (context) => const HistoryOrder(),
+  RatingScreen.routeName: (context) => const RatingScreen(),
+  ShopHome.routeName: (context) => const ShopHome(),
+  Statistic.routeName: (context) => const Statistic(),
+  AddProduct.routeName: (context) => const AddProduct(),
+  EditProduct.routeName: (context) => const EditProduct(),
 };
