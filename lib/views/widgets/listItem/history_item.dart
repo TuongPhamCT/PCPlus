@@ -11,6 +11,7 @@ class HistoryItem extends StatefulWidget {
 }
 
 class _HistoryItemState extends State<HistoryItem> {
+  bool isShop = true;
   bool xacNhan = false;
   bool goiHang = true;
   bool giaoHang = false;
@@ -107,6 +108,7 @@ class _HistoryItemState extends State<HistoryItem> {
               ],
             ),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -126,7 +128,7 @@ class _HistoryItemState extends State<HistoryItem> {
                 const Gap(10),
                 Container(
                   width: size.width - 180,
-                  height: 125,
+                  height: isShop ? 150 : 125,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -157,6 +159,20 @@ class _HistoryItemState extends State<HistoryItem> {
                           ),
                         ],
                       ),
+                      if (isShop)
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "To: Pham Thanh Tuong",
+                              style: TextDecor.robo17,
+                            ),
+                            Text(
+                              "Address: 123 Nguyen Van Linh, Da Nang",
+                              style: TextDecor.robo17,
+                            ),
+                          ],
+                        ),
                       Expanded(child: Container()),
                       Row(
                         children: [
@@ -167,6 +183,7 @@ class _HistoryItemState extends State<HistoryItem> {
                           ),
                         ],
                       ),
+                      const Gap(5),
                     ],
                   ),
                 ),
