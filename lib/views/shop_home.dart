@@ -126,7 +126,7 @@ class _ShopHomeState extends State<ShopHome> {
                           'https://cdn.tgdd.vn/Files/2022/01/30/1413644/cac-thuong-hieu-tai-nghe-tot-va-duoc-ua-chuong-nha.jpg',
                       description: 'Tai nghe hiện đại nhất',
                       quantity: 10,
-                      location: 'Hồ Chí Minh',
+                      location: 'Hồ Chí Minh Thu Duc, Linh Xuan',
                       rating: 4.5,
                       price: 576000,
                       sold: 3);
