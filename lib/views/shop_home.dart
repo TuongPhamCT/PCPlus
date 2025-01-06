@@ -3,15 +3,12 @@ import 'package:gap/gap.dart';
 import 'package:pcplus/commands/shop_home_command.dart';
 import 'package:pcplus/config/asset_helper.dart';
 import 'package:pcplus/contract/shop_home_contract.dart';
-import 'package:pcplus/observers/subscriber_interface.dart';
 import 'package:pcplus/presenter/shop_home_presenter.dart';
 import 'package:pcplus/singleton/user_singleton.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 import 'package:pcplus/views/add_product.dart';
 import 'package:pcplus/views/widgets/bottom/shop_bottom_bar.dart';
-import 'package:pcplus/views/widgets/listItem/shop_item.dart';
-import 'package:pcplus/views/widgets/listItem/suggest_item.dart';
 import 'package:pcplus/views/widgets/util_widgets.dart';
 
 import '../builders/widget_builders/shop_item_builder.dart';
@@ -79,7 +76,7 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
       body: Container(
         height: size.height,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage(AssetHelper.shopBg),
             fit: BoxFit.cover,
@@ -156,11 +153,10 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
               const Gap(10),
               if (productWidgets.isEmpty)
                 UtilWidgets.getCenterTextWithContainer(
-                  width: size.width,
-                  height: size.height * 0.5,
-                  text: "Không có sản phẩm nào",
-                  color: Palette.primaryColor
-                )
+                    width: size.width,
+                    height: size.height * 0.5,
+                    text: "Không có sản phẩm nào",
+                    color: Palette.primaryColor)
               else
                 ListView.builder(
                   shrinkWrap: true,
@@ -176,15 +172,17 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
           ),
         ),
       ),
-      floatingActionButton: isShop ? FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).pushNamed(AddProduct.routeName);
-        },
-        child: const Icon(
-          Icons.add,
-          size: 36,
-        ),
-      ) : null,
+      floatingActionButton: isShop
+          ? FloatingActionButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(AddProduct.routeName);
+              },
+              child: const Icon(
+                Icons.add,
+                size: 36,
+              ),
+            )
+          : null,
       bottomNavigationBar: isShop ? const ShopBottomBar(currentIndex: 0) : null,
     );
   }
@@ -194,11 +192,12 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
     ShopItemBuilder shopItemBuilder = ShopItemBuilder();
     for (ItemData item in _presenter!.itemsData) {
       director.makeShopItem(
-        builder: shopItemBuilder,
-        data: item,
-        editCommand: ShopHomeItemEditCommand(presenter: _presenter!, item: item),
-        deleteCommand: ShopHomeItemDeleteCommand(presenter: _presenter!, item: item)
-      );
+          builder: shopItemBuilder,
+          data: item,
+          editCommand:
+              ShopHomeItemEditCommand(presenter: _presenter!, item: item),
+          deleteCommand:
+              ShopHomeItemDeleteCommand(presenter: _presenter!, item: item));
       productWidgets.add(shopItemBuilder.createWidget()!);
     }
     setState(() {});

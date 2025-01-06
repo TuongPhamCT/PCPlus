@@ -1,5 +1,4 @@
 import 'package:pcplus/contract/cart_shopping_screen_contract.dart';
-import 'package:pcplus/objects/in_cart_item_data.dart';
 import 'package:pcplus/singleton/cart_singleton.dart';
 
 import '../services/utility.dart';

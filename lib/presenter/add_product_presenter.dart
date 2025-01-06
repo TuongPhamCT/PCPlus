@@ -60,8 +60,7 @@ class AddProductPresenter {
         detail: detail,
         description: description,
         sold: 0,
-        colors: ["black, grey, white"]
-    );
+        colors: ["black, grey, white"]);
 
     await _shopSingleton.addData(model);
     _view.onPopContext();

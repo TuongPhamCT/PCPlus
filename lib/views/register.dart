@@ -4,7 +4,6 @@ import 'package:gap/gap.dart';
 import 'package:pcplus/config/asset_helper.dart';
 import 'package:pcplus/contract/register_contract.dart';
 import 'package:pcplus/presenter/register_presenter.dart';
-import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 import 'package:pcplus/views/OTP.dart';
 import 'package:pcplus/views/login.dart';

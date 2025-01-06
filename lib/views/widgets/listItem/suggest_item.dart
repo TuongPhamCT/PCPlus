@@ -71,7 +71,7 @@ class SuggestItem extends StatelessWidget {
               ),
             ),
             const Gap(16),
-            Container(
+            SizedBox(
               width: size.width * 0.425,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,4 +1,3 @@
-import 'package:pcplus/presenter/register_presenter.dart';
 
 abstract class Utility {
 
@@ -37,7 +36,7 @@ abstract class Utility {
       value = "${transform.toStringAsFixed(1)}M";
     }
 
-    return "$value";
+    return value;
   }
 
   static String formatCurrency(int? amount) {

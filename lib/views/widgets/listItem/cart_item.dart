@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:gap/gap.dart';
 import 'package:pcplus/themes/palette/palette.dart';
@@ -20,7 +19,7 @@ class CartItem extends StatefulWidget {
   final void Function(bool?)? onChanged;
   final void Function()? onDelete;
   final void Function(int amount)? onChangeAmount;
-  CartItem({
+  const CartItem({
     super.key,
     required this.shopName,
     required this.itemName,
@@ -151,7 +150,7 @@ class _CartItemState extends State<CartItem> {
                   ),
                 ),
                 const Gap(10),
-                Container(
+                SizedBox(
                   width: size.width * 0.425,
                   height: 125,
                   child: Column(

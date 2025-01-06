@@ -1,24 +1,17 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:gap/gap.dart';
-import 'package:pcplus/builders/object_builders/list_object_builder_director.dart';
 import 'package:pcplus/builders/widget_builders/review_item_builder.dart';
 import 'package:pcplus/builders/widget_builders/widget_builder_director.dart';
 import 'package:pcplus/config/asset_helper.dart';
 import 'package:pcplus/contract/detail_product_contract.dart';
-import 'package:pcplus/models/ratings/rating_model.dart';
 import 'package:pcplus/presenter/detail_product_presenter.dart';
 import 'package:pcplus/services/utility.dart';
 import 'package:pcplus/singleton/view_item_singleton.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 import 'package:pcplus/views/bill/bill_product.dart';
-import 'package:pcplus/views/widgets/listItem/review_item.dart';
 
 import '../../objects/review_data.dart';
 import '../widgets/util_widgets.dart';
@@ -431,7 +424,7 @@ class _DetailProductState extends State<DetailProduct> implements DetailProductC
                           width: 110,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(80),
-                            image: DecorationImage(
+                            image: const DecorationImage(
                               image: AssetImage(AssetHelper.shopAvt),
                               fit: BoxFit.cover,
                             ),
