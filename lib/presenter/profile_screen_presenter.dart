@@ -1,6 +1,7 @@
 import 'package:pcplus/contract/profile_screen_contract.dart';
 import 'package:pcplus/services/authentication_service.dart';
 import 'package:pcplus/services/pref_service.dart';
+import 'package:pcplus/singleton/user_singleton.dart';
 
 import '../models/users/user_model.dart';
 
@@ -15,8 +16,7 @@ class ProfileScreenPresenter {
   final PrefService _pref = PrefService();
 
   Future<void> getData() async {
-    user = await _pref.loadUserData();
-    isSeller = user!.isSeller!;
+    user = UserSingleton.getInstance().currentUser;
     _view.onLoadDataSucceeded();
   }
 
