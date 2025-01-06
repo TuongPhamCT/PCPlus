@@ -49,6 +49,7 @@ class ShopSingleton {
     );
     itemsData.add(newData);
     _itemRepository.addItemToFirestore(itemModel);
+    reorder();
   }
 
   void updateData(ItemData data) {
@@ -59,5 +60,11 @@ class ShopSingleton {
     _itemRepository.deleteItemById(data.product!.itemID!);
     itemsData.remove(data);
     itemModels.remove(data.product!);
+  }
+
+  void reorder() {
+    itemsData.sort((element1, element2)
+      => element1.product!.addDate!.compareTo(element2.product!.addDate!) * -1
+    );
   }
 }
