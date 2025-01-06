@@ -29,7 +29,7 @@ class LoginPresenter {
     } catch (e) {
       print(e);
       _view.onPopContext();
-      _view.onLoginFailed();
+      _view.onError();
       return;
     }
     _view.onPopContext();

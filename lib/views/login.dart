@@ -134,7 +134,6 @@ class _LoginScreenState extends State<LoginScreen> implements LoginViewContract 
     setState(() {
       error = "Email or password is invalid";
     });
-    UtilWidgets.createSnackBar(context, "Login failed!");
   }
 
   @override
@@ -155,5 +154,13 @@ class _LoginScreenState extends State<LoginScreen> implements LoginViewContract 
   @override
   void onWaitingProgressBar() {
     UtilWidgets.createLoadingWidget(context);
+  }
+
+  @override
+  void onError() {
+    UtilWidgets.createSnackBar(context, "Login failed!");
+    setState(() {
+      error = "";
+    });
   }
 }
