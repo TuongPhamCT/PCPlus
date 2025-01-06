@@ -30,7 +30,6 @@ class _AddProductState extends State<AddProduct> implements AddProductContract {
     if (pickedFile != null) {
       setState(() {
         _images.add(File(pickedFile.path));
-
       });
     }
   }
