@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:pcplus/themes/text_decor.dart';
 
 import '../../themes/palette/palette.dart';
 
 abstract class UtilWidgets {
-
   // const title
   static const NOTIFICATION = "Notification";
   static const WARNING = "Warning";
@@ -14,11 +14,11 @@ abstract class UtilWidgets {
         barrierDismissible: false,
         builder: (context) {
           return const Center(child: CircularProgressIndicator());
-        }
-    );
+        });
   }
 
-  static void createDialog(BuildContext context, String title, String content, VoidCallback onClick) {
+  static void createDialog(BuildContext context, String title, String content,
+      VoidCallback onClick) {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -37,7 +37,8 @@ abstract class UtilWidgets {
     );
   }
 
-  static void createDismissibleDialog(BuildContext context, String title, String content, VoidCallback onClick) {
+  static void createDismissibleDialog(BuildContext context, String title,
+      String content, VoidCallback onClick) {
     showDialog(
       context: context,
       barrierDismissible: true,
@@ -56,31 +57,25 @@ abstract class UtilWidgets {
     );
   }
 
-  static void createSnackBar(BuildContext context, String content){
+  static void createSnackBar(BuildContext context, String content) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: Palette.primaryColor,
         content: Text(
           content,
-          style: const TextStyle(color: Colors.red),
+          style: TextDecor.robo17.copyWith(color: Colors.white),
         ),
       ),
     );
   }
 
-  static Widget getLoadingWidget(){
-    return const Center( child: CircularProgressIndicator());
+  static Widget getLoadingWidget() {
+    return const Center(child: CircularProgressIndicator());
   }
 
-  static Widget getLoadingWidgetWithContainer({
-    required double width,
-    required double height
-  }) {
-    return SizedBox(
-      width: width,
-      height: height,
-      child: getLoadingWidget()
-    );
+  static Widget getLoadingWidgetWithContainer(
+      {required double width, required double height}) {
+    return SizedBox(width: width, height: height, child: getLoadingWidget());
   }
 
   static Widget getCenterTextWithContainer({
@@ -94,13 +89,11 @@ abstract class UtilWidgets {
       width: width,
       height: height,
       child: Center(
-        child: Text(
-          text ?? "",
-          style: TextStyle(
-            color: color ?? Palette.primaryColor,
-            fontSize: fontSize ?? 16,
-          )
-        ),
+        child: Text(text ?? "",
+            style: TextStyle(
+              color: color ?? Palette.primaryColor,
+              fontSize: fontSize ?? 16,
+            )),
       ),
     );
   }
