@@ -1,5 +1,6 @@
 abstract class EditProductContract {
-  void onLoadDataSucceeded();
   void onWaitingProgressBar();
   void onPopContext();
+  void onEditFailed(String message);
+  void onEditSucceeded();
 }

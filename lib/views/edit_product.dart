@@ -3,13 +3,13 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:pcplus/config/asset_helper.dart';
 import 'package:pcplus/contract/edit_product_contract.dart';
 import 'package:pcplus/presenter/edit_product_presenter.dart';
 import 'package:pcplus/singleton/shop_singleton.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 import 'package:pcplus/objects/image_data.dart';
+import 'package:pcplus/views/widgets/util_widgets.dart';
 import '../models/items/item_model.dart';
 
 class EditProduct extends StatefulWidget {
@@ -20,11 +20,10 @@ class EditProduct extends StatefulWidget {
   State<EditProduct> createState() => _EditProductState();
 }
 
-class _EditProductState extends State<EditProduct>
-    implements EditProductContract {
+class _EditProductState extends State<EditProduct> implements EditProductContract {
   final _formKey = GlobalKey<FormState>();
   EditProductPresenter? _presenter;
-  final List<ImageData> _images = [];
+  List<ImageData> _images = [];
   final ImagePicker _picker = ImagePicker();
 
   final ShopSingleton _shopSingleton = ShopSingleton.getInstance();
@@ -45,7 +44,10 @@ class _EditProductState extends State<EditProduct>
     _priceController.text = itemModel.price.toString();
     _amountController.text = itemModel.stock.toString();
     for (String url in itemModel.reviewImages!) {
-      ImageData imageData = ImageData(path: url, isNew: false);
+      ImageData imageData = ImageData(
+          path: url,
+          isNew: false
+      );
       _images.add(imageData);
     }
 
@@ -58,7 +60,10 @@ class _EditProductState extends State<EditProduct>
     if (pickedFile != null) {
       setState(() {
         ImageData imageData = ImageData(
-            path: pickedFile.path, isNew: true, file: File(pickedFile.path));
+          path: pickedFile.path,
+          isNew: true,
+          file: File(pickedFile.path)
+        );
         _images.add(imageData);
       });
     }
@@ -90,11 +95,7 @@ class _EditProductState extends State<EditProduct>
         ),
         centerTitle: true,
       ),
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage(AssetHelper.shopBg), fit: BoxFit.cover),
-        ),
+      body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
@@ -126,7 +127,7 @@ class _EditProductState extends State<EditProduct>
                     return null;
                   },
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 // Mô tả
                 TextFormField(
                   onTapOutside: (event) {
@@ -146,7 +147,7 @@ class _EditProductState extends State<EditProduct>
                   maxLines: 3,
                   minLines: 1,
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 // Giới thiệu chi tiết
                 TextFormField(
                   onTapOutside: (event) {
@@ -166,7 +167,7 @@ class _EditProductState extends State<EditProduct>
                   maxLines: 200,
                   minLines: 1,
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 // Giá
                 TextFormField(
                   onTapOutside: (event) {
@@ -185,7 +186,7 @@ class _EditProductState extends State<EditProduct>
                   ),
                   keyboardType: TextInputType.number,
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 // Số lượng
                 TextFormField(
                   onTapOutside: (event) {
@@ -204,7 +205,7 @@ class _EditProductState extends State<EditProduct>
                   ),
                   keyboardType: TextInputType.number,
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16),
                 // Ảnh minh hoạ
                 Text(
                   "Ảnh minh hoạ:",
@@ -213,8 +214,8 @@ class _EditProductState extends State<EditProduct>
                 const SizedBox(height: 8),
                 GridView.builder(
                   shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  physics: NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: 400 / 200,
                     crossAxisSpacing: 8,
@@ -226,17 +227,20 @@ class _EditProductState extends State<EditProduct>
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(8),
-                          child: _images[index].isNew == false
-                              ? Image.network(_images[index].path,
-                                  width: double.infinity,
-                                  height: double.infinity,
-                                  fit: BoxFit.cover)
-                              : Image.file(
-                                  _images[index].file!,
-                                  width: double.infinity,
-                                  height: double.infinity,
-                                  fit: BoxFit.cover,
-                                ),
+                          child:
+                            _images[index].isNew == false ?
+                              Image.network(
+                                _images[index].path,
+                                width: double.infinity,
+                                height: double.infinity,
+                                fit: BoxFit.cover
+                              )
+                              :
+                              Image.file(_images[index].file!,
+                                width: double.infinity,
+                                height: double.infinity,
+                                fit: BoxFit.cover,
+                              ),
                         ),
                         Positioned(
                           top: 8,
@@ -244,11 +248,11 @@ class _EditProductState extends State<EditProduct>
                           child: GestureDetector(
                             onTap: () => _removeImage(index),
                             child: Container(
-                              decoration: const BoxDecoration(
+                              decoration: BoxDecoration(
                                 color: Colors.red,
                                 shape: BoxShape.circle,
                               ),
-                              child: const Icon(
+                              child: Icon(
                                 Icons.close,
                                 color: Colors.white,
                                 size: 20,
@@ -271,38 +275,38 @@ class _EditProductState extends State<EditProduct>
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState?.validate() ?? false) {
-                      // Xử lý logic thêm sản phẩm tại đây
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Sản phẩm đã được thêm')),
+                      // Xử lý logic sửa sản phẩm tại đây
+                      _presenter?.handleEditProduct(
+                          name: _nameController.text.trim(),
+                          description: _descriptionController.text.trim(),
+                          detail: _detailController.text.trim(),
+                          price: int.parse(_priceController.text.trim()),
+                          amount: int.parse(_amountController.text.trim()),
+                          images: _images
                       );
                     }
                   },
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(double.infinity, 50),
-                    backgroundColor: Palette.main1,
-                  ),
                   child: Text(
                     "CẬP NHẬT",
                     style: TextDecor.robo18Semi,
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(double.infinity, 50),
+                    backgroundColor: Palette.main1,
                   ),
                 ),
                 const Gap(10),
                 ElevatedButton(
                   onPressed: () {
-                    if (_formKey.currentState?.validate() ?? false) {
-                      // Xử lý logic thêm sản phẩm tại đây
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Sản phẩm đã được thêm')),
-                      );
-                    }
+                    Navigator.pop(context);
                   },
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(double.infinity, 50),
-                    backgroundColor: Colors.orangeAccent,
-                  ),
                   child: Text(
                     "HUỶ",
                     style: TextDecor.robo18Semi,
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(double.infinity, 50),
+                    backgroundColor: Colors.orangeAccent,
                   ),
                 ),
                 const Gap(16),
@@ -315,17 +319,22 @@ class _EditProductState extends State<EditProduct>
   }
 
   @override
-  void onLoadDataSucceeded() {
-    // TODO: implement onLoadDataSucceeded
-  }
-
-  @override
   void onPopContext() {
-    // TODO: implement onPopContext
+    Navigator.of(context, rootNavigator: true).pop();
   }
 
   @override
   void onWaitingProgressBar() {
-    // TODO: implement onWaitingProgressBar
+    UtilWidgets.createLoadingWidget(context);
+  }
+
+  @override
+  void onEditFailed(String message) {
+    UtilWidgets.createSnackBar(context, message);
+  }
+
+  @override
+  void onEditSucceeded() {
+    UtilWidgets.createSnackBar(context, "Cập nhật thành công");
   }
 }
