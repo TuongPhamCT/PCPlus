@@ -6,11 +6,22 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:gap/gap.dart';
+import 'package:pcplus/builders/object_builders/list_object_builder_director.dart';
+import 'package:pcplus/builders/widget_builders/review_item_builder.dart';
+import 'package:pcplus/builders/widget_builders/widget_builder_director.dart';
 import 'package:pcplus/config/asset_helper.dart';
+import 'package:pcplus/contract/detail_product_contract.dart';
+import 'package:pcplus/models/ratings/rating_model.dart';
+import 'package:pcplus/presenter/detail_product_presenter.dart';
+import 'package:pcplus/services/utility.dart';
+import 'package:pcplus/singleton/view_item_singleton.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 import 'package:pcplus/views/bill/bill_product.dart';
 import 'package:pcplus/views/widgets/listItem/review_item.dart';
+
+import '../../objects/review_data.dart';
+import '../widgets/util_widgets.dart';
 
 class DetailProduct extends StatefulWidget {
   const DetailProduct({super.key});
@@ -20,26 +31,60 @@ class DetailProduct extends StatefulWidget {
   State<DetailProduct> createState() => _DetailProductState();
 }
 
-class _DetailProductState extends State<DetailProduct> {
-  final List<String> images = [
-    'https://cdn.tgdd.vn/Files/2022/01/30/1413644/cac-thuong-hieu-tai-nghe-tot-va-duoc-ua-chuong-nha.jpg',
-    'https://cdn.xtmobile.vn/vnt_upload/news/06_2024/21/tai-nghe-chup-tai-airpods-max-xtmobile.jpg',
-    'https://duhung.vn/wp-content/uploads/2022/07/yealink-yhs34-dual-.jpg',
-    'https://cdn.tgdd.vn/Products/Images/54/311186/tai-nghe-bluetooth-chup-tai-havit-h662bt-den-tn-600x600.jpg',
-    'https://duhung.vn/wp-content/uploads/2022/07/YHS36-dual-.jpg',
-    'https://cdn.tgdd.vn/Products/Images/54/327554/tai-nghe-bluetooth-true-wireless-samsung-galaxy-buds-3-pro-r630n-100724-082455-600x600-1-600x600.jpg',
-  ];
+class _DetailProductState extends State<DetailProduct> implements DetailProductContract {
+  DetailProductPresenter? _presenter;
+
+  List<String> images = [];
+
+  final ViewItemSingleton _itemSingleton = ViewItemSingleton.getInstance();
+  final WidgetBuilderDirector director = WidgetBuilderDirector();
+
   final PageController _pageController = PageController();
   final ScrollController _scrollController = ScrollController();
   int _selectedIndex = 0;
+
+  String productName = "Product Name Here";
+  String description = "description";
+  String detail = "detail information\ndetail information";
+  int stock = 100;
+  int price = 200000;
+  int sold = 1000200;
 
   bool _detailInfor = false;
   double rating = 3.5;
   int color = 1;
   int soluong = 1;
 
+  // Shop data
+  String shopName = "King Shop";
+  String shopPhone = "0123456789";
+  String location = "TP. Ho Chi Minh";
+  int productsCount = 50;
+
+  List<ReviewData> reviews = [];
+
   late AnimationController _controller;
   late Animation<double> _rotationAnimation;
+
+  @override
+  void initState() {
+    _presenter = DetailProductPresenter(this);
+
+    productName = _itemSingleton.itemData!.product!.name!;
+    description = _itemSingleton.itemData!.product!.description!;
+    detail = _itemSingleton.itemData!.product!.detail!;
+    stock = _itemSingleton.itemData!.product!.stock!;
+    price = _itemSingleton.itemData!.product!.price!;
+    sold = _itemSingleton.itemData!.product!.sold!;
+    rating = _itemSingleton.itemData!.rating ?? 0;
+    shopName = _itemSingleton.itemData!.shop!.getShopName();
+    location = _itemSingleton.itemData!.shop!.getLocation();
+    productsCount = _itemSingleton.shopProductsCount;
+    reviews = _itemSingleton.reviewsData;
+    images = _itemSingleton.itemData!.product!.reviewImages!;
+
+    super.initState();
+  }
 
   void _onPageChanged(int index) {
     setState(() {
@@ -51,7 +96,7 @@ class _DetailProductState extends State<DetailProduct> {
   void _scrollToIndex(int index) {
     _scrollController.animateTo(
       index * 80.0,
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
     );
   }
@@ -59,6 +104,7 @@ class _DetailProductState extends State<DetailProduct> {
   void _showSuccessDialog(BuildContext context) {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
         Future.delayed(const Duration(seconds: 1), () {
           Navigator.of(context).pop(); // Đóng dialog
@@ -109,7 +155,9 @@ class _DetailProductState extends State<DetailProduct> {
                   child: Column(
                     children: [
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          _presenter?.handleBack();
+                        },
                         child: Container(
                           height: 42,
                           width: 42,
@@ -223,12 +271,12 @@ class _DetailProductState extends State<DetailProduct> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Product Name Here Pham Thanh Tuong Pham Thanh Tuong',
+                    productName,
                     style: TextDecor.robo24Bold,
                     maxLines: 2,
                   ),
                   Text(
-                    '200.000 VNĐ',
+                    Utility.formatCurrency(price),
                     style: TextDecor.robo18Semi.copyWith(
                       color: Colors.red,
                     ),
@@ -244,19 +292,19 @@ class _DetailProductState extends State<DetailProduct> {
                       ),
                       const Gap(3),
                       Text(
-                        '4.9',
+                        "$rating",
                         style: TextDecor.robo13Medi,
                       ),
                       Expanded(child: Container()),
                       Text(
-                        '100,5k Sold',
+                        Utility.formatSoldCount(sold),
                         style: TextDecor.robo13Medi,
                       ),
                     ],
                   ),
                   const Gap(10),
                   Text(
-                    'Wireless Over-ear Industry Leading Noise Canceling Headphones with Microphone',
+                    description,
                     style: TextDecor.robo15,
                     maxLines: 3,
                   ),
@@ -301,7 +349,7 @@ class _DetailProductState extends State<DetailProduct> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        'Detail Information Here\n Detail Information Here\n Detail Information Here\n Detail Information Here\n Detail Information Here\n',
+                        detail,
                         style: TextDecor.robo15.copyWith(wordSpacing: 1.5),
                       ),
                     ),
@@ -403,12 +451,13 @@ class _DetailProductState extends State<DetailProduct> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      'King Shop',
+                                      shopName,
                                       style: TextDecor.robo18Semi,
                                     ),
                                     InkWell(
                                       onTap: () {
                                         //Go to Shop view
+                                        _presenter?.handleViewShop();
                                       },
                                       child: Container(
                                         height: 24,
@@ -433,18 +482,18 @@ class _DetailProductState extends State<DetailProduct> {
                                 ),
                               ),
                               Text(
-                                '0123456789',
+                                shopPhone,
                                 style: TextDecor.robo16,
                               ),
                               Row(
                                 children: [
-                                  Icon(
+                                  const Icon(
                                     Icons.location_on,
                                     color: Colors.black,
                                     size: 20,
                                   ),
                                   Text(
-                                    'Thu Duc, Ho Chi Minh',
+                                    location,
                                     style: TextDecor.robo16,
                                   ),
                                 ],
@@ -452,7 +501,7 @@ class _DetailProductState extends State<DetailProduct> {
                               Row(
                                 children: [
                                   Text(
-                                    '50',
+                                    "$productsCount",
                                     style: TextDecor.robo16.copyWith(
                                       color: Colors.red,
                                     ),
@@ -507,7 +556,7 @@ class _DetailProductState extends State<DetailProduct> {
                       ),
                       const Gap(3),
                       Text(
-                        '(1000 Reviews)',
+                        '(${reviews.length} Reviews)',
                         style: TextDecor.robo16.copyWith(
                           color: Colors.black.withOpacity(0.7),
                         ),
@@ -515,15 +564,26 @@ class _DetailProductState extends State<DetailProduct> {
                     ],
                   ),
                   const Gap(12),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    padding: const EdgeInsets.all(0),
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: 5,
-                    itemBuilder: (context, index) {
-                      return ReviewItem();
-                    },
-                  ),
+                  reviews.isEmpty ?
+                    UtilWidgets.getCenterTextWithContainer(
+                        width: size.width,
+                        height: 30,
+                        text: "No review",
+                        color: Palette.primaryColor,
+                        fontSize: 16
+                    )
+                  :
+                    ListView.builder(
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.all(0),
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: reviews.length,
+                      itemBuilder: (context, index) {
+                        ReviewItemBuilder builder = ReviewItemBuilder();
+                        director.makeReviewItem(builder: builder, data: reviews[index]);
+                        return builder.createWidget();
+                      },
+                    ),
                   const Gap(30),
                 ],
               ),
@@ -549,20 +609,7 @@ class _DetailProductState extends State<DetailProduct> {
           children: [
             InkWell(
               onTap: () {
-                showDialog(
-                  context: context,
-                  barrierDismissible: false,
-                  builder: (context) {
-                    // Tự động đóng dialog sau 3 giây
-                    Future.delayed(const Duration(seconds: 1), () {
-                      Navigator.of(context).pop(); // Đóng dialog
-                      // Hiển thị dialog thông báo thành công
-                      _showSuccessDialog(context);
-                    });
-
-                    return const Center(child: CircularProgressIndicator());
-                  },
-                );
+                _presenter?.handleAddToCart();
               },
               child: Container(
                 width: size.width / 2,
@@ -673,13 +720,13 @@ class _DetailProductState extends State<DetailProduct> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        '200.000 VND',
+                                        Utility.formatCurrency(price),
                                         style: TextDecor.robo18Semi
                                             .copyWith(color: Colors.red),
                                       ),
                                       const Gap(10),
                                       Text(
-                                        'Stock: 100',
+                                        'Stock: $stock',
                                         style: TextDecor.robo17Medi,
                                       ),
                                     ],
@@ -712,7 +759,64 @@ class _DetailProductState extends State<DetailProduct> {
                                       InkWell(
                                         onTap: () {
                                           setBottomSheetState(() {
-                                            color = 1;
+                                            color = 0;
+                                          });
+                                        },
+                                        child: Container(
+                                          height: 45,
+                                          width: 100,
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: color == 0
+                                                  ? Palette.primaryColor
+                                                  : Palette.borderBackBtn,
+                                              width: 2,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Container(
+                                                height: 24,
+                                                width: 24,
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color: color == 0
+                                                          ? Palette.primaryColor
+                                                          : Palette
+                                                              .borderBackBtn,
+                                                      width: 2),
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              const Gap(5),
+                                              Text(
+                                                'Black',
+                                                style: TextDecor.robo16
+                                                    .copyWith(
+                                                        color: color == 0
+                                                            ? Palette
+                                                                .primaryColor
+                                                            : Palette
+                                                                .borderBackBtn),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      const Gap(10),
+                                      //Color Grey Picker
+                                      InkWell(
+                                        onTap: () {
+                                          setBottomSheetState(() {
+                                            color = 2;
                                           });
                                         },
                                         child: Container(
@@ -746,12 +850,12 @@ class _DetailProductState extends State<DetailProduct> {
                                                       width: 2),
                                                   borderRadius:
                                                       BorderRadius.circular(12),
-                                                  color: Colors.black,
+                                                  color: Colors.grey,
                                                 ),
                                               ),
                                               const Gap(5),
                                               Text(
-                                                'Black',
+                                                'Grey',
                                                 style: TextDecor.robo16
                                                     .copyWith(
                                                         color: color == 1
@@ -765,11 +869,11 @@ class _DetailProductState extends State<DetailProduct> {
                                         ),
                                       ),
                                       const Gap(10),
-                                      //Color Grey Picker
+                                      //Color White Picker
                                       InkWell(
                                         onTap: () {
                                           setBottomSheetState(() {
-                                            color = 2;
+                                            color = 3;
                                           });
                                         },
                                         child: Container(
@@ -803,63 +907,6 @@ class _DetailProductState extends State<DetailProduct> {
                                                       width: 2),
                                                   borderRadius:
                                                       BorderRadius.circular(12),
-                                                  color: Colors.grey,
-                                                ),
-                                              ),
-                                              const Gap(5),
-                                              Text(
-                                                'Grey',
-                                                style: TextDecor.robo16
-                                                    .copyWith(
-                                                        color: color == 2
-                                                            ? Palette
-                                                                .primaryColor
-                                                            : Palette
-                                                                .borderBackBtn),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      const Gap(10),
-                                      //Color White Picker
-                                      InkWell(
-                                        onTap: () {
-                                          setBottomSheetState(() {
-                                            color = 3;
-                                          });
-                                        },
-                                        child: Container(
-                                          height: 45,
-                                          width: 100,
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 10),
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: color == 3
-                                                  ? Palette.primaryColor
-                                                  : Palette.borderBackBtn,
-                                              width: 2,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                          ),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              Container(
-                                                height: 24,
-                                                width: 24,
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                      color: color == 3
-                                                          ? Palette.primaryColor
-                                                          : Palette
-                                                              .borderBackBtn,
-                                                      width: 2),
-                                                  borderRadius:
-                                                      BorderRadius.circular(12),
                                                   color: Colors.white,
                                                 ),
                                               ),
@@ -868,7 +915,7 @@ class _DetailProductState extends State<DetailProduct> {
                                                 'White',
                                                 style: TextDecor.robo16
                                                     .copyWith(
-                                                        color: color == 3
+                                                        color: color == 2
                                                             ? Palette
                                                                 .primaryColor
                                                             : Palette
@@ -947,7 +994,9 @@ class _DetailProductState extends State<DetailProduct> {
                                   GestureDetector(
                                     onTap: () {
                                       setBottomSheetState(() {
-                                        soluong++;
+                                        if (soluong < stock) {
+                                          soluong++;
+                                        }
                                       });
                                     },
                                     child: Container(
@@ -988,8 +1037,10 @@ class _DetailProductState extends State<DetailProduct> {
                               child: InkWell(
                                 onTap: () {
                                   //Go to Payment View
-                                  Navigator.of(context)
-                                      .pushNamed(BillProduct.routeName);
+                                  _presenter?.handleBuyNow(
+                                    amount: soluong,
+                                    colorIndex: color
+                                  );
                                 },
                                 child: Container(
                                   height: 45,
@@ -1037,5 +1088,48 @@ class _DetailProductState extends State<DetailProduct> {
         ),
       ),
     );
+  }
+
+  @override
+  void onAddToCart() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        // Tự động đóng dialog sau 3 giây
+        Future.delayed(const Duration(seconds: 1), () {
+          Navigator.of(context).pop(); // Đóng dialog
+          // Hiển thị dialog thông báo thành công
+          _showSuccessDialog(context);
+        });
+
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
+  }
+
+  @override
+  void onBack() {
+    Navigator.of(context, rootNavigator: true).pop();
+  }
+
+  @override
+  void onBuyNow() {
+    Navigator.of(context).pushNamed(BillProduct.routeName);
+  }
+
+  @override
+  void onViewShop() {
+    // TODO: implement onViewShop
+  }
+
+  @override
+  void onPopContext() {
+    Navigator.of(context, rootNavigator: true).pop();
+  }
+
+  @override
+  void onWaitingProgressBar() {
+    UtilWidgets.createLoadingWidget(context);
   }
 }

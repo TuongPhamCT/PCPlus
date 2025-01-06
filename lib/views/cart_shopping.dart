@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:pcplus/contract/cart_shopping_screen_contract.dart';
+import 'package:pcplus/objects/in_cart_item_data.dart';
+import 'package:pcplus/presenter/cart_shopping_screen_presenter.dart';
+import 'package:pcplus/singleton/cart_singleton.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
+import 'package:pcplus/views/product/detail_product.dart';
 import 'package:pcplus/views/widgets/bottom/bottom_bar_custom.dart';
 import 'package:pcplus/views/widgets/listItem/cart_item.dart';
+import 'package:pcplus/views/widgets/util_widgets.dart';
 
 class CartShoppingScreen extends StatefulWidget {
   const CartShoppingScreen({super.key});
@@ -13,34 +19,57 @@ class CartShoppingScreen extends StatefulWidget {
   State<CartShoppingScreen> createState() => _CartShoppingScreenState();
 }
 
-class _CartShoppingScreenState extends State<CartShoppingScreen> {
-  List<bool> _itemChecked = [];
+class _CartShoppingScreenState extends State<CartShoppingScreen> implements CartShoppingScreenContract {
+  final CartSingleton _cartSingleton = CartSingleton.getInstance();
+  CartShoppingScreenPresenter? _presenter;
+
   bool _selectAll = false;
   int soluong = 10;
+  bool init = true;
+  String totalPrice = "";
 
   @override
   void initState() {
+    _presenter = CartShoppingScreenPresenter(this);
+    soluong = _cartSingleton.inCartItems.length;
     super.initState();
-    // Khởi tạo danh sách checkbox (giả sử 10 item ban đầu)
-    _itemChecked = List.generate(soluong, (index) => false);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (init == false) {
+      loadData();
+    }
+  }
+
+  Future<void> loadData() async {
+    _cartSingleton.deselectAllItemsInCart();
+    _cartSingleton.resetAmount();
+    await _cartSingleton.fetchData();
+    setState(() {
+      totalPrice = _presenter!.calculateTotalPrice();
+    });
   }
 
   void _toggleSelectAll(bool? value) {
+    _presenter?.handleSelectAll(value ?? false);
     setState(() {
       _selectAll = value ?? false;
-      _itemChecked = List.generate(_itemChecked.length, (_) => _selectAll);
+      totalPrice = _presenter!.calculateTotalPrice();
     });
   }
 
   void _toggleItemChecked(int index, bool? value) {
-    setState(() {
-      _itemChecked[index] = value ?? false;
-      _selectAll = _itemChecked.every((isChecked) => isChecked);
-    });
+    _presenter?.handleSelectItem(index, value ?? false);
+  }
+
+  void _deleteItem(int index) {
+    _presenter?.handleDelete(index);
   }
 
   int _getCheckedCount() {
-    return _itemChecked.where((isChecked) => isChecked).length;
+    return _cartSingleton.inCartItems.where((element) => element.isCheck).length;
   }
 
   @override
@@ -71,15 +100,36 @@ class _CartShoppingScreenState extends State<CartShoppingScreen> {
       body: Column(
         children: [
           Expanded(
-            child: ListView.builder(
-              itemCount: _itemChecked.length,
-              itemBuilder: (context, index) {
-                return CartItem(
-                  onChanged: (value) => _toggleItemChecked(index, value),
-                  isCheck: _itemChecked[index],
-                );
-              },
-            ),
+            child:
+              _cartSingleton.inCartItems.isEmpty ?
+                UtilWidgets.getCenterTextWithContainer(
+                  width: size.width,
+                  height: size.height * 0.7,
+                  text: "Nothing here",
+                  color: Palette.primaryColor,
+                  fontSize: 16
+                )
+                :
+                ListView.builder(
+                  itemCount: _cartSingleton.inCartItems.length,
+                  itemBuilder: (context, index) {
+                    InCartItemData itemData = _cartSingleton.inCartItems[index];
+                    return CartItem(
+                        shopName: itemData.shop!.getShopName(),
+                        itemName: itemData.item!.name!,
+                        description: itemData.item!.description!,
+                        rating: itemData.rating,
+                        location: itemData.shop!.getLocation(),
+                        imageUrl: itemData.item!.image!,
+                        onChanged: (value) => _toggleItemChecked(index, value),
+                        isCheck: _cartSingleton.inCartItems[index].isCheck,
+                        price: itemData.item!.price!,
+                        stock: itemData.item!.stock!,
+                        onDelete: () => _deleteItem(index),
+                        onChangeAmount: (value) => _presenter?.handleChangeItemAmount(index, value),
+                    );
+                  },
+                ),
           ),
           Container(
             height: 60,
@@ -107,15 +157,17 @@ class _CartShoppingScreenState extends State<CartShoppingScreen> {
                 ),
                 Expanded(child: Container()),
                 Text("Total: ", style: TextDecor.robo14),
-                Text("10.000VNĐ", style: TextDecor.robo17Medi),
+                Text(totalPrice, style: TextDecor.robo17Medi),
                 const Gap(8),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    _presenter!.handleBuy();
+                  },
                   child: Container(
                     alignment: Alignment.center,
                     height: 60,
                     width: 115,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: Palette.primaryColor,
                     ),
                     child: Text(
@@ -129,9 +181,39 @@ class _CartShoppingScreenState extends State<CartShoppingScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomBarCustom(
+      bottomNavigationBar: const BottomBarCustom(
         currentIndex: 1,
       ),
     );
+  }
+
+  @override
+  void onBuy() {
+    Navigator.of(context).pushNamed(DetailProduct.routeName);
+  }
+
+  @override
+  void onDeleteItem() {
+    setState(() {
+      totalPrice = _presenter!.calculateTotalPrice();
+    });
+  }
+
+  @override
+  void onPopContext() {
+    Navigator.of(context, rootNavigator: true).pop();
+  }
+
+  @override
+  void onWaitingProgressBar() {
+    UtilWidgets.createLoadingWidget(context);
+  }
+
+  @override
+  void onSelectItem() {
+    setState(() {
+      totalPrice = _presenter!.calculateTotalPrice();
+      _selectAll = _cartSingleton.inCartItems.every((element) => element.isCheck);
+    });
   }
 }

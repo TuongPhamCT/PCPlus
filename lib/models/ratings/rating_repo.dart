@@ -36,12 +36,16 @@ class RatingRepository {
   }
 
   Future<List<RatingModel>> getAllRatingsByItemID(String id) async {
-    final QuerySnapshot querySnapshot = await _storage.collection(RatingModel.collectionName)
-        .where('itemID', isEqualTo: id).get();
-    final items = querySnapshot
-        .docs
-        .map((doc) => RatingModel.fromJson(doc as Map<String, dynamic>))
-        .toList();
-    return items;
+    try {
+      final QuerySnapshot querySnapshot = await _storage.collection(RatingModel.collectionName)
+          .where('itemID', isEqualTo: id).get();
+      final items = querySnapshot
+          .docs
+          .map((doc) => RatingModel.fromJson(doc as Map<String, dynamic>))
+          .toList();
+      return items;
+    } catch (e) {
+      return [];
+    }
   }
 }

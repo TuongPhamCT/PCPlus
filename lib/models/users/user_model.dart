@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class UserModel {
 
   String? userID;
@@ -47,7 +49,7 @@ class UserModel {
       name: json['name'] as String,
       email: json['email'] as String,
       phone: json['phone'] as String,
-      dateOfBirth: json['dateOfBirth'] as DateTime,
+      dateOfBirth: (json['dateOfBirth'] as Timestamp).toDate(),
       gender: json['gender'] as String,
       isSeller: json['isSeller'] as bool,
       avatarUrl: json['avatarUrl'] as String,

@@ -1,6 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pcplus/config/asset_helper.dart';
+import 'package:pcplus/models/users/user_model.dart';
+import 'package:pcplus/services/authentication_service.dart';
+import 'package:pcplus/services/pref_service.dart';
 import 'package:pcplus/themes/palette/palette.dart';
+import 'package:pcplus/views/home.dart';
 import 'package:pcplus/views/login.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -13,12 +18,17 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
+  final PrefService _pref = PrefService();
+  final AuthenticationService _auth = AuthenticationService();
   AnimationController? _controller;
   Animation<double>? _animation;
+
+  bool loginSucceeded = false;
 
   @override
   void initState() {
     super.initState();
+    _getUserData();
 
     // Tạo AnimationController với thời gian 3 giây
     _controller = AnimationController(
@@ -38,9 +48,25 @@ class _SplashScreenState extends State<SplashScreen>
     });
   }
 
+  Future<void> _getUserData() async {
+    UserModel? loggedUser = await _pref.loadUserData();
+    if (loggedUser == null) {
+      return;
+    }
+    String password = await _pref.getPassword();
+    UserCredential? userCredential = await _auth.signInWithEmailAndPassword(loggedUser.email!, password);
+    if(userCredential != null) {
+      loginSucceeded = true;
+    }
+  }
+
   // Hàm chuyển sang màn hình Login
   void _navigateToHome() {
-    Navigator.of(context).pushNamed(LoginScreen.routeName);
+    if (loginSucceeded) {
+      Navigator.of(context).pushNamed(HomeScreen.routeName);
+    } else {
+      Navigator.of(context).pushNamed(LoginScreen.routeName);
+    }
   }
 
   @override

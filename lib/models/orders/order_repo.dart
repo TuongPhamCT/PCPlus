@@ -28,12 +28,16 @@ class OrderRepository {
   }
 
   Future<List<OrderModel>> getAllOrdersByUserID(String id) async {
-    final QuerySnapshot querySnapshot = await _storage.collection(OrderModel.collectionName)
-        .where('userID', isEqualTo: id).get();
-    final orders = querySnapshot
-        .docs
-        .map((doc) => OrderModel.fromJson(doc as Map<String, dynamic>))
-        .toList();
-    return orders;
+    try {
+      final QuerySnapshot querySnapshot = await _storage.collection(OrderModel.collectionName)
+          .where('userID', isEqualTo: id).get();
+      final orders = querySnapshot
+          .docs
+          .map((doc) => OrderModel.fromJson(doc as Map<String, dynamic>))
+          .toList();
+      return orders;
+    } catch (e) {
+      return [];
+    }
   }
 }
