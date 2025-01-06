@@ -12,6 +12,7 @@ import 'package:pcplus/views/edit_profile.dart';
 import 'package:pcplus/views/login.dart';
 import 'package:pcplus/views/order/history_oder.dart';
 import 'package:pcplus/views/widgets/bottom/bottom_bar_custom.dart';
+import 'package:pcplus/views/widgets/bottom/shop_bottom_bar.dart';
 import 'package:pcplus/views/widgets/profile/background_container.dart';
 import 'package:pcplus/views/widgets/util_widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -511,13 +512,14 @@ class _ProfileScreenState extends State<ProfileScreen>
                 ],
               ),
       ),
-      bottomNavigationBar: const BottomBarCustom(currentIndex: 3),
+      bottomNavigationBar: isShop ? const ShopBottomBar(currentIndex: 3) : const BottomBarCustom(currentIndex: 3),
     );
   }
 
   @override
   void onLoadDataSucceeded() {
     setState(() {
+      isShop = _presenter!.isSeller;
       _userName = _presenter!.user!.name!;
       _userAvatarUrl = _presenter!.user!.avatarUrl!;
       _isLoading = false;

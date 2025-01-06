@@ -9,12 +9,14 @@ class ProfileScreenPresenter {
   ProfileScreenPresenter(this._view);
 
   UserModel? user;
+  bool isSeller = false;
 
   final AuthenticationService _auth = AuthenticationService();
   final PrefService _pref = PrefService();
 
   Future<void> getData() async {
     user = await _pref.loadUserData();
+    isSeller = user!.isSeller!;
     _view.onLoadDataSucceeded();
   }
 
