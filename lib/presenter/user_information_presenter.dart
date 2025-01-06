@@ -12,6 +12,7 @@ import 'package:pcplus/services/image_storage_service.dart';
 
 import '../builders/model_builders/user_builder.dart';
 import '../services/pref_service.dart';
+import '../singleton/user_singleton.dart';
 
 class UserInformationPresenter {
   final UserInformationContract _view;
@@ -26,7 +27,6 @@ class UserInformationPresenter {
   final AuthenticationService _auth = AuthenticationService();
 
   XFile? pickedImage;
-  UserModel? user;
 
   String getEmail() {
     return _registerController.email!;
@@ -118,7 +118,7 @@ class UserInformationPresenter {
       //await _apiController.callApiAddUserData(user);
       _userRepo.addUserToFirestore(user);
       await _prefService.saveUserData(userData: user, password: password);
-      this.user = user;
+      UserSingleton.getInstance().currentUser = user;
       _view.onPopContext();
       _view.onConfirmSucceeded();
     } catch (e) {

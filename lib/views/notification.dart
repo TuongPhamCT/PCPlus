@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pcplus/contract/notification_screen_contract.dart';
 import 'package:pcplus/presenter/notification_screen_presenter.dart';
+import 'package:pcplus/singleton/user_singleton.dart';
 import 'package:pcplus/themes/text_decor.dart';
 import 'package:pcplus/views/notification/confirm.dart';
 import 'package:pcplus/views/widgets/bottom/bottom_bar_custom.dart';
@@ -24,6 +25,7 @@ class _NotificationScreenState extends State<NotificationScreen> implements Noti
   @override
   void initState() {
     _presenter = NotificationScreenPresenter(this);
+    isShop = UserSingleton.getInstance().isShop();
     super.initState();
   }
 
@@ -60,7 +62,7 @@ class _NotificationScreenState extends State<NotificationScreen> implements Noti
           },
         ),
       ),
-      bottomNavigationBar: isShop ? const ShopBottomBar(currentIndex: 2) : const BottomBarCustom(currentIndex: 2),
+      bottomNavigationBar: !isShop ? const ShopBottomBar(currentIndex: 2) : const BottomBarCustom(currentIndex: 2),
     );
   }
 

@@ -13,6 +13,7 @@ import 'package:pcplus/views/widgets/profile/profile_input.dart';
 import 'package:pcplus/views/widgets/util_widgets.dart';
 
 import '../presenter/login_presenter.dart';
+import '../singleton/user_singleton.dart';
 import 'home.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -139,7 +140,7 @@ class _LoginScreenState extends State<LoginScreen> implements LoginViewContract 
   @override
   void onLoginSucceeded() {
     // TODO: implement onLoginSucceeded
-    if (_loginPresenter!.user!.isSeller!) {
+    if (UserSingleton.getInstance().isShop()) {
       Navigator.of(context).pushNamed(ShopHome.routeName);
     } else {
       Navigator.of(context).pushNamed(HomeScreen.routeName);
