@@ -71,8 +71,9 @@ class ShopItem extends StatelessWidget {
                 fit: BoxFit.cover,
                 errorBuilder: (BuildContext context, Object exception,
                     StackTrace? stackTrace) {
-                  return Container(
-                    height: 105,
+                  return const SizedBox(
+                    height: 130,
+                    width: 140,
                   );
                 },
               ),
