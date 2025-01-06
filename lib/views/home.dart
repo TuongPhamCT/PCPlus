@@ -7,6 +7,7 @@ import 'package:pcplus/builders/widget_builders/widget_builder_director.dart';
 import 'package:pcplus/commands/home_command.dart';
 import 'package:pcplus/config/asset_helper.dart';
 import 'package:pcplus/contract/home_contract.dart';
+import 'package:pcplus/singleton/user_singleton.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 import 'package:pcplus/views/product/detail_product.dart';
@@ -45,11 +46,7 @@ class _HomeScreenState extends State<HomeScreen> implements HomeContract {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (isFirstLoad) {
-      loadData();
-    } else {
-      fetchData();
-    }
+    loadData();
   }
 
   Future<void> loadData() async {
@@ -78,7 +75,12 @@ class _HomeScreenState extends State<HomeScreen> implements HomeContract {
                     FocusScope.of(context).unfocus();
                   },
                   onChanged: (value) {},
-                  onEditingComplete: () {},
+                  onEditingComplete: () {
+                    _presenter!.handleSearch(_searchController.text.trim());
+                  },
+                  onSubmitted: (value) {
+                    _presenter!.handleSearch(_searchController.text.trim());
+                  },
                   controller: _searchController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(

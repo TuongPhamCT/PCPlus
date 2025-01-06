@@ -38,8 +38,8 @@ class HomePresenter {
     final ListObjectBuilderDirector director = ListObjectBuilderDirector();
 
     final TestTool testTool = TestTool();
-    // List<ItemModel> newestItemModels = await _itemRepo.getTopItems(MAX_NEWEST_ITEMS);
-    List<ItemModel> newestItemModels = testTool.getRandomItemModelList(10);
+    List<ItemModel> newestItemModels = await _itemRepo.getTopItems(MAX_NEWEST_ITEMS);
+    // List<ItemModel> newestItemModels = testTool.getRandomItemModelList(10);
 
     await director.makeListItemData(
         builder: builder,

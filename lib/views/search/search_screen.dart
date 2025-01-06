@@ -88,8 +88,11 @@ class _SearchScreenState extends State<SearchScreen> implements SearchScreenCont
                       onTapOutside: (event) {
                         FocusScope.of(context).unfocus();
                       },
+                      readOnly: isSearching,
                       onChanged: (value) {},
-                      onEditingComplete: () {},
+                      onEditingComplete: () {
+                        _presenter?.handleSearch(_searchController.text.trim());
+                      },
                       controller: _searchController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(

@@ -38,7 +38,7 @@ class ItemRepository {
   Future<List<ItemModel>> getTopItems(int limit) async {
     try {
       final QuerySnapshot querySnapshot = await _storage.collection(ItemModel.collectionName)
-          .orderBy('addDate', descending: true)
+          .orderBy('addDate', descending: false)
           .limit(limit)
           .get();
       final items = querySnapshot
@@ -85,12 +85,10 @@ class ItemRepository {
 
   Future<List<ItemModel>> getItemsBySearchInput(String searchInput) async {
     try {
-      final QuerySnapshot querySnapshot = await _storage.collection(ItemModel.collectionName)
-          .where((doc) {
-            ItemModel item = ItemModel.fromJson(doc, doc.data() as Map<String, dynamic>);
-            String name = item.name!.toLowerCase();
-            return name.contains(searchInput.toLowerCase());
-          })
+      final QuerySnapshot querySnapshot =
+        await _storage.collection(ItemModel.collectionName)
+          .where('name', isGreaterThanOrEqualTo: searchInput.toLowerCase())
+          .where('name', isLessThan: "${searchInput.toLowerCase()}\uf8ff")
           .get();
       final items = querySnapshot
           .docs
