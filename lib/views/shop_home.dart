@@ -79,18 +79,11 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
       body: Container(
         height: size.height,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        decoration: BoxDecoration(
-          image:
-            avatarUrl.isEmpty ?
-              const DecorationImage(
-                image: AssetImage(AssetHelper.shopBg),
-                fit: BoxFit.cover,
-              )
-            :
-            DecorationImage(
-              image: NetworkImage(avatarUrl),
-              fit: BoxFit.cover,
-            ),
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(AssetHelper.shopBg),
+            fit: BoxFit.cover,
+          ),
         ),
         child: SingleChildScrollView(
           child: Column(
@@ -103,12 +96,19 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
                   Container(
                     height: 100,
                     width: 100,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: AssetImage(AssetHelper.shopAvt),
-                        fit: BoxFit.cover,
-                      ),
+                      image:
+                        avatarUrl.isEmpty ?
+                          const DecorationImage(
+                            image: AssetImage(AssetHelper.shopAvt),
+                            fit: BoxFit.cover,
+                          )
+                        :
+                          DecorationImage(
+                            image: NetworkImage(avatarUrl),
+                            fit: BoxFit.cover,
+                          ),
                     ),
                   ),
                   const Gap(10),
