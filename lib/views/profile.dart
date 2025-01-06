@@ -31,7 +31,7 @@ class _ProfileScreenState extends State<ProfileScreen>
   String _userAvatarUrl = "";
   String _userName = "";
   bool _isLoading = false;
-  bool isShop = true;
+  bool isShop = false;
 
   Future<void> launchEmailApp() async {
     final Uri emailLaunchUri = Uri(
@@ -66,7 +66,7 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   @override
   void initState() {
-     _presenter = ProfileScreenPresenter(this);
+    _presenter = ProfileScreenPresenter(this);
     super.initState();
   }
 
@@ -512,7 +512,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                 ],
               ),
       ),
-      bottomNavigationBar: isShop ? const ShopBottomBar(currentIndex: 3) : const BottomBarCustom(currentIndex: 3),
+      bottomNavigationBar: isShop
+          ? const ShopBottomBar(currentIndex: 3)
+          : const BottomBarCustom(currentIndex: 3),
     );
   }
 
