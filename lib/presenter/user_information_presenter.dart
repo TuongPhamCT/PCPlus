@@ -26,6 +26,7 @@ class UserInformationPresenter {
   final AuthenticationService _auth = AuthenticationService();
 
   XFile? pickedImage;
+  UserModel? user;
 
   String getEmail() {
     return _registerController.email!;
@@ -117,6 +118,7 @@ class UserInformationPresenter {
       //await _apiController.callApiAddUserData(user);
       _userRepo.addUserToFirestore(user);
       await _prefService.saveUserData(userData: user, password: password);
+      this.user = user;
       _view.onPopContext();
       _view.onConfirmSucceeded();
     } catch (e) {
