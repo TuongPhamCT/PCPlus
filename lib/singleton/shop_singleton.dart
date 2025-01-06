@@ -1,5 +1,6 @@
 import 'package:pcplus/models/items/item_repo.dart';
 import 'package:pcplus/models/users/user_repo.dart';
+import 'package:pcplus/services/image_storage_service.dart';
 import 'package:pcplus/singleton/user_singleton.dart';
 
 import '../builders/object_builders/list_item_data_builder.dart';
@@ -17,6 +18,7 @@ class ShopSingleton {
 
   final ItemRepository _itemRepository = ItemRepository();
   final UserSingleton _userSingleton = UserSingleton.getInstance();
+  final ImageStorageService _imageStorageService = ImageStorageService();
 
   List<ItemModel> itemModels = [];
   List<ItemData> itemsData = [];
@@ -57,6 +59,9 @@ class ShopSingleton {
   }
 
   void deleteData(ItemData data) {
+    for (String url in data.product!.reviewImages!) {
+      _imageStorageService.deleteImage(url);
+    }
     _itemRepository.deleteItemById(data.product!.itemID!);
     itemsData.remove(data);
     itemModels.remove(data.product!);
