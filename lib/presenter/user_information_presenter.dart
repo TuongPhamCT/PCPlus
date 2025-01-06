@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pcplus/contract/user_information_contract.dart';
 import 'package:pcplus/controller/api_controller.dart';
@@ -10,6 +11,7 @@ import 'package:pcplus/services/authentication_service.dart';
 import 'package:pcplus/services/image_storage_service.dart';
 
 import '../builders/model_builders/user_builder.dart';
+import '../services/pref_service.dart';
 
 class UserInformationPresenter {
   final UserInformationContract _view;
@@ -18,6 +20,7 @@ class UserInformationPresenter {
   final RegisterController _registerController =
       RegisterController.getInstance();
   final ApiController _apiController = ApiController();
+  final PrefService _prefService = PrefService();
   final ImageStorageService _imageStorageService = ImageStorageService();
   final UserRepository _userRepo = UserRepository();
   final AuthenticationService _auth = AuthenticationService();
@@ -43,7 +46,6 @@ class UserInformationPresenter {
     _view.onWaitingProgressBar();
 
     if (name.isEmpty ||
-        avatarUrl.isEmpty ||
         phone.isEmpty ||
         password.isEmpty ||
         rePassword.isEmpty ||
@@ -72,21 +74,35 @@ class UserInformationPresenter {
       return;
     }
 
-    String? imagePath = await _imageStorageService.uploadImage(
-        StorageFolderNames.AVATARS, File(pickedImage!.path));
-    if (imagePath == null) {
-      _view.onPopContext();
-      _view.onConfirmFailed("Something was wrong. Please try again.");
-      return;
+    String? imagePath;
+
+    if (pickedImage != null) {
+      imagePath = await _imageStorageService.uploadImage(
+          StorageFolderNames.AVATARS, File(pickedImage!.path));
+      if (imagePath == null) {
+        _view.onPopContext();
+        _view.onConfirmFailed("Something was wrong. Please try again.");
+        return;
+      }
     }
 
     try {
+      UserCredential? userCredential = await _auth.signUpWithEmailAndPassword(email, password);
+      if (userCredential == null) {
+        _view.onPopContext();
+        _view.onConfirmFailed("Something was wrong. Please try again.");
+        return;
+      }
       _registerController.reset();
       UserBuilder builder = _registerController.getBuilder();
-      builder.setUserID(await _userRepo.generateUserID());
+      builder.setUserID(userCredential.user!.uid);
       builder.setName(name);
       builder.setEmail(email);
-      builder.setAvatarUrl(imagePath);
+      if (imagePath != null && imagePath.isNotEmpty) {
+        builder.setAvatarUrl(imagePath);
+      } else {
+        builder.setAvatarUrl("");
+      }
       builder.setDateOfBirth(birthDate);
       builder.setGender(isMale);
       builder.setPhone(phone);
@@ -98,11 +114,11 @@ class UserInformationPresenter {
       UserModel user = builder.createModel();
       //await _apiController.callApiAddUserData(user);
       _userRepo.addUserToFirestore(user);
-      await _auth.signInWithEmailAndPassword(email, password);
-
+      await _prefService.saveUserData(userData: user, password: password);
       _view.onPopContext();
       _view.onConfirmSucceeded();
     } catch (e) {
+      print(e);
       _view.onPopContext();
       _view.onConfirmFailed("Something was wrong. Please try again.");
     }

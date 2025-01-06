@@ -48,7 +48,7 @@ class EditProfileScreenPresenter {
     user!.gender = isMale ? "Male" : "Female";
 
     await _userRepo.updateUser(user!);
-    await _pref.saveUserData(user!);
+    await _pref.saveUserData(userData: user!);
     _view.onPopContext();
     _view.onSaveSucceeded();
   }

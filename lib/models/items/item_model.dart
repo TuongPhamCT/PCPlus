@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class ItemModel {
 
   String? itemID;
@@ -6,9 +8,11 @@ class ItemModel {
   String? itemType;
   String? image;
   String? description;
+  String? detail;
   DateTime? addDate;
   int? price;
   int? stock;
+  int? sold = 0;
   String? status;
   List<String>? reviewImages = [];
   List<String>? colors = [];
@@ -22,13 +26,15 @@ class ItemModel {
       required this.itemType,
       required this.sellerID,
       this.description,
+      this.detail,
       required this.addDate,
       required this.price,
       required this.stock,
       required this.status,
       required this.image,
       this.reviewImages,
-      required this.colors
+      required this.colors,
+      this.sold
     }
   );
 
@@ -39,8 +45,10 @@ class ItemModel {
     'itemType': itemType,
     'addDate': addDate,
     'description': description,
+    'detail': detail,
     'price': price,
     'stock': stock,
+    'sold': sold,
     'status': status,
     'image': image,
     'reviewImages': reviewImages,
@@ -56,10 +64,12 @@ class ItemModel {
       name: json['name'] as String,
       sellerID: json['sellerID'] as String,
       itemType: json['itemType'] as String,
-      addDate: json['addDate'] as DateTime,
+      addDate: (json['addDate'] as Timestamp).toDate(),
       description: json['description'] as String,
+      detail: json['detail'] as String,
       price: json['price'] as int,
       stock: json['stock'] as int,
+      sold: json['sold'] as int,
       status: json['status'] as String,
       image: json['image'] as String,
       reviewImages: List.castFrom(reviewImagesData!),
@@ -91,3 +101,4 @@ class ItemModel {
     reviewImages?.remove(color);
   }
 }
+

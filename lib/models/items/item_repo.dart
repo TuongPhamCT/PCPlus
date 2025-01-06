@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pcplus/models/items/item_model.dart';
+import 'package:pcplus/services/utility.dart';
 
 class ItemRepository {
   final FirebaseFirestore _storage = FirebaseFirestore.instance;
@@ -36,14 +37,84 @@ class ItemRepository {
   }
 
   Future<List<ItemModel>> getTopItems(int limit) async {
-    final QuerySnapshot querySnapshot = await _storage.collection(ItemModel.collectionName)
-        .orderBy('addDate', descending: true)
-        .limit(limit)
-        .get();
-    final items = querySnapshot
-        .docs
-        .map((doc) => ItemModel.fromJson(doc as Map<String, dynamic>))
-        .toList();
-    return items;
+    try {
+      final QuerySnapshot querySnapshot = await _storage.collection(ItemModel.collectionName)
+          .orderBy('addDate', descending: true)
+          .limit(limit)
+          .get();
+      final items = querySnapshot
+          .docs
+          .map((doc) => ItemModel.fromJson(doc as Map<String, dynamic>))
+          .toList();
+      return items;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  Future<List<ItemModel>> getAllItems() async {
+    try {
+      final QuerySnapshot querySnapshot = await _storage.collection(ItemModel.collectionName).get();
+      final items = querySnapshot
+          .docs
+          .map((doc) => ItemModel.fromJson(doc as Map<String, dynamic>))
+          .toList();
+      return items;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  Future<List<ItemModel>> getItemsBySeller(String sellerID) async {
+    try {
+      final QuerySnapshot querySnapshot =
+        await _storage.collection(ItemModel.collectionName)
+            .where('sellerID', isEqualTo: sellerID)
+            .get();
+      final items = querySnapshot
+          .docs
+          .map((doc) => ItemModel.fromJson(doc as Map<String, dynamic>))
+          .toList();
+      return items;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  Future<List<ItemModel>> getItemsBySearchInput(String searchInput) async {
+    try {
+      final QuerySnapshot querySnapshot = await _storage.collection(ItemModel.collectionName)
+          .where((doc) {
+            ItemModel item = ItemModel.fromJson(doc as Map<String, dynamic>);
+            String name = item.name!.toLowerCase();
+            return name.contains(searchInput.toLowerCase());
+          })
+          .get();
+      final items = querySnapshot
+          .docs
+          .map((doc) => ItemModel.fromJson(doc as Map<String, dynamic>))
+          .toList();
+      return items;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  Future<String?> generateID() async {
+    final List<ItemModel> items = await getAllItems();
+    const prefix = "PCP";
+    if (items.isEmpty) {
+      return "${prefix}0000000001";
+    }
+
+    int maxIndex = 0;
+    for (ItemModel item in items) {
+      int index = int.parse(Utility.extractDigits(item.itemID!));
+      if (index > maxIndex) {
+        maxIndex = index;
+      }
+    }
+
+    return "$prefix${(maxIndex + 1).toString().padLeft(10, '0')}";
   }
 }

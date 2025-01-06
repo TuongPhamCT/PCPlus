@@ -23,8 +23,12 @@ class AuthenticationService {
   }
 
   // Sign in
-  Future<UserCredential> signInWithEmailAndPassword(String email, String password) async {
-    return await _auth.signInWithEmailAndPassword(email: email.trim(), password: password.trim());
+  Future<UserCredential?> signInWithEmailAndPassword(String email, String password) async {
+    try {
+     return await _auth.signInWithEmailAndPassword(email: email.trim(), password: password.trim());
+    } catch (e) {
+      return null;
+    }
   }
 
   // sign up

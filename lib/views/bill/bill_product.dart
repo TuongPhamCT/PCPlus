@@ -27,6 +27,13 @@ class _BillProductState extends State<BillProduct> {
   };
 
   @override
+  void initState() {
+
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(

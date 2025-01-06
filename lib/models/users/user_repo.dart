@@ -51,10 +51,9 @@ class UserRepository {
         .toList();
     return shops;
   }
-
-  Future<String> generateUserID() async {
-    List<UserModel> users = await getAllUsers();
-    int count = users.length;
-    return count.toString().padLeft(8, '0');
-  }
+  // Future<String> generateUserID() async {
+  //   List<UserModel> users = await getAllUsers();
+  //   int count = users.length;
+  //   return count.toString().padLeft(8, '0');
+  // }
 }

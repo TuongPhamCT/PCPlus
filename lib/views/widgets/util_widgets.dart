@@ -71,4 +71,37 @@ abstract class UtilWidgets {
   static Widget getLoadingWidget(){
     return const Center( child: CircularProgressIndicator());
   }
+
+  static Widget getLoadingWidgetWithContainer({
+    required double width,
+    required double height
+  }) {
+    return SizedBox(
+      width: width,
+      height: height,
+      child: getLoadingWidget()
+    );
+  }
+
+  static Widget getCenterTextWithContainer({
+    required double width,
+    required double height,
+    String? text,
+    Color? color,
+    double? fontSize,
+  }) {
+    return SizedBox(
+      width: width,
+      height: height,
+      child: Center(
+        child: Text(
+          text ?? "",
+          style: TextStyle(
+            color: color ?? Palette.primaryColor,
+            fontSize: fontSize ?? 16,
+          )
+        ),
+      ),
+    );
+  }
 }

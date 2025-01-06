@@ -1,21 +1,18 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pcplus/commands/search_command.dart';
 import 'package:pcplus/component/dependency_injection.dart';
 import 'package:pcplus/firebase_options.dart';
 import 'package:pcplus/route.dart';
 import 'package:pcplus/views/OTP.dart';
-import 'package:pcplus/views/add_product.dart';
 import 'package:pcplus/views/cart_shopping.dart';
-import 'package:pcplus/views/edit_product.dart';
 import 'package:pcplus/views/home.dart';
+import 'package:pcplus/views/login.dart';
 import 'package:pcplus/views/notification.dart';
-import 'package:pcplus/views/order/rating.dart';
 import 'package:pcplus/views/product/detail_product.dart';
 import 'package:pcplus/views/search/search_screen.dart';
-import 'package:pcplus/views/shop_home.dart';
 import 'package:pcplus/views/splash.dart';
-import 'package:pcplus/views/statistic.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

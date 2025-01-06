@@ -1,10 +1,18 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:gap/gap.dart';
+import 'package:pcplus/builders/widget_builders/suggest_item_builder.dart';
+import 'package:pcplus/builders/widget_builders/widget_builder_director.dart';
+import 'package:pcplus/commands/search_command.dart';
+import 'package:pcplus/const/item_filter.dart';
+import 'package:pcplus/contract/search_screen_contract.dart';
+import 'package:pcplus/presenter/search_screen_presenter.dart';
+import 'package:pcplus/singleton/search_singleton.dart';
 import 'package:pcplus/themes/palette/palette.dart';
-import 'package:pcplus/views/widgets/listItem/suggest_item.dart';
+import 'package:pcplus/views/widgets/util_widgets.dart';
+
+import '../../objects/suggest_item_data.dart';
+import '../product/detail_product.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -14,18 +22,48 @@ class SearchScreen extends StatefulWidget {
   State<SearchScreen> createState() => _SearchScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class _SearchScreenState extends State<SearchScreen> implements SearchScreenContract {
+  SearchScreenPresenter? _presenter;
+  final WidgetBuilderDirector director = WidgetBuilderDirector();
+  final SearchSingleton _searchSingleton = SearchSingleton.getInstance();
+
+  List<ItemData> _items = [];
+
   bool lienQuan = true;
   bool moiNhat = false;
   bool gia = false;
   bool giaTang = false;
+
+  bool isSearching = false;
+
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    _presenter = SearchScreenPresenter(this);
+    _searchController.text = _searchSingleton.storedSearchInput;
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_searchSingleton.needSearch) {
+      loadData();
+      _searchSingleton.needSearch = false;
+    }
+  }
+
+  Future<void> loadData() async {
+    await _presenter?.handleSearch(_searchController.text);
+  }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 45),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 45),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,7 +73,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 children: [
                   InkWell(
                     onTap: () {
-                      Navigator.pop(context);
+                      _presenter!.handleBack();
                     },
                     child: const Icon(
                       FontAwesomeIcons.arrowLeft,
@@ -52,10 +90,11 @@ class _SearchScreenState extends State<SearchScreen> {
                       },
                       onChanged: (value) {},
                       onEditingComplete: () {},
+                      controller: _searchController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderSide:
-                              BorderSide(color: Palette.primaryColor, width: 1),
+                              const BorderSide(color: Palette.primaryColor, width: 1),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         focusedBorder: OutlineInputBorder(
@@ -66,7 +105,9 @@ class _SearchScreenState extends State<SearchScreen> {
                         contentPadding: const EdgeInsets.only(top: 4),
                         prefixIcon: InkWell(
                           customBorder: const CircleBorder(),
-                          onTap: () {},
+                          onTap: () {
+                            _presenter?.handleSearch(_searchController.text.trim());
+                          },
                           child: const Icon(
                             FontAwesomeIcons.magnifyingGlass,
                             size: 16,
@@ -88,12 +129,14 @@ class _SearchScreenState extends State<SearchScreen> {
                 children: [
                   InkWell(
                     onTap: () {
-                      setState(() {
-                        lienQuan = !lienQuan;
-                        moiNhat = false;
-                        giaTang = false;
-                        gia = false;
-                      });
+                      if (isSearching) {
+                        return;
+                      }
+                      lienQuan = !lienQuan;
+                      moiNhat = false;
+                      giaTang = false;
+                      gia = false;
+                      _presenter!.setFilter(lienQuan ? ItemFilter.RELATED : ItemFilter.DEFAULT);
                     },
                     child: Container(
                       alignment: Alignment.center,
@@ -101,14 +144,14 @@ class _SearchScreenState extends State<SearchScreen> {
                       height: 42,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(
-                          lienQuan ? Radius.circular(5) : Radius.circular(0),
+                          lienQuan ? const Radius.circular(5) : const Radius.circular(0),
                         ),
                         border: lienQuan
                             ? Border.all(
                                 color: Palette.primaryColor,
                                 width: 1,
                               )
-                            : Border(
+                            : const Border(
                                 right: BorderSide(
                                   color: Palette.primaryColor,
                                   width: 1,
@@ -119,7 +162,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 ),
                               ),
                       ),
-                      child: Text(
+                      child: const Text(
                         'Liên quan',
                         style: TextStyle(
                           color: Palette.primaryColor,
@@ -130,12 +173,14 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                   InkWell(
                     onTap: () {
-                      setState(() {
-                        lienQuan = false;
-                        moiNhat = !moiNhat;
-                        giaTang = false;
-                        gia = false;
-                      });
+                      if (isSearching) {
+                        return;
+                      }
+                      lienQuan = false;
+                      moiNhat = !moiNhat;
+                      giaTang = false;
+                      gia = false;
+                      _presenter!.setFilter(moiNhat ? ItemFilter.NEWEST : ItemFilter.DEFAULT);
                     },
                     child: Container(
                       alignment: Alignment.center,
@@ -143,14 +188,14 @@ class _SearchScreenState extends State<SearchScreen> {
                       height: 42,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(
-                          moiNhat ? Radius.circular(5) : Radius.circular(0),
+                          moiNhat ? const Radius.circular(5) : const Radius.circular(0),
                         ),
                         border: moiNhat
                             ? Border.all(
                                 color: Palette.primaryColor,
                                 width: 1,
                               )
-                            : Border(
+                            : const Border(
                                 right: BorderSide(
                                   color: Palette.primaryColor,
                                   width: 1,
@@ -161,7 +206,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 ),
                               ),
                       ),
-                      child: Text(
+                      child: const Text(
                         'Mới nhất',
                         style: TextStyle(
                           color: Palette.primaryColor,
@@ -172,12 +217,15 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                   InkWell(
                     onTap: () {
-                      setState(() {
-                        giaTang = !giaTang;
-                        gia = true;
-                        lienQuan = false;
-                        moiNhat = false;
-                      });
+                      if (isSearching) {
+                        return;
+                      }
+                      giaTang = !giaTang;
+                      gia = true;
+                      lienQuan = false;
+                      moiNhat = false;
+                      _presenter!.setFilter(giaTang ? ItemFilter.PRICE_ASCENDING : ItemFilter.PRICE_DESCENDING);
+
                     },
                     child: Container(
                       alignment: Alignment.center,
@@ -185,14 +233,14 @@ class _SearchScreenState extends State<SearchScreen> {
                       height: 42,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(
-                          gia ? Radius.circular(5) : Radius.circular(0),
+                          gia ? const Radius.circular(5) : const Radius.circular(0),
                         ),
                         border: gia
                             ? Border.all(
                                 color: Palette.primaryColor,
                                 width: 1,
                               )
-                            : Border(
+                            : const Border(
                                 right: BorderSide(
                                   color: Palette.primaryColor,
                                   width: 1,
@@ -229,28 +277,82 @@ class _SearchScreenState extends State<SearchScreen> {
                 ],
               ),
               const Gap(10),
-              ListView.builder(
-                shrinkWrap: true,
-                padding: EdgeInsets.zero,
-                physics: const NeverScrollableScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                itemCount: 8,
-                itemBuilder: (context, index) {
-                  return SuggestItem(
-                      itemName: 'itemName',
-                      imagePath:
-                          'https://cdn.tgdd.vn/Files/2022/01/30/1413644/cac-thuong-hieu-tai-nghe-tot-va-duoc-ua-chuong-nha.jpg',
-                      description: 'description',
-                      location: 'location',
-                      rating: 3.5,
-                      price: 3500,
-                      sold: 32);
-                },
-              ),
+              isSearching ?
+                UtilWidgets.getLoadingWidgetWithContainer(
+                    width: size.width,
+                    height: size.height * 3/4
+                )
+              : _items.isEmpty ?
+                  UtilWidgets.getCenterTextWithContainer(
+                    width: size.width,
+                    height: size.height * 3/4,
+                    text: "No result"
+                  )
+                :
+                ListView.builder(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.zero,
+                  physics: const NeverScrollableScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  itemCount: _items.length,
+                  itemBuilder: (context, index) {
+                    SuggestItemBuilder builder = SuggestItemBuilder();
+                    director.makeSuggestItem(
+                        builder: builder,
+                        data: _items[index],
+                        command: SearchItemPressedCommand(
+                            presenter: _presenter!,
+                            item: _items[index]
+                        ),
+                    );
+                    return builder.createWidget();
+                  },
+                ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  @override
+  void onBack() {
+    Navigator.pop(context);
+  }
+
+  @override
+  Future<void> onChangeFilter(List<ItemData> result) async {
+    setState(() {
+      _items = result;
+    });
+  }
+
+  @override
+  void onFinishSearching() {
+    setState(() {
+      isSearching = false;
+    });
+  }
+
+  @override
+  void onStartSearching() {
+    setState(() {
+      isSearching = true;
+    });
+  }
+
+  @override
+  void onSelectItem() {
+    Navigator.of(context).pushNamed(DetailProduct.routeName);
+  }
+
+  @override
+  void onPopContext() {
+    Navigator.of(context, rootNavigator: true).pop();
+  }
+
+  @override
+  void onWaitingProgressBar() {
+    UtilWidgets.createLoadingWidget(context);
   }
 }

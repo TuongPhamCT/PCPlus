@@ -5,10 +5,36 @@ import 'package:gap/gap.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 
+import '../../../services/utility.dart';
+
 class CartItem extends StatefulWidget {
-  bool isCheck;
-  void Function(bool?)? onChanged;
-  CartItem({super.key, required this.onChanged, required this.isCheck});
+  final String shopName;
+  final String itemName;
+  final String description;
+  final double rating;
+  final String location;
+  final String imageUrl;
+  final bool isCheck;
+  final int price;
+  final int stock;
+  final void Function(bool?)? onChanged;
+  final void Function()? onDelete;
+  final void Function(int amount)? onChangeAmount;
+  CartItem({
+    super.key,
+    required this.shopName,
+    required this.itemName,
+    required this.description,
+    required this.rating,
+    required this.location,
+    required this.imageUrl,
+    required this.onChanged,
+    required this.isCheck,
+    required this.price,
+    required this.stock,
+    required this.onDelete,
+    required this.onChangeAmount
+  });
 
   @override
   State<CartItem> createState() => _CartItemState();
@@ -16,17 +42,35 @@ class CartItem extends StatefulWidget {
 
 class _CartItemState extends State<CartItem> {
   int soluong = 1;
+  bool buyable = false;
+
+  @override
+  void initState() {
+    _checkSoldOut();
+    super.initState();
+  }
+
+  void _checkSoldOut() {
+    buyable = soluong <= widget.stock;
+  }
+
   void _decreaseQuantity() {
     setState(() {
       if (soluong > 1) {
         soluong--;
+        widget.onChangeAmount!(soluong);
+        _checkSoldOut();
       }
     });
   }
 
   void _increaseQuantity() {
     setState(() {
-      soluong++;
+      if (soluong < widget.stock) {
+        soluong++;
+        widget.onChangeAmount!(soluong);
+        _checkSoldOut();
+      }
     });
   }
 
@@ -41,7 +85,7 @@ class _CartItemState extends State<CartItem> {
         height: 200,
         width: size.width * 0.425,
         decoration: BoxDecoration(
-          color: Palette.backgroundColor.withOpacity(0.2),
+          color: buyable ? Palette.backgroundColor.withOpacity(0.2) : Palette.greyBackground.withOpacity(0.2),
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: Colors.grey,
@@ -69,12 +113,12 @@ class _CartItemState extends State<CartItem> {
                   ),
                   const Gap(5),
                   Text(
-                    'Shop Name',
+                    widget.shopName,
                     style: TextDecor.robo17Medi,
                   ),
                   Expanded(child: Container()),
                   InkWell(
-                    onTap: () {},
+                    onTap: widget.onDelete,
                     child: const Icon(
                       Icons.delete,
                       color: Colors.red,
@@ -88,12 +132,13 @@ class _CartItemState extends State<CartItem> {
               children: [
                 Checkbox(
                   value: widget.isCheck,
-                  onChanged: widget.onChanged,
-                ),
+                  onChanged: buyable ? widget.onChanged : (value) {},
+                )
+                ,
                 ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(10)),
                   child: Image.network(
-                    "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AA1wMWtv.img?w=730&h=487&m=6",
+                    widget.imageUrl,
                     width: 125,
                     height: 140,
                     fit: BoxFit.cover,
@@ -114,13 +159,13 @@ class _CartItemState extends State<CartItem> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "PTT",
+                        "${widget.itemName}${buyable ? "" : " (Sold out)"}",
                         maxLines: 2,
                         textAlign: TextAlign.justify,
                         style: TextDecor.robo16Medi,
                       ),
                       Text(
-                        "Description: pham thanh tuong pham thanh tuong pham thanh tuong",
+                        widget.description,
                         textAlign: TextAlign.justify,
                         maxLines: 2,
                         style: TextDecor.robo12.copyWith(
@@ -131,14 +176,14 @@ class _CartItemState extends State<CartItem> {
                         children: [
                           const Icon(Icons.star, size: 18, color: Colors.amber),
                           Text(
-                            "4.5",
+                            Utility.formatRatingValue(widget.rating),
                             style: TextDecor.robo14,
                           ),
                           Expanded(child: Container()),
                           const Icon(Icons.location_on,
                               size: 18, color: Colors.black),
                           Text(
-                            "HCM",
+                            widget.location,
                             style: TextDecor.robo14,
                           ),
                         ],
@@ -151,7 +196,7 @@ class _CartItemState extends State<CartItem> {
                             color: Colors.red,
                           ),
                           Text(
-                            "100",
+                            Utility.formatCurrency(widget.price),
                             style: TextDecor.robo16Medi.copyWith(
                               color: Colors.red,
                             ),
@@ -167,9 +212,9 @@ class _CartItemState extends State<CartItem> {
                                   width: 0.5,
                                   color: Colors.grey,
                                 ),
-                                borderRadius: BorderRadius.only(
-                                  topLeft: const Radius.circular(3),
-                                  bottomLeft: const Radius.circular(3),
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(3),
+                                  bottomLeft: Radius.circular(3),
                                 ),
                               ),
                               child: const Icon(
@@ -203,9 +248,9 @@ class _CartItemState extends State<CartItem> {
                                   width: 0.5,
                                   color: Colors.grey,
                                 ),
-                                borderRadius: BorderRadius.only(
-                                  topRight: const Radius.circular(3),
-                                  bottomRight: const Radius.circular(3),
+                                borderRadius: const BorderRadius.only(
+                                  topRight: Radius.circular(3),
+                                  bottomRight: Radius.circular(3),
                                 ),
                               ),
                               child: const Icon(
