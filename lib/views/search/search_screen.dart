@@ -135,7 +135,7 @@ class _SearchScreenState extends State<SearchScreen> implements SearchScreenCont
                       if (isSearching) {
                         return;
                       }
-                      lienQuan = !lienQuan;
+                      lienQuan = true;
                       moiNhat = false;
                       giaTang = false;
                       gia = false;
@@ -180,7 +180,7 @@ class _SearchScreenState extends State<SearchScreen> implements SearchScreenCont
                         return;
                       }
                       lienQuan = false;
-                      moiNhat = !moiNhat;
+                      moiNhat = true;
                       giaTang = false;
                       gia = false;
                       _presenter!.setFilter(moiNhat ? ItemFilter.NEWEST : ItemFilter.DEFAULT);

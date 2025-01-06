@@ -85,16 +85,16 @@ class ItemRepository {
 
   Future<List<ItemModel>> getItemsBySearchInput(String searchInput) async {
     try {
-      final QuerySnapshot querySnapshot =
-        await _storage.collection(ItemModel.collectionName)
-          .where('name', isGreaterThanOrEqualTo: searchInput.toLowerCase())
-          .where('name', isLessThan: "${searchInput.toLowerCase()}\uf8ff")
-          .get();
-      final items = querySnapshot
-          .docs
-          .map((doc) => ItemModel.fromJson(doc.id, doc.data() as Map<String, dynamic>))
-          .toList();
-      return items;
+      final List<ItemModel> allItems = await getAllItems();
+      final List<ItemModel> result = [];
+
+      for (ItemModel item in allItems) {
+        if(item.name!.toLowerCase().contains(searchInput.toLowerCase())) {
+          result.add(item);
+        }
+      }
+
+      return result;
     } catch (e) {
       return [];
     }

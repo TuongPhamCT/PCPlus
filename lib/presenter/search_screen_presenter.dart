@@ -65,7 +65,7 @@ class SearchScreenPresenter {
       case ItemFilter.NEWEST:
         {
           showResults.sort((item1, item2) {
-            return item1.product!.addDate!.compareTo(item2.product!.addDate!) * -1;
+            return item1.product!.addDate!.compareTo(item2.product!.addDate!);
           });
           break;
         }
