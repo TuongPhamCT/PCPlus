@@ -7,4 +7,5 @@ abstract class ShopHomeContract {
   void onItemEdit();
   void onItemDelete();
   void onItemPressed();
+  void onBack();
 }

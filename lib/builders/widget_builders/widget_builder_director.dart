@@ -54,7 +54,8 @@ class WidgetBuilderDirector {
     required ItemData data,
     required CommandInterface editCommand,
     required CommandInterface deleteCommand,
-    required ShopHomeItemPressedCommand pressedCommand
+    required ShopHomeItemPressedCommand pressedCommand,
+    required bool isShop
   }) {
     if (builder is ShopItemBuilder) {
       ShopItemBuilder itemBuilder = builder;
@@ -65,6 +66,7 @@ class WidgetBuilderDirector {
       itemBuilder.setPressedCommand(pressedCommand);
       itemBuilder.setShop(data.shop!);
       itemBuilder.setRating(data.rating!);
+      itemBuilder.setIsShop(isShop);
     }
   }
 }

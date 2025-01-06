@@ -4,6 +4,7 @@ import 'package:pcplus/commands/shop_home_command.dart';
 import 'package:pcplus/config/asset_helper.dart';
 import 'package:pcplus/contract/shop_home_contract.dart';
 import 'package:pcplus/presenter/shop_home_presenter.dart';
+import 'package:pcplus/singleton/shop_singleton.dart';
 import 'package:pcplus/singleton/user_singleton.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
@@ -14,8 +15,10 @@ import 'package:pcplus/views/widgets/util_widgets.dart';
 
 import '../builders/widget_builders/shop_item_builder.dart';
 import '../builders/widget_builders/widget_builder_director.dart';
+import '../models/users/user_model.dart';
 import '../objects/suggest_item_data.dart';
 import 'edit_product.dart';
+import 'home.dart';
 
 class ShopHome extends StatefulWidget {
   const ShopHome({super.key});
@@ -29,6 +32,9 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
   ShopHomePresenter? _presenter;
   final UserSingleton _userSingleton = UserSingleton.getInstance();
   WidgetBuilderDirector director = WidgetBuilderDirector();
+
+  UserModel? shop;
+
   bool init = true;
   bool isShop = true;
   String avatarUrl = "";
@@ -38,7 +44,8 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
   @override
   void initState() {
     isShop = _userSingleton.isShop();
-    avatarUrl = _userSingleton.currentUser!.avatarUrl ?? "";
+    shop = ShopSingleton.getInstance().shop;
+    avatarUrl = shop!.avatarUrl ?? "";
     _presenter = ShopHomePresenter(this);
     super.initState();
   }
@@ -71,7 +78,7 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
                   size: 30,
                 ),
                 onPressed: () {
-                  Navigator.pop(context);
+                  _presenter!.handleBack();
                 },
               ),
             )
@@ -117,7 +124,7 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(
-                        _userSingleton.currentUser!.name!,
+                        shop!.getShopName(),
                         style: TextDecor.robo24Bold.copyWith(
                           color: Palette.primaryColor,
                         ),
@@ -131,7 +138,7 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
                           ),
                           const Gap(10),
                           Text(
-                            _userSingleton.currentUser!.phone!,
+                            shop!.phone!,
                             style: TextDecor.robo18.copyWith(
                               color: Colors.black,
                             ),
@@ -147,7 +154,7 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
                           ),
                           const Gap(5),
                           Text(
-                            _userSingleton.currentUser!.getLocation(),
+                            shop!.getLocation(),
                             style: TextDecor.robo18.copyWith(
                               color: Colors.black,
                             ),
@@ -204,6 +211,7 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
       director.makeShopItem(
           builder: shopItemBuilder,
           data: item,
+          isShop: isShop,
           editCommand:
               ShopHomeItemEditCommand(presenter: _presenter!, item: item),
           deleteCommand:
@@ -253,5 +261,10 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
   @override
   void onItemPressed() {
     Navigator.of(context).pushNamed(DetailProduct.routeName);
+  }
+
+  @override
+  void onBack() {
+    Navigator.of(context).pushNamed(HomeScreen.routeName);
   }
 }
