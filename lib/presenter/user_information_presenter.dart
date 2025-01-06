@@ -87,7 +87,8 @@ class UserInformationPresenter {
     }
 
     try {
-      UserCredential? userCredential = await _auth.signUpWithEmailAndPassword(email, password);
+      UserCredential? userCredential =
+          await _auth.signUpWithEmailAndPassword(email, password);
       if (userCredential == null) {
         _view.onPopContext();
         _view.onConfirmFailed("Something was wrong. Please try again.");
@@ -108,6 +109,7 @@ class UserInformationPresenter {
       builder.setPhone(phone);
       builder.setMoney(0);
       if (isSeller) {
+        builder.setSeller(true);
         builder.setShopName(shopName);
         builder.setLocation(location);
       }

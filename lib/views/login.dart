@@ -7,6 +7,7 @@ import 'package:pcplus/themes/text_decor.dart';
 import 'package:gap/gap.dart';
 import 'package:pcplus/views/forgot_password.dart';
 import 'package:pcplus/views/register.dart';
+import 'package:pcplus/views/shop_home.dart';
 import 'package:pcplus/views/widgets/profile/button_profile.dart';
 import 'package:pcplus/views/widgets/profile/profile_input.dart';
 import 'package:pcplus/views/widgets/util_widgets.dart';
@@ -138,7 +139,11 @@ class _LoginScreenState extends State<LoginScreen> implements LoginViewContract 
   @override
   void onLoginSucceeded() {
     // TODO: implement onLoginSucceeded
-    Navigator.of(context).pushNamed(HomeScreen.routeName);
+    if (_loginPresenter!.user!.isSeller!) {
+      Navigator.of(context).pushNamed(ShopHome.routeName);
+    } else {
+      Navigator.of(context).pushNamed(HomeScreen.routeName);
+    }
   }
 
   @override

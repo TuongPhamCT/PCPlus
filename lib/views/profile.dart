@@ -65,7 +65,7 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   @override
   void initState() {
-    // _presenter = ProfileScreenPresenter(this);
+     _presenter = ProfileScreenPresenter(this);
     super.initState();
   }
 
@@ -463,7 +463,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     TextButton(
                                       onPressed: () {
                                         Navigator.of(dialogContext).pop();
-                                        _presenter!.signOut();
                                       },
                                       child: Text(
                                         'Cancel',
@@ -471,7 +470,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                                       ),
                                     ),
                                     TextButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        _presenter!.signOut();
+                                      },
                                       child: Text(
                                         'Confirm',
                                         style:

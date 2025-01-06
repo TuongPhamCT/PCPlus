@@ -11,6 +11,7 @@ class LoginPresenter {
   final AuthenticationService _authService = AuthenticationService();
   final UserRepository _userRepo = UserRepository();
   final PrefService _prefService = PrefService();
+  UserModel? user;
 
   Future<void> login(String email, String password) async {
     try {
@@ -22,6 +23,7 @@ class LoginPresenter {
         return;
       }
       UserModel userData = await _userRepo.getUserById(userCredential.user!.uid);
+      user = userData;
       await _prefService.saveUserData(userData: userData, password: password);
     } catch (e) {
       print(e);
