@@ -47,6 +47,7 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
     super.didChangeDependencies();
     if (init) {
       loadData();
+      init = false;
     } else {
       fetchData();
     }

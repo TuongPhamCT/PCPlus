@@ -22,6 +22,8 @@ class ShopHomePresenter {
   }
 
   Future<void> fetchData() async {
+    itemModels = _shopSingleton.itemModels;
+    itemsData = _shopSingleton.itemsData;
     _view.onFetchDataSucceeded();
   }
 
