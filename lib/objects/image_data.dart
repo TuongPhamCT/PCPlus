@@ -11,8 +11,4 @@ class ImageData extends DataObjectInterface {
     required this.isNew,
     this.file,
   });
-  
-  void loadFileFromUrl() {
-    file = File.fromUri(Uri.parse(path));
-  }
 }
