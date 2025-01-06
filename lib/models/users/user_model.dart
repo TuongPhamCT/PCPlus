@@ -46,7 +46,7 @@ class UserModel {
   };
 
   static UserModel fromJson(Map<String, dynamic> json) {
-    final shopInfo = jsonDecode(json['shopInfo']) as Map<String, Object?>?;
+    final shopInfo = json['shopInfo'] as Map<String, Object?>?;
 
     return UserModel(
       userID: json['userID'] as String,
