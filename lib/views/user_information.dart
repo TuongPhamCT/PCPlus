@@ -10,6 +10,7 @@ import 'package:pcplus/presenter/user_information_presenter.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 import 'package:pcplus/views/home.dart';
+import 'package:pcplus/views/shop_home.dart';
 import 'package:pcplus/views/widgets/profile/background_container.dart';
 import 'package:pcplus/views/widgets/profile/button_profile.dart';
 import 'package:pcplus/views/widgets/util_widgets.dart';
@@ -462,7 +463,11 @@ class _UserInformationState extends State<UserInformation>
 
   @override
   void onConfirmSucceeded() {
-    Navigator.of(context).pushNamed(HomeScreen.routeName);
+    if (_presenter!.user!.isSeller!) {
+      Navigator.of(context).pushNamed(ShopHome.routeName);
+    } else {
+      Navigator.of(context).pushNamed(HomeScreen.routeName);
+    }
   }
 
   @override

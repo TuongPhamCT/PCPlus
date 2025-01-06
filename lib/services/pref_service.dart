@@ -19,6 +19,10 @@ class PrefService {
     prefs.setBool('isSeller', userData.isSeller!);
     prefs.setString('avatarUrl', userData.avatarUrl!);
     prefs.setInt('money', userData.money!);
+    if (userData.isSeller!) {
+      prefs.setString('location', userData.getLocation());
+      prefs.setString('shopName', userData.getShopName());
+    }
   }
 
   Future<void> clearUserData() async {
@@ -38,7 +42,7 @@ class PrefService {
     if (prefs.getString('dateOfBirth') == null) {
       return null;
     }
-    return UserModel(
+    UserModel model = UserModel(
       userID: prefs.getString('userID'),
       name: prefs.getString('name'),
       email: prefs.getString('email'),
@@ -49,6 +53,13 @@ class PrefService {
       avatarUrl: prefs.getString('avatarUrl'),
       money: prefs.getInt('money')
     );
+
+    if (model.isSeller!) {
+      model.setLocation(prefs.getString('location')!);
+      model.setShopName(prefs.getString('shopName')!);
+    }
+
+    return model;
   }
 
   Future<String> getPassword() async {
