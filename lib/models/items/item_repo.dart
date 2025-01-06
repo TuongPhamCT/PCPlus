@@ -75,6 +75,7 @@ class ItemRepository {
           .docs
           .map((doc) => ItemModel.fromJson(doc.id, doc as Map<String, dynamic>))
           .toList();
+          
       return items;
     } catch (e) {
       return [];

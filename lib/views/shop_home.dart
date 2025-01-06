@@ -158,11 +158,10 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
               const Gap(10),
               if (productWidgets.isEmpty)
                 UtilWidgets.getCenterTextWithContainer(
-                  width: size.width,
-                  height: size.height * 0.5,
-                  text: "Không có sản phẩm nào",
-                  color: Palette.primaryColor
-                )
+                    width: size.width,
+                    height: size.height * 0.5,
+                    text: "Không có sản phẩm nào",
+                    color: Palette.primaryColor)
               else
                 ListView.builder(
                   shrinkWrap: true,
@@ -178,15 +177,17 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
           ),
         ),
       ),
-      floatingActionButton: isShop ? FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).pushNamed(AddProduct.routeName);
-        },
-        child: const Icon(
-          Icons.add,
-          size: 36,
-        ),
-      ) : null,
+      floatingActionButton: isShop
+          ? FloatingActionButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(AddProduct.routeName);
+              },
+              child: const Icon(
+                Icons.add,
+                size: 36,
+              ),
+            )
+          : null,
       bottomNavigationBar: isShop ? const ShopBottomBar(currentIndex: 0) : null,
     );
   }
@@ -195,11 +196,12 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
     ShopItemBuilder shopItemBuilder = ShopItemBuilder();
     for (ItemData item in _presenter!.itemsData) {
       director.makeShopItem(
-        builder: shopItemBuilder,
-        data: item,
-        editCommand: ShopHomeItemEditCommand(presenter: _presenter!, item: item),
-        deleteCommand: ShopHomeItemDeleteCommand(presenter: _presenter!, item: item)
-      );
+          builder: shopItemBuilder,
+          data: item,
+          editCommand:
+              ShopHomeItemEditCommand(presenter: _presenter!, item: item),
+          deleteCommand:
+              ShopHomeItemDeleteCommand(presenter: _presenter!, item: item));
       productWidgets.add(shopItemBuilder.createWidget()!);
     }
     setState(() {});
