@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
@@ -11,6 +13,8 @@ class UserModel {
   bool? isSeller;
   String? avatarUrl;
   int? money = 0;
+  String? location;
+  String? shopName;
   Map<String, Object?>? shopInfo = {};
 
   static String collectionName = 'Users';
@@ -38,11 +42,11 @@ class UserModel {
     'isSeller': isSeller,
     'avatarUrl': avatarUrl,
     'money': money,
-    'shopInfo': shopInfo
+    'shopInfo': jsonEncode(shopInfo)
   };
 
   static UserModel fromJson(Map<String, dynamic> json) {
-    final shopInfo = json['shopInfo'] as Map<String, Object?>?;
+    final shopInfo = jsonDecode(json['shopInfo']) as Map<String, Object?>?;
 
     return UserModel(
       userID: json['userID'] as String,
@@ -59,6 +63,7 @@ class UserModel {
   }
 
   void setLocation(String location) {
+    shopInfo ??= {};
     shopInfo![ShopInfo.LOCATION] = location;
   }
 
@@ -67,6 +72,7 @@ class UserModel {
   }
 
   void setShopName(String shopName) {
+    shopInfo ??= {};
     shopInfo![ShopInfo.SHOP_NAME] = shopName;
   }
 
