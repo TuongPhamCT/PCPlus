@@ -17,6 +17,8 @@ import 'package:pcplus/views/widgets/profile/background_container.dart';
 import 'package:pcplus/views/widgets/util_widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../singleton/user_singleton.dart';
+
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
   static const String routeName = 'profile_screen';
@@ -67,6 +69,7 @@ class _ProfileScreenState extends State<ProfileScreen>
   @override
   void initState() {
      _presenter = ProfileScreenPresenter(this);
+     isShop = UserSingleton.getInstance().isShop();
     super.initState();
   }
 
@@ -519,7 +522,6 @@ class _ProfileScreenState extends State<ProfileScreen>
   @override
   void onLoadDataSucceeded() {
     setState(() {
-      isShop = _presenter!.isSeller;
       _userName = _presenter!.user!.name!;
       _userAvatarUrl = _presenter!.user!.avatarUrl!;
       _isLoading = false;

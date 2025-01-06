@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 import 'package:pcplus/services/authentication_service.dart';
 import 'package:pcplus/services/pref_service.dart';
 import '../contract/login_contract.dart';
 import '../models/users/user_model.dart';
 import '../models/users/user_repo.dart';
+import '../singleton/user_singleton.dart';
 
 class LoginPresenter {
   final LoginViewContract _view;
@@ -11,7 +13,6 @@ class LoginPresenter {
   final AuthenticationService _authService = AuthenticationService();
   final UserRepository _userRepo = UserRepository();
   final PrefService _prefService = PrefService();
-  UserModel? user;
 
   Future<void> login(String email, String password) async {
     try {
@@ -23,7 +24,7 @@ class LoginPresenter {
         return;
       }
       UserModel userData = await _userRepo.getUserById(userCredential.user!.uid);
-      user = userData;
+      UserSingleton.getInstance().currentUser = userData;
       await _prefService.saveUserData(userData: userData, password: password);
     } catch (e) {
       print(e);

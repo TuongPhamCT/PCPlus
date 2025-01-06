@@ -15,6 +15,8 @@ import 'package:pcplus/views/widgets/profile/background_container.dart';
 import 'package:pcplus/views/widgets/profile/button_profile.dart';
 import 'package:pcplus/views/widgets/util_widgets.dart';
 
+import '../singleton/user_singleton.dart';
+
 class UserInformation extends StatefulWidget {
   const UserInformation({super.key});
   static const String routeName = 'user_information';
@@ -463,7 +465,7 @@ class _UserInformationState extends State<UserInformation>
 
   @override
   void onConfirmSucceeded() {
-    if (_presenter!.user!.isSeller!) {
+    if (UserSingleton.getInstance().isShop()) {
       Navigator.of(context).pushNamed(ShopHome.routeName);
     } else {
       Navigator.of(context).pushNamed(HomeScreen.routeName);
