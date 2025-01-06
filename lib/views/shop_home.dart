@@ -223,12 +223,12 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
 
   @override
   void onPopContext() {
-    // TODO: implement onPopContext
+    Navigator.of(context, rootNavigator: true).pop();
   }
 
   @override
   void onWaitingProgressBar() {
-    // TODO: implement onWaitingProgressBar
+    UtilWidgets.createLoadingWidget(context);
   }
 
   @override

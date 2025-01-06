@@ -33,7 +33,7 @@ class AddProductPresenter {
 
     for (File image in images) {
       String? imagePath = await _imageStorageService.uploadImage(
-          StorageFolderNames.AVATARS, image);
+          StorageFolderNames.PRODUCTS, image);
       if (imagePath == null) {
         _view.onPopContext();
         _view.onAddFailed("Something was wrong. Please try again.");
