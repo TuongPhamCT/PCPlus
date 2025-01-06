@@ -47,7 +47,6 @@ class _EditProductState extends State<EditProduct> implements EditProductContrac
           path: url,
           isNew: false
       );
-      imageData.loadFileFromUrl();
       _images.add(imageData);
     }
 
@@ -227,12 +226,20 @@ class _EditProductState extends State<EditProduct> implements EditProductContrac
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(8),
-                          child: Image.file(
-                            _images[index].file!,
-                            width: double.infinity,
-                            height: double.infinity,
-                            fit: BoxFit.cover,
-                          ),
+                          child:
+                            _images[index].isNew ?
+                              Image.network(
+                                _images[index].path,
+                                width: double.infinity,
+                                height: double.infinity,
+                                fit: BoxFit.cover
+                              )
+                              :
+                              Image.file(_images[index].file!,
+                                width: double.infinity,
+                                height: double.infinity,
+                                fit: BoxFit.cover,
+                              ),
                         ),
                         Positioned(
                           top: 8,
