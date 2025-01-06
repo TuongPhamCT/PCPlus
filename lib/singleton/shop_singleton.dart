@@ -26,12 +26,22 @@ class ShopSingleton extends PublisherInterface {
   List<ItemData> itemsData = [];
   ItemData? editedItem;
 
+  UserModel? shop;
+
+  void changeShop(UserModel shop) {
+    this.shop = shop;
+    init = true;
+  }
+
   Future<void> initShopData() async {
     if (init == false) {
       return;
     }
 
-    itemModels = await _itemRepository.getItemsBySeller(_userSingleton.currentUser!.userID!);
+    itemModels.clear();
+    itemsData.clear();
+
+    itemModels = await _itemRepository.getItemsBySeller(shop!.userID!);
 
     final ListItemDataBuilder builder = ListItemDataBuilder();
     final Map<String, UserModel> cacheShops = {};
@@ -44,7 +54,7 @@ class ShopSingleton extends PublisherInterface {
     );
     itemsData = builder.createList().cast<ItemData>();
     for (ItemData itemData in itemsData) {
-      itemData.shop = _userSingleton.currentUser!;
+      itemData.shop = shop;
     }
     init = false;
     reorder();
@@ -53,7 +63,7 @@ class ShopSingleton extends PublisherInterface {
   Future<void> addData(ItemModel itemModel) async {
     itemModels.add(itemModel);
     ItemData newData = ItemData(
-      shop: _userSingleton.currentUser,
+      shop: shop,
       product: itemModel,
       rating: 0,
     );

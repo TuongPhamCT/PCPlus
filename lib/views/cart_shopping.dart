@@ -1,6 +1,9 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:pcplus/contract/cart_shopping_screen_contract.dart';
+import 'package:pcplus/models/ratings/rating_model.dart';
+import 'package:pcplus/models/ratings/rating_repo.dart';
 import 'package:pcplus/objects/in_cart_item_data.dart';
 import 'package:pcplus/presenter/cart_shopping_screen_presenter.dart';
 import 'package:pcplus/singleton/cart_singleton.dart';
@@ -25,7 +28,6 @@ class _CartShoppingScreenState extends State<CartShoppingScreen> implements Cart
 
   bool _selectAll = false;
   int soluong = 10;
-  bool init = true;
   String totalPrice = "";
 
   @override
@@ -38,15 +40,14 @@ class _CartShoppingScreenState extends State<CartShoppingScreen> implements Cart
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (init == false) {
-      loadData();
-    }
+    loadData();
   }
 
   Future<void> loadData() async {
     _cartSingleton.deselectAllItemsInCart();
     _cartSingleton.resetAmount();
     await _cartSingleton.fetchData();
+    
     setState(() {
       totalPrice = _presenter!.calculateTotalPrice();
     });

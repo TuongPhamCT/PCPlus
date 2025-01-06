@@ -23,7 +23,7 @@ class LoginPresenter {
         return;
       }
       UserModel userData = await _userRepo.getUserById(userCredential.user!.uid);
-      UserSingleton.getInstance().currentUser = userData;
+      UserSingleton.getInstance().loadUser(userData);
       await _prefService.saveUserData(userData: userData, password: password);
     } catch (e) {
       print(e);
