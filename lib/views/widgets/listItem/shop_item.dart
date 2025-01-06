@@ -16,6 +16,7 @@ class ShopItem extends StatelessWidget {
   final double rating;
   final int price;
   final int sold;
+  final int quantity;
   final CommandInterface? command;
 
   const ShopItem({
@@ -23,6 +24,7 @@ class ShopItem extends StatelessWidget {
     required this.itemName,
     required this.imagePath,
     required this.description,
+    required this.quantity,
     required this.location,
     required this.rating,
     required this.price,
@@ -94,6 +96,19 @@ class ShopItem extends StatelessWidget {
                       color: Colors.grey,
                     ),
                   ),
+                  quantity > 0
+                      ? Text(
+                          "Available: $quantity",
+                          style: TextDecor.robo14.copyWith(
+                            color: Colors.black,
+                          ),
+                        )
+                      : Text(
+                          "Out of stock",
+                          style: TextDecor.robo14.copyWith(
+                            color: Colors.red,
+                          ),
+                        ),
                   Row(
                     children: [
                       const Icon(Icons.star, size: 18, color: Colors.amber),

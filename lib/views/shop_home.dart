@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:pcplus/config/asset_helper.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
+import 'package:pcplus/views/widgets/bottom/shop_bottom_bar.dart';
 import 'package:pcplus/views/widgets/listItem/shop_item.dart';
 import 'package:pcplus/views/widgets/listItem/suggest_item.dart';
 
@@ -18,6 +19,7 @@ class _ShopHomeState extends State<ShopHome> {
   bool isShop = true;
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: !isShop
           ? AppBar(
@@ -33,6 +35,7 @@ class _ShopHomeState extends State<ShopHome> {
             )
           : null,
       body: Container(
+        height: size.height,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
           color: Colors.grey.withOpacity(0.2),
@@ -59,50 +62,69 @@ class _ShopHomeState extends State<ShopHome> {
                   const Gap(10),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(
-                        'Shop Name',
+                        'Tuong Shop',
                         style: TextDecor.robo24Bold.copyWith(
                           color: Palette.primaryColor,
                         ),
                       ),
-                      const Gap(5),
                       Row(
                         children: [
                           const Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                            size: 30,
+                            Icons.phone,
+                            color: Colors.black,
+                            size: 24,
                           ),
+                          const Gap(10),
                           Text(
-                            '4.5',
-                            style: TextDecor.robo24Medi.copyWith(
-                              color: Palette.primaryColor,
+                            '0123456789',
+                            style: TextDecor.robo18.copyWith(
+                              color: Colors.black,
                             ),
                           ),
                         ],
-                      )
+                      ),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.location_on,
+                            color: Colors.black,
+                            size: 28,
+                          ),
+                          const Gap(5),
+                          Text(
+                            'Hồ Chí Minh',
+                            style: TextDecor.robo18.copyWith(
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ],
               ),
               const Gap(20),
               Text('Danh mục sản phẩm', style: TextDecor.robo18Bold),
+              const Gap(10),
               ListView.builder(
                 shrinkWrap: true,
                 padding: EdgeInsets.zero,
                 physics: const NeverScrollableScrollPhysics(),
                 scrollDirection: Axis.vertical,
-                itemCount: 8,
+                itemCount: 1,
                 itemBuilder: (context, index) {
                   return ShopItem(
-                      itemName: 'itemName',
+                      itemName: 'Tai nghe SONY 3',
                       imagePath:
                           'https://cdn.tgdd.vn/Files/2022/01/30/1413644/cac-thuong-hieu-tai-nghe-tot-va-duoc-ua-chuong-nha.jpg',
-                      description: 'description',
-                      location: 'location',
+                      description: 'Tai nghe hiện đại nhất',
+                      quantity: 10,
+                      location: 'Hồ Chí Minh',
                       rating: 4.5,
-                      price: 12000,
+                      price: 576000,
                       sold: 3);
                 },
               ),
@@ -121,6 +143,7 @@ class _ShopHomeState extends State<ShopHome> {
           size: 36,
         ),
       ),
+      bottomNavigationBar: const ShopBottomBar(currentIndex: 0),
     );
   }
 }
