@@ -17,6 +17,7 @@ class ShopItem extends StatelessWidget {
   final int quantity;
   final CommandInterface? deleteCommand;
   final CommandInterface? editCommand;
+  final CommandInterface? pressedCommand;
 
   const ShopItem({
     super.key,
@@ -29,14 +30,17 @@ class ShopItem extends StatelessWidget {
     required this.price,
     required this.sold,
     this.deleteCommand,
-    this.editCommand
+    this.editCommand,
+    this.pressedCommand,
   });
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        pressedCommand?.execute();
+      },
       child: Container(
         margin: const EdgeInsets.only(bottom: 10),
         padding: const EdgeInsets.all(10),

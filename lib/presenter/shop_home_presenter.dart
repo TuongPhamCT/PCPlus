@@ -1,6 +1,7 @@
 import 'package:pcplus/contract/shop_home_contract.dart';
 import 'package:pcplus/observers/subscriber_interface.dart';
 import 'package:pcplus/singleton/shop_singleton.dart';
+import 'package:pcplus/singleton/view_item_singleton.dart';
 import '../models/items/item_model.dart';
 import '../objects/suggest_item_data.dart';
 
@@ -11,6 +12,7 @@ class ShopHomePresenter implements SubscriberInterface {
   }
 
   final ShopSingleton _shopSingleton = ShopSingleton.getInstance();
+  final ViewItemSingleton _itemSingleton = ViewItemSingleton.getInstance();
 
   List<ItemModel> itemModels = [];
   List<ItemData> itemsData = [];
@@ -44,5 +46,12 @@ class ShopHomePresenter implements SubscriberInterface {
     itemModels = _shopSingleton.itemModels;
     itemsData = _shopSingleton.itemsData;
     _view.onFetchDataSucceeded();
+  }
+
+  Future<void> handleItemPressed(ItemData item) async {
+    _view.onWaitingProgressBar();
+    await _itemSingleton.storeItemData(item);
+    _view.onPopContext();
+    _view.onItemPressed();
   }
 }

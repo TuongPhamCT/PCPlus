@@ -8,6 +8,7 @@ import 'package:pcplus/config/asset_helper.dart';
 import 'package:pcplus/contract/detail_product_contract.dart';
 import 'package:pcplus/presenter/detail_product_presenter.dart';
 import 'package:pcplus/services/utility.dart';
+import 'package:pcplus/singleton/user_singleton.dart';
 import 'package:pcplus/singleton/view_item_singleton.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
@@ -28,6 +29,7 @@ class _DetailProductState extends State<DetailProduct> implements DetailProductC
   DetailProductPresenter? _presenter;
 
   List<String> images = [];
+  bool isShop = false;
 
   final ViewItemSingleton _itemSingleton = ViewItemSingleton.getInstance();
   final WidgetBuilderDirector director = WidgetBuilderDirector();
@@ -62,7 +64,7 @@ class _DetailProductState extends State<DetailProduct> implements DetailProductC
   @override
   void initState() {
     _presenter = DetailProductPresenter(this);
-
+    isShop = UserSingleton.getInstance().isShop();
     productName = _itemSingleton.itemData!.product!.name!;
     description = _itemSingleton.itemData!.product!.description!;
     detail = _itemSingleton.itemData!.product!.detail!;
@@ -584,7 +586,7 @@ class _DetailProductState extends State<DetailProduct> implements DetailProductC
           ],
         ),
       ),
-      bottomNavigationBar: Container(
+      bottomNavigationBar: isShop ? null : Container(
         height: 55,
         decoration: const BoxDecoration(
           borderRadius: BorderRadius.only(
