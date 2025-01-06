@@ -57,7 +57,7 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
   }
 
   Future<void> fetchData() async {
-
+    await _presenter?.fetchData();
   }
 
   @override

@@ -71,7 +71,7 @@ class ApiController {
     } catch (e) {
       print(e);
       try {
-        Uri uri = Uri.parse("$baseUrl/recommend/?user_id=5235448&amount=10");
+        Uri uri = Uri.parse("$baseUrl/recommend/?user_id=${userId}&amount=${amount}");
         print(uri);
         final response = await http.post(uri);
         print(response.body);

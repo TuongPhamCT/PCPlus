@@ -1,8 +1,9 @@
-import 'dart:html';
+import 'dart:io';
 
 import 'package:pcplus/contract/add_product_contract.dart';
 import 'package:pcplus/models/items/item_model.dart';
 import 'package:pcplus/models/items/item_repo.dart';
+import 'package:pcplus/services/image_storage_service.dart';
 import 'package:pcplus/singleton/shop_singleton.dart';
 import 'package:pcplus/singleton/user_singleton.dart';
 
@@ -16,6 +17,8 @@ class AddProductPresenter {
   final UserSingleton _userSingleton = UserSingleton.getInstance();
   final ItemRepository _itemRepository = ItemRepository();
 
+  final ImageStorageService _imageStorageService = ImageStorageService();
+
   Future<void> handleAddProduct({
     required String name,
     required String description,
@@ -27,6 +30,17 @@ class AddProductPresenter {
     _view.onWaitingProgressBar();
 
     List<String> urls = [];
+
+    for (File image in images) {
+      String? imagePath = await _imageStorageService.uploadImage(
+          StorageFolderNames.AVATARS, image);
+      if (imagePath == null) {
+        _view.onPopContext();
+        _view.onAddFailed("Something was wrong. Please try again.");
+        return;
+      }
+      urls.add(imagePath);
+    }
 
     ItemModel model = ItemModel(
         itemID: await _itemRepository.generateID(),
