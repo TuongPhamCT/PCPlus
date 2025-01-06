@@ -75,9 +75,6 @@ class _HomeScreenState extends State<HomeScreen> implements HomeContract {
                     FocusScope.of(context).unfocus();
                   },
                   onChanged: (value) {},
-                  onEditingComplete: () {
-                    _presenter!.handleSearch(_searchController.text.trim());
-                  },
                   onSubmitted: (value) {
                     _presenter!.handleSearch(_searchController.text.trim());
                   },
