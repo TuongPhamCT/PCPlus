@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:pcplus/models/items/item_model.dart';
 import 'package:pcplus/services/random_tool.dart';
 
+import '../const/product_status.dart';
+
 class TestTool {
   final RandomTool randomTool = RandomTool();
 
@@ -181,10 +183,8 @@ class TestTool {
         addDate: randomTool.generateRandomDate(startDate, endDate),
         price: randomTool.generateRandomPrice(1, 100, 4),
         stock: randomTool.generateRandomNumber(100, 1000),
-        status: "",
+        status: ProductStatus.BUYABLE,
         detail: randomTool.generateRandomString(40),
-        image: testImages[
-            randomTool.generateRandomNumber(0, testImages.length - 1)],
         reviewImages: testImages,
         colors: testColor,
         description: randomTool.generateRandomString(20),

@@ -5,8 +5,11 @@ import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pcplus/contract/edit_product_contract.dart';
 import 'package:pcplus/presenter/edit_product_presenter.dart';
+import 'package:pcplus/singleton/shop_singleton.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
+
+import '../models/items/item_model.dart';
 
 class EditProduct extends StatefulWidget {
   const EditProduct({super.key});
@@ -22,9 +25,23 @@ class _EditProductState extends State<EditProduct> implements EditProductContrac
   List<File> _images = [];
   final ImagePicker _picker = ImagePicker();
 
+  final ShopSingleton _shopSingleton = ShopSingleton.getInstance();
+
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _detailController = TextEditingController();
+  final TextEditingController _priceController = TextEditingController();
+  final TextEditingController _amountController = TextEditingController();
+
   @override
   void initState() {
     _presenter = EditProductPresenter(this);
+    ItemModel itemModel = _shopSingleton.editedItem!.product!;
+    _nameController.text = itemModel.name!;
+    _detailController.text = itemModel.detail!;
+    _descriptionController.text = itemModel.description!;
+    _priceController.text = itemModel.price.toString();
+    _amountController.text = itemModel.stock.toString();
     super.initState();
   }
 
@@ -78,6 +95,7 @@ class _EditProductState extends State<EditProduct> implements EditProductContrac
                   onTapOutside: (event) {
                     FocusScope.of(context).unfocus();
                   },
+                  controller: _nameController,
                   decoration: InputDecoration(
                     labelText: "Tên sản phẩm",
                     labelStyle: TextDecor.robo16,
@@ -101,6 +119,7 @@ class _EditProductState extends State<EditProduct> implements EditProductContrac
                   onTapOutside: (event) {
                     FocusScope.of(context).unfocus();
                   },
+                  controller: _descriptionController,
                   decoration: InputDecoration(
                     labelText: "Mô tả",
                     labelStyle: TextDecor.robo16,
@@ -120,6 +139,7 @@ class _EditProductState extends State<EditProduct> implements EditProductContrac
                   onTapOutside: (event) {
                     FocusScope.of(context).unfocus();
                   },
+                  controller: _detailController,
                   decoration: InputDecoration(
                     labelText: "Giới thiệu chi tiết",
                     labelStyle: TextDecor.robo16,
@@ -139,6 +159,7 @@ class _EditProductState extends State<EditProduct> implements EditProductContrac
                   onTapOutside: (event) {
                     FocusScope.of(context).unfocus();
                   },
+                  controller: _priceController,
                   decoration: InputDecoration(
                     labelText: "Giá",
                     labelStyle: TextDecor.robo16,
@@ -157,6 +178,7 @@ class _EditProductState extends State<EditProduct> implements EditProductContrac
                   onTapOutside: (event) {
                     FocusScope.of(context).unfocus();
                   },
+                  controller: _amountController,
                   decoration: InputDecoration(
                     labelText: "Số lượng",
                     labelStyle: TextDecor.robo16,
@@ -175,7 +197,7 @@ class _EditProductState extends State<EditProduct> implements EditProductContrac
                   "Ảnh minh hoạ:",
                   style: TextDecor.robo16,
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 GridView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
@@ -220,13 +242,13 @@ class _EditProductState extends State<EditProduct> implements EditProductContrac
                     );
                   },
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 OutlinedButton.icon(
                   onPressed: _pickImage,
-                  icon: Icon(Icons.add_photo_alternate),
-                  label: Text("Tải ảnh lên"),
+                  icon: const Icon(Icons.add_photo_alternate),
+                  label: const Text("Tải ảnh lên"),
                 ),
-                SizedBox(height: 32),
+                const SizedBox(height: 32),
                 // Nút thêm sản phẩm
                 ElevatedButton(
                   onPressed: () {
