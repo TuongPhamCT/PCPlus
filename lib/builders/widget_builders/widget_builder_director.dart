@@ -1,5 +1,6 @@
 import 'package:pcplus/builders/widget_builders/new_item_builder.dart';
 import 'package:pcplus/builders/widget_builders/review_item_builder.dart';
+import 'package:pcplus/builders/widget_builders/shop_item_builder.dart';
 import 'package:pcplus/builders/widget_builders/suggest_item_builder.dart';
 import 'package:pcplus/builders/widget_builders/widget_builder_interface.dart';
 import 'package:pcplus/commands/command_interface.dart';
@@ -9,9 +10,9 @@ import '../../objects/review_data.dart';
 import '../../objects/suggest_item_data.dart';
 
 class WidgetBuilderDirector {
-  Future<void> makeNewItem({
+  void makeNewItem({
     required WidgetBuilderInterface builder, required ItemData data, required CommandInterface command
-  }) async {
+  }) {
     if (builder is NewItemBuilder) {
       NewItemBuilder itemBuilder = builder;
       itemBuilder.reset();
@@ -45,6 +46,23 @@ class WidgetBuilderDirector {
       ReviewItemBuilder itemBuilder = builder;
       itemBuilder.reset();
       itemBuilder.setReviewData(data);
+    }
+  }
+
+  void makeShopItem({
+    required WidgetBuilderInterface builder,
+    required ItemData data,
+    required CommandInterface editCommand,
+    required CommandInterface deleteCommand
+  }) {
+    if (builder is ShopItemBuilder) {
+      ShopItemBuilder itemBuilder = builder;
+      itemBuilder.reset();
+      itemBuilder.setProduct(data.product!);
+      itemBuilder.setEditCommand(editCommand);
+      itemBuilder.setDeleteCommand(deleteCommand);
+      itemBuilder.setShop(data.shop!);
+      itemBuilder.setRating(data.rating!);
     }
   }
 }

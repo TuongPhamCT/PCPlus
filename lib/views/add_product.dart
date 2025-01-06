@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pcplus/contract/add_product_contract.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 
@@ -14,8 +15,10 @@ class AddProduct extends StatefulWidget {
   State<AddProduct> createState() => _AddProductState();
 }
 
-class _AddProductState extends State<AddProduct> {
+class _AddProductState extends State<AddProduct> implements AddProductContract {
   final _formKey = GlobalKey<FormState>();
+
+
   List<File> _images = [];
   final ImagePicker _picker = ImagePicker();
 
@@ -244,5 +247,15 @@ class _AddProductState extends State<AddProduct> {
         ),
       ),
     );
+  }
+
+  @override
+  void onPopContext() {
+    // TODO: implement onPopContext
+  }
+
+  @override
+  void onWaitingProgressBar() {
+    // TODO: implement onWaitingProgressBar
   }
 }

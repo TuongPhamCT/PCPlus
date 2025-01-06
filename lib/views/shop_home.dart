@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:pcplus/commands/shop_home_command.dart';
 import 'package:pcplus/config/asset_helper.dart';
+import 'package:pcplus/contract/shop_home_contract.dart';
+import 'package:pcplus/presenter/shop_home_presenter.dart';
 import 'package:pcplus/singleton/user_singleton.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
@@ -8,6 +11,12 @@ import 'package:pcplus/views/add_product.dart';
 import 'package:pcplus/views/widgets/bottom/shop_bottom_bar.dart';
 import 'package:pcplus/views/widgets/listItem/shop_item.dart';
 import 'package:pcplus/views/widgets/listItem/suggest_item.dart';
+import 'package:pcplus/views/widgets/util_widgets.dart';
+
+import '../builders/widget_builders/shop_item_builder.dart';
+import '../builders/widget_builders/widget_builder_director.dart';
+import '../objects/suggest_item_data.dart';
+import 'edit_product.dart';
 
 class ShopHome extends StatefulWidget {
   const ShopHome({super.key});
@@ -17,10 +26,40 @@ class ShopHome extends StatefulWidget {
   State<ShopHome> createState() => _ShopHomeState();
 }
 
-class _ShopHomeState extends State<ShopHome> {
+class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
+  ShopHomePresenter? _presenter;
   final UserSingleton _userSingleton = UserSingleton.getInstance();
-
+  WidgetBuilderDirector director = WidgetBuilderDirector();
+  bool init = true;
   bool isShop = true;
+
+  List<Widget> productWidgets = [];
+
+  @override
+  void initState() {
+    isShop = _userSingleton.isShop();
+    _presenter = ShopHomePresenter(this);
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (init) {
+      loadData();
+    } else {
+      fetchData();
+    }
+  }
+
+  Future<void> loadData() async {
+    await _presenter?.getData();
+  }
+
+  Future<void> fetchData() async {
+
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -116,30 +155,29 @@ class _ShopHomeState extends State<ShopHome> {
               const Gap(20),
               Text('Danh mục sản phẩm', style: TextDecor.robo18Bold),
               const Gap(10),
-              ListView.builder(
-                shrinkWrap: true,
-                padding: EdgeInsets.zero,
-                physics: const NeverScrollableScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                itemCount: 1,
-                itemBuilder: (context, index) {
-                  return ShopItem(
-                      itemName: 'Tai nghe SONY 3',
-                      imagePath:
-                          'https://cdn.tgdd.vn/Files/2022/01/30/1413644/cac-thuong-hieu-tai-nghe-tot-va-duoc-ua-chuong-nha.jpg',
-                      description: 'Tai nghe hiện đại nhất',
-                      quantity: 10,
-                      location: 'Hồ Chí Minh Thu Duc, Linh Xuan',
-                      rating: 4.5,
-                      price: 576000,
-                      sold: 3);
-                },
-              ),
+              if (productWidgets.isEmpty)
+                UtilWidgets.getCenterTextWithContainer(
+                  width: size.width,
+                  height: size.height * 0.5,
+                  text: "Không có sản phẩm nào",
+                  color: Palette.primaryColor
+                )
+              else
+                ListView.builder(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.zero,
+                  physics: const NeverScrollableScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  itemCount: 1,
+                  itemBuilder: (context, index) {
+                    return productWidgets[index];
+                  },
+                ),
             ],
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: isShop ? FloatingActionButton(
         onPressed: () {
           Navigator.of(context).pushNamed(AddProduct.routeName);
         },
@@ -147,8 +185,56 @@ class _ShopHomeState extends State<ShopHome> {
           Icons.add,
           size: 36,
         ),
-      ),
-      bottomNavigationBar: const ShopBottomBar(currentIndex: 0),
+      ) : null,
+      bottomNavigationBar: isShop ? const ShopBottomBar(currentIndex: 0) : null,
     );
+  }
+
+  Future<void> buildItemList() async {
+    ShopItemBuilder shopItemBuilder = ShopItemBuilder();
+    for (ItemData item in _presenter!.itemsData) {
+      director.makeShopItem(
+        builder: shopItemBuilder,
+        data: item,
+        editCommand: ShopHomeItemEditCommand(presenter: _presenter!, item: item),
+        deleteCommand: ShopHomeItemDeleteCommand(presenter: _presenter!, item: item)
+      );
+      productWidgets.add(shopItemBuilder.createWidget()!);
+    }
+    setState(() {});
+  }
+
+  @override
+  void onItemEdit() {
+    Navigator.of(context).pushNamed(EditProduct.routeName);
+  }
+
+  @override
+  void onItemDelete() {
+    setState(() {
+      buildItemList();
+    });
+  }
+
+  @override
+  void onLoadDataSucceeded() {
+    buildItemList();
+  }
+
+  @override
+  void onPopContext() {
+    // TODO: implement onPopContext
+  }
+
+  @override
+  void onWaitingProgressBar() {
+    // TODO: implement onWaitingProgressBar
+  }
+
+  @override
+  void onFetchDataSucceeded() {
+    setState(() {
+      buildItemList();
+    });
   }
 }
