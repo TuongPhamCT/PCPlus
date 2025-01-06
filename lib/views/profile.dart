@@ -68,9 +68,8 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   @override
   void initState() {
-
-     _presenter = ProfileScreenPresenter(this);
-     isShop = UserSingleton.getInstance().isShop();
+    _presenter = ProfileScreenPresenter(this);
+    isShop = UserSingleton.getInstance().isShop();
 
     super.initState();
   }
@@ -100,116 +99,75 @@ class _ProfileScreenState extends State<ProfileScreen>
       body: SingleChildScrollView(
         child: _isLoading
             ? UtilWidgets.getLoadingWidget()
-            : Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Gap(20),
-                  Container(
-                    alignment: Alignment.center,
-                    child: Container(
-                      height: 132,
-                      width: 132,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: _userAvatarUrl.isNotEmpty
-                            ? DecorationImage(
-                                image: NetworkImage(_userAvatarUrl),
-                                fit: BoxFit.cover,
-                              )
-                            : const DecorationImage(
-                                image: AssetImage(AssetHelper.defaultAvt),
-                                fit: BoxFit.cover,
-                              ),
+            : Container(
+                height: size.height - 140,
+                decoration: BoxDecoration(
+                  image: const DecorationImage(
+                    image: AssetImage(AssetHelper.profileBg),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Gap(20),
+                    Container(
+                      alignment: Alignment.center,
+                      child: Container(
+                        height: 132,
+                        width: 132,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: _userAvatarUrl.isNotEmpty
+                              ? DecorationImage(
+                                  image: NetworkImage(_userAvatarUrl),
+                                  fit: BoxFit.cover,
+                                )
+                              : const DecorationImage(
+                                  image: AssetImage(AssetHelper.defaultAvt),
+                                  fit: BoxFit.cover,
+                                ),
+                        ),
                       ),
                     ),
-                  ),
-                  const Gap(10),
-                  Container(
-                    alignment: Alignment.center,
-                    child: Text(
-                      _userName,
-                      style: TextDecor.profileName,
+                    const Gap(10),
+                    Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        _userName,
+                        style: TextDecor.profileName,
+                      ),
                     ),
-                  ),
-                  const Gap(25),
-                  BackgroundContainer(
-                    horizontalPadding: 20,
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Đơn hàng',
-                              style: TextDecor.profileIntroText,
-                            ),
-                            InkWell(
-                              onTap: () {
-                                Navigator.of(context)
-                                    .pushNamed(HistoryOrder.routeName);
-                              },
-                              child: Text(
-                                'Xem lịch sử đơn hàng',
-                                style: TextDecor.profileIntroText.copyWith(
-                                  color: Palette.main1,
+                    const Gap(25),
+                    BackgroundContainer(
+                      horizontalPadding: 20,
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Đơn hàng',
+                                style: TextDecor.profileIntroText,
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.of(context)
+                                      .pushNamed(HistoryOrder.routeName);
+                                },
+                                child: Text(
+                                  'Xem lịch sử đơn hàng',
+                                  style: TextDecor.profileIntroText.copyWith(
+                                    color: Palette.main1,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const Gap(10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            InkWell(
-                              onTap: () {},
-                              child: Column(
-                                children: [
-                                  SizedBox(
-                                    width: 40,
-                                    height: 40,
-                                    child: Stack(
-                                      children: [
-                                        const Padding(
-                                          padding:
-                                              EdgeInsets.only(top: 5, right: 6),
-                                          child: Icon(
-                                            FontAwesomeIcons.wallet,
-                                            size: 30,
-                                            color: Palette.main1,
-                                          ),
-                                        ),
-                                        Positioned(
-                                          right: 0,
-                                          top: 0,
-                                          child: Container(
-                                            width: 20,
-                                            height: 20,
-                                            alignment: Alignment.center,
-                                            decoration: const BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: Palette.primaryColor,
-                                            ),
-                                            child: Text(
-                                              '1',
-                                              style: TextDecor.robo16.copyWith(
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const Gap(3),
-                                  Text(
-                                    'Chờ xác nhận',
-                                    style: TextDecor.orderProfile,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            if (!isShop)
+                            ],
+                          ),
+                          const Gap(10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
                               InkWell(
                                 onTap: () {},
                                 child: Column(
@@ -223,7 +181,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                             padding: EdgeInsets.only(
                                                 top: 5, right: 6),
                                             child: Icon(
-                                              FontAwesomeIcons.boxesPacking,
+                                              FontAwesomeIcons.wallet,
                                               size: 30,
                                               color: Palette.main1,
                                             ),
@@ -253,61 +211,62 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     ),
                                     const Gap(3),
                                     Text(
-                                      'Chờ lấy hàng',
+                                      'Chờ xác nhận',
                                       style: TextDecor.orderProfile,
                                     ),
                                   ],
                                 ),
                               ),
-                            InkWell(
-                              onTap: () {},
-                              child: Column(
-                                children: [
-                                  SizedBox(
-                                    width: 40,
-                                    height: 40,
-                                    child: Stack(
-                                      children: [
-                                        const Padding(
-                                          padding:
-                                              EdgeInsets.only(top: 5, right: 3),
-                                          child: Icon(
-                                            FontAwesomeIcons.truck,
-                                            size: 30,
-                                            color: Palette.main1,
-                                          ),
-                                        ),
-                                        Positioned(
-                                          right: 0,
-                                          top: 0,
-                                          child: Container(
-                                            width: 20,
-                                            height: 20,
-                                            alignment: Alignment.center,
-                                            decoration: const BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: Palette.primaryColor,
-                                            ),
-                                            child: Text(
-                                              '1',
-                                              style: TextDecor.robo16.copyWith(
-                                                color: Colors.white,
+                              if (!isShop)
+                                InkWell(
+                                  onTap: () {},
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        width: 40,
+                                        height: 40,
+                                        child: Stack(
+                                          children: [
+                                            const Padding(
+                                              padding: EdgeInsets.only(
+                                                  top: 5, right: 6),
+                                              child: Icon(
+                                                FontAwesomeIcons.boxesPacking,
+                                                size: 30,
+                                                color: Palette.main1,
                                               ),
                                             ),
-                                          ),
+                                            Positioned(
+                                              right: 0,
+                                              top: 0,
+                                              child: Container(
+                                                width: 20,
+                                                height: 20,
+                                                alignment: Alignment.center,
+                                                decoration: const BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: Palette.primaryColor,
+                                                ),
+                                                child: Text(
+                                                  '1',
+                                                  style:
+                                                      TextDecor.robo16.copyWith(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                      const Gap(3),
+                                      Text(
+                                        'Chờ lấy hàng',
+                                        style: TextDecor.orderProfile,
+                                      ),
+                                    ],
                                   ),
-                                  const Gap(3),
-                                  Text(
-                                    isShop ? 'Chờ gửi hàng' : 'Chờ giao hàng',
-                                    style: TextDecor.orderProfile,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            if (!isShop)
+                                ),
                               InkWell(
                                 onTap: () {},
                                 child: Column(
@@ -321,7 +280,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                             padding: EdgeInsets.only(
                                                 top: 5, right: 3),
                                             child: Icon(
-                                              FontAwesomeIcons.rankingStar,
+                                              FontAwesomeIcons.truck,
                                               size: 30,
                                               color: Palette.main1,
                                             ),
@@ -351,170 +310,221 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     ),
                                     const Gap(3),
                                     Text(
-                                      'Đánh giá',
+                                      isShop ? 'Chờ gửi hàng' : 'Chờ giao hàng',
                                       style: TextDecor.orderProfile,
                                     ),
                                   ],
                                 ),
                               ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: Column(
-                      children: [
-                        const Gap(20),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context)
-                                .pushNamed(EditProfileScreen.routeName);
-                          },
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 50,
-                                alignment: Alignment.center,
-                                child: const Icon(
-                                  FontAwesomeIcons.user,
-                                  color: Palette.primaryColor,
-                                  size: 25,
-                                ),
-                              ),
-                              Text(
-                                'Edit Profile',
-                                style: TextDecor.profileTextButton,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Gap(20),
-                        GestureDetector(
-                          onTap: () {},
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 50,
-                                alignment: Alignment.center,
-                                child: const Icon(
-                                  FontAwesomeIcons.language,
-                                  color: Palette.primaryColor,
-                                  size: 25,
-                                ),
-                              ),
-                              Text(
-                                'Change Language',
-                                style: TextDecor.profileTextButton,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Gap(20),
-                        GestureDetector(
-                          onTap: () {},
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 50,
-                                alignment: Alignment.center,
-                                child: const Icon(
-                                  Icons.add_alert_rounded,
-                                  color: Palette.primaryColor,
-                                  size: 30,
-                                ),
-                              ),
-                              Text(
-                                'Notification Setting',
-                                style: TextDecor.profileTextButton,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Gap(20),
-                        GestureDetector(
-                          onTap: () {
-                            launchEmailApp();
-                          },
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 50,
-                                alignment: Alignment.center,
-                                child: const Icon(
-                                  FontAwesomeIcons.solidCircleQuestion,
-                                  color: Palette.primaryColor,
-                                  size: 25,
-                                ),
-                              ),
-                              Text(
-                                'Help Center',
-                                style: TextDecor.profileTextButton,
-                              ),
-                            ],
-                          ),
-                        ),
-                        const Gap(20),
-                        GestureDetector(
-                          onTap: () async {
-                            showDialog(
-                              context: context,
-                              builder: (dialogContext) {
-                                return AlertDialog(
-                                  title: const Text('Confirm'),
-                                  content: const Text(
-                                      'Are you sure you want to sign out?'),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(dialogContext).pop();
-                                      },
-                                      child: Text(
-                                        'Cancel',
-                                        style: TextDecor.profileIntroText,
-                                      ),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        _presenter!.signOut();
-                                      },
-                                      child: Text(
-                                        'Confirm',
-                                        style:
-                                            TextDecor.profileIntroText.copyWith(
-                                          color: Palette.main1,
+                              if (!isShop)
+                                InkWell(
+                                  onTap: () {},
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        width: 40,
+                                        height: 40,
+                                        child: Stack(
+                                          children: [
+                                            const Padding(
+                                              padding: EdgeInsets.only(
+                                                  top: 5, right: 3),
+                                              child: Icon(
+                                                FontAwesomeIcons.rankingStar,
+                                                size: 30,
+                                                color: Palette.main1,
+                                              ),
+                                            ),
+                                            Positioned(
+                                              right: 0,
+                                              top: 0,
+                                              child: Container(
+                                                width: 20,
+                                                height: 20,
+                                                alignment: Alignment.center,
+                                                decoration: const BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: Palette.primaryColor,
+                                                ),
+                                                child: Text(
+                                                  '1',
+                                                  style:
+                                                      TextDecor.robo16.copyWith(
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          },
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 50,
-                                alignment: Alignment.center,
-                                child: const Icon(
-                                  FontAwesomeIcons.signOut,
-                                  color: Palette.primaryColor,
-                                  size: 25,
+                                      const Gap(3),
+                                      Text(
+                                        'Đánh giá',
+                                        style: TextDecor.orderProfile,
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                'Sign Out',
-                                style: TextDecor.profileTextButton,
-                              ),
                             ],
                           ),
-                        ),
-                        const Gap(20),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: Column(
+                        children: [
+                          const Gap(20),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.of(context)
+                                  .pushNamed(EditProfileScreen.routeName);
+                            },
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 50,
+                                  alignment: Alignment.center,
+                                  child: const Icon(
+                                    FontAwesomeIcons.user,
+                                    color: Palette.primaryColor,
+                                    size: 25,
+                                  ),
+                                ),
+                                Text(
+                                  'Edit Profile',
+                                  style: TextDecor.profileTextButton,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Gap(20),
+                          GestureDetector(
+                            onTap: () {},
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 50,
+                                  alignment: Alignment.center,
+                                  child: const Icon(
+                                    FontAwesomeIcons.language,
+                                    color: Palette.primaryColor,
+                                    size: 25,
+                                  ),
+                                ),
+                                Text(
+                                  'Change Language',
+                                  style: TextDecor.profileTextButton,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Gap(20),
+                          GestureDetector(
+                            onTap: () {},
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 50,
+                                  alignment: Alignment.center,
+                                  child: const Icon(
+                                    Icons.add_alert_rounded,
+                                    color: Palette.primaryColor,
+                                    size: 30,
+                                  ),
+                                ),
+                                Text(
+                                  'Notification Setting',
+                                  style: TextDecor.profileTextButton,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Gap(20),
+                          GestureDetector(
+                            onTap: () {
+                              launchEmailApp();
+                            },
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 50,
+                                  alignment: Alignment.center,
+                                  child: const Icon(
+                                    FontAwesomeIcons.solidCircleQuestion,
+                                    color: Palette.primaryColor,
+                                    size: 25,
+                                  ),
+                                ),
+                                Text(
+                                  'Help Center',
+                                  style: TextDecor.profileTextButton,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Gap(20),
+                          GestureDetector(
+                            onTap: () async {
+                              showDialog(
+                                context: context,
+                                builder: (dialogContext) {
+                                  return AlertDialog(
+                                    title: const Text('Confirm'),
+                                    content: const Text(
+                                        'Are you sure you want to sign out?'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(dialogContext).pop();
+                                        },
+                                        child: Text(
+                                          'Cancel',
+                                          style: TextDecor.profileIntroText,
+                                        ),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          _presenter!.signOut();
+                                        },
+                                        child: Text(
+                                          'Confirm',
+                                          style: TextDecor.profileIntroText
+                                              .copyWith(
+                                            color: Palette.main1,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            child: Row(
+                              children: [
+                                Container(
+                                  width: 50,
+                                  alignment: Alignment.center,
+                                  child: const Icon(
+                                    FontAwesomeIcons.signOut,
+                                    color: Palette.primaryColor,
+                                    size: 25,
+                                  ),
+                                ),
+                                Text(
+                                  'Sign Out',
+                                  style: TextDecor.profileTextButton,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Gap(20),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
       ),
       bottomNavigationBar: isShop
