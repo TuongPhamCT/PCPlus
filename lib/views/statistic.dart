@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:pcplus/themes/text_decor.dart';
+import 'package:pcplus/views/widgets/bottom/shop_bottom_bar.dart';
 
 class Statistic extends StatefulWidget {
   const Statistic({super.key});
@@ -12,8 +13,8 @@ class Statistic extends StatefulWidget {
 
 class _StatisticState extends State<Statistic> {
   String _selectedStatisticType = "Tháng"; // "Tháng" hoặc "Năm"
-  String _selectedMonth = "1"; // Tháng mặc định
-  String _selectedYear = "2020"; // Năm mặc định
+  String _selectedMonth = "12"; // Tháng mặc định
+  String _selectedYear = "2024"; // Năm mặc định
   final List<String> _months =
       List.generate(12, (index) => "${index + 1}"); // Tháng 1–12
   final List<String> _years =
@@ -21,12 +22,12 @@ class _StatisticState extends State<Statistic> {
 
   // Dữ liệu bán hàng (tháng và năm trong cùng một cấu trúc)
   final Map<String, Map<String, List<int>>> salesData = {
-    "2020": {
-      "1": [100, 120, 80],
+    "2024": {
+      "12": [100, 120, 80],
       "2": [90, 140, 100],
       "Yearly": [1500, 1800, 1200],
     },
-    "2021": {
+    "2025": {
       "1": [110, 130, 90],
       "Yearly": [1400, 1700, 1100],
     },
@@ -61,7 +62,7 @@ class _StatisticState extends State<Statistic> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Dropdown chọn kiểu thống kê (Tháng/Năm)
-          
+
             Row(
               children: [
                 Text(
@@ -171,7 +172,7 @@ class _StatisticState extends State<Statistic> {
             // Chú thích
             Wrap(
               spacing: 8,
-              children: ["Sản phẩm A", "Sản phẩm B", "Sản phẩm C"]
+              children: ["Tai nghe Sony", "Chuột Lenovo", "Bàn phím Logitech"]
                   .asMap()
                   .entries
                   .map((entry) => Chip(
@@ -184,6 +185,7 @@ class _StatisticState extends State<Statistic> {
           ],
         ),
       ),
+      bottomNavigationBar: ShopBottomBar(currentIndex: 1),
     );
   }
 }

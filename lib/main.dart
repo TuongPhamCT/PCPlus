@@ -12,6 +12,7 @@ import 'package:pcplus/views/login.dart';
 import 'package:pcplus/views/notification.dart';
 import 'package:pcplus/views/product/detail_product.dart';
 import 'package:pcplus/views/search/search_screen.dart';
+import 'package:pcplus/views/shop_home.dart';
 import 'package:pcplus/views/splash.dart';
 
 Future<void> main() async {
