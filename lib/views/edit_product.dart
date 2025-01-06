@@ -9,6 +9,7 @@ import 'package:pcplus/singleton/shop_singleton.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 import 'package:pcplus/objects/image_data.dart';
+import 'package:pcplus/views/widgets/util_widgets.dart';
 import '../models/items/item_model.dart';
 
 class EditProduct extends StatefulWidget {
@@ -227,7 +228,7 @@ class _EditProductState extends State<EditProduct> implements EditProductContrac
                         ClipRRect(
                           borderRadius: BorderRadius.circular(8),
                           child:
-                            _images[index].isNew ?
+                            _images[index].isNew == false ?
                               Image.network(
                                 _images[index].path,
                                 width: double.infinity,
@@ -274,9 +275,14 @@ class _EditProductState extends State<EditProduct> implements EditProductContrac
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState?.validate() ?? false) {
-                      // Xử lý logic thêm sản phẩm tại đây
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Sản phẩm đã được thêm')),
+                      // Xử lý logic sửa sản phẩm tại đây
+                      _presenter?.handleEditProduct(
+                          name: _nameController.text.trim(),
+                          description: _descriptionController.text.trim(),
+                          detail: _detailController.text.trim(),
+                          price: int.parse(_priceController.text.trim()),
+                          amount: int.parse(_amountController.text.trim()),
+                          images: _images
                       );
                     }
                   },
@@ -292,12 +298,7 @@ class _EditProductState extends State<EditProduct> implements EditProductContrac
                 const Gap(10),
                 ElevatedButton(
                   onPressed: () {
-                    if (_formKey.currentState?.validate() ?? false) {
-                      // Xử lý logic thêm sản phẩm tại đây
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Sản phẩm đã được thêm')),
-                      );
-                    }
+                    Navigator.pop(context);
                   },
                   child: Text(
                     "HUỶ",
@@ -318,17 +319,22 @@ class _EditProductState extends State<EditProduct> implements EditProductContrac
   }
 
   @override
-  void onLoadDataSucceeded() {
-    // TODO: implement onLoadDataSucceeded
-  }
-
-  @override
   void onPopContext() {
-    // TODO: implement onPopContext
+    Navigator.of(context, rootNavigator: true).pop();
   }
 
   @override
   void onWaitingProgressBar() {
-    // TODO: implement onWaitingProgressBar
+    UtilWidgets.createLoadingWidget(context);
+  }
+
+  @override
+  void onEditFailed(String message) {
+    UtilWidgets.createSnackBar(context, message);
+  }
+
+  @override
+  void onEditSucceeded() {
+    UtilWidgets.createSnackBar(context, "Cập nhật thành công");
   }
 }
