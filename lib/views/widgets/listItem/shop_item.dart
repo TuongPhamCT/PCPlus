@@ -85,14 +85,14 @@ class ShopItem extends StatelessWidget {
                 children: [
                   Text(
                     itemName,
-                    maxLines: 2,
+                    maxLines: 1,
                     textAlign: TextAlign.justify,
                     style: TextDecor.robo16Medi,
                   ),
                   Text(
                     description,
                     textAlign: TextAlign.justify,
-                    maxLines: 2,
+                    maxLines: 1,
                     style: TextDecor.robo12.copyWith(
                       color: Colors.grey,
                     ),
@@ -120,9 +120,13 @@ class ShopItem extends StatelessWidget {
                       Expanded(child: Container()),
                       const Icon(Icons.location_on,
                           size: 18, color: Colors.black),
-                      Text(
-                        location,
-                        style: TextDecor.robo14,
+                      SizedBox(
+                        width: size.width - 300,
+                        child: Text(
+                          location,
+                          maxLines: 1,
+                          style: TextDecor.robo14,
+                        ),
                       ),
                     ],
                   ),
