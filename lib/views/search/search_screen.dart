@@ -90,8 +90,8 @@ class _SearchScreenState extends State<SearchScreen> implements SearchScreenCont
                       },
                       readOnly: isSearching,
                       onChanged: (value) {},
-                      onEditingComplete: () {
-                        _presenter?.handleSearch(_searchController.text.trim());
+                      onSubmitted: (value) {
+                        _presenter!.handleSearch(_searchController.text.trim());
                       },
                       controller: _searchController,
                       decoration: InputDecoration(

@@ -37,6 +37,7 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
 
   bool init = true;
   bool isShop = true;
+  bool isLoading = true;
   String avatarUrl = "";
 
   List<Widget> productWidgets = [];
@@ -168,7 +169,12 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
               const Gap(20),
               Text('Danh mục sản phẩm', style: TextDecor.robo18Bold),
               const Gap(10),
-              if (productWidgets.isEmpty)
+              if (isLoading)
+                UtilWidgets.getLoadingWidgetWithContainer(
+                    width: size.width,
+                    height: size.height * 0.75
+                )
+              else if (productWidgets.isEmpty)
                 UtilWidgets.getCenterTextWithContainer(
                     width: size.width,
                     height: size.height * 0.5,
@@ -239,6 +245,9 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
   @override
   void onLoadDataSucceeded() {
     buildItemList();
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
