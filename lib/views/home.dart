@@ -45,11 +45,19 @@ class _HomeScreenState extends State<HomeScreen> implements HomeContract {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    loadData();
+    if (isFirstLoad) {
+      loadData();
+    } else {
+      fetchData();
+    }
   }
 
   Future<void> loadData() async {
     await _presenter?.getData();
+  }
+
+  Future<void> fetchData() async {
+
   }
 
   @override
@@ -176,7 +184,7 @@ class _HomeScreenState extends State<HomeScreen> implements HomeContract {
   Future<void> onLoadDataSucceed() async {
     NewItemBuilder newItemBuilder = NewItemBuilder();
     for (ItemData item in _presenter!.newestItems) {
-      await director.makeNewItem(
+      director.makeNewItem(
         builder: newItemBuilder,
         data: item,
         command: HomeItemPressedCommand(presenter: _presenter!, item: item),

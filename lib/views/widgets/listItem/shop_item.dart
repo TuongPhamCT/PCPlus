@@ -18,7 +18,8 @@ class ShopItem extends StatelessWidget {
   final int price;
   final int sold;
   final int quantity;
-  final CommandInterface? command;
+  final CommandInterface? deleteCommand;
+  final CommandInterface? editCommand;
 
   const ShopItem({
     super.key,
@@ -30,14 +31,15 @@ class ShopItem extends StatelessWidget {
     required this.rating,
     required this.price,
     required this.sold,
-    this.command,
+    this.deleteCommand,
+    this.editCommand
   });
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return GestureDetector(
-      onTap: command?.execute ?? () {},
+      onTap: () {},
       child: Container(
         margin: const EdgeInsets.only(bottom: 10),
         padding: const EdgeInsets.all(10),
@@ -161,8 +163,7 @@ class ShopItem extends StatelessWidget {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(EditProduct.routeName);
+                          editCommand?.execute();
                         },
                         child: const Icon(
                           Icons.edit,
@@ -192,6 +193,7 @@ class ShopItem extends StatelessWidget {
                                   TextButton(
                                     onPressed: () {
                                       Navigator.of(context).pop();
+                                      deleteCommand?.execute();
                                     },
                                     child: const Text('Delete'),
                                   ),
