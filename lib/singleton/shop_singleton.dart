@@ -1,5 +1,4 @@
 import 'package:pcplus/models/items/item_repo.dart';
-import 'package:pcplus/models/users/user_repo.dart';
 import 'package:pcplus/observers/publisher_interface.dart';
 import 'package:pcplus/services/image_storage_service.dart';
 import 'package:pcplus/singleton/user_singleton.dart';

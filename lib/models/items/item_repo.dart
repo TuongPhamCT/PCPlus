@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pcplus/models/items/item_model.dart';
-import 'package:pcplus/services/utility.dart';
 
 class ItemRepository {
   final FirebaseFirestore _storage = FirebaseFirestore.instance;
@@ -71,10 +70,13 @@ class ItemRepository {
         await _storage.collection(ItemModel.collectionName)
             .where('sellerID', isEqualTo: sellerID)
             .get();
+
+       print("Số lượng tài liệu: ${querySnapshot.docs.length}");
       final items = querySnapshot
           .docs
           .map((doc) => ItemModel.fromJson(doc.id, doc.data() as Map<String, dynamic>))
           .toList();
+          
       return items;
     } catch (e) {
       return [];

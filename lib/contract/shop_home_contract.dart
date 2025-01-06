@@ -1,4 +1,3 @@
-import '../objects/suggest_item_data.dart';
 
 abstract class ShopHomeContract {
   void onLoadDataSucceeded();

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:gap/gap.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 import 'package:pcplus/views/delivery/delivery_infor.dart';
@@ -169,7 +167,7 @@ class _BillProductState extends State<BillProduct> {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
-                return PaymentProductItem();
+                return const PaymentProductItem();
               },
             ),
             const Gap(10),

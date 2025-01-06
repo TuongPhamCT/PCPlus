@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:gap/gap.dart';
 import 'package:pcplus/config/asset_helper.dart';
@@ -101,8 +99,8 @@ class _ProfileScreenState extends State<ProfileScreen>
             ? UtilWidgets.getLoadingWidget()
             : Container(
                 height: size.height - 140,
-                decoration: BoxDecoration(
-                  image: const DecorationImage(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
                     image: AssetImage(AssetHelper.profileBg),
                     fit: BoxFit.fill,
                   ),

@@ -58,7 +58,7 @@ class _NotificationScreenState extends State<NotificationScreen> implements Noti
         child: ListView.builder(
           itemCount: 10,
           itemBuilder: (context, index) {
-            return ConfirmNoti();
+            return const ConfirmNoti();
           },
         ),
       ),

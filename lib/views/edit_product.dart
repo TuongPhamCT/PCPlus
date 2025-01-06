@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pcplus/config/asset_helper.dart';
 import 'package:pcplus/contract/edit_product_contract.dart';
 import 'package:pcplus/presenter/edit_product_presenter.dart';
 import 'package:pcplus/singleton/shop_singleton.dart';
@@ -19,10 +20,11 @@ class EditProduct extends StatefulWidget {
   State<EditProduct> createState() => _EditProductState();
 }
 
-class _EditProductState extends State<EditProduct> implements EditProductContract {
+class _EditProductState extends State<EditProduct>
+    implements EditProductContract {
   final _formKey = GlobalKey<FormState>();
   EditProductPresenter? _presenter;
-  List<ImageData> _images = [];
+  final List<ImageData> _images = [];
   final ImagePicker _picker = ImagePicker();
 
   final ShopSingleton _shopSingleton = ShopSingleton.getInstance();
@@ -43,10 +45,7 @@ class _EditProductState extends State<EditProduct> implements EditProductContrac
     _priceController.text = itemModel.price.toString();
     _amountController.text = itemModel.stock.toString();
     for (String url in itemModel.reviewImages!) {
-      ImageData imageData = ImageData(
-          path: url,
-          isNew: false
-      );
+      ImageData imageData = ImageData(path: url, isNew: false);
       _images.add(imageData);
     }
 
@@ -59,10 +58,7 @@ class _EditProductState extends State<EditProduct> implements EditProductContrac
     if (pickedFile != null) {
       setState(() {
         ImageData imageData = ImageData(
-          path: pickedFile.path,
-          isNew: true,
-          file: File(pickedFile.path)
-        );
+            path: pickedFile.path, isNew: true, file: File(pickedFile.path));
         _images.add(imageData);
       });
     }
@@ -94,7 +90,11 @@ class _EditProductState extends State<EditProduct> implements EditProductContrac
         ),
         centerTitle: true,
       ),
-      body: Padding(
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage(AssetHelper.shopBg), fit: BoxFit.cover),
+        ),
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
@@ -126,7 +126,7 @@ class _EditProductState extends State<EditProduct> implements EditProductContrac
                     return null;
                   },
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 // Mô tả
                 TextFormField(
                   onTapOutside: (event) {
@@ -146,7 +146,7 @@ class _EditProductState extends State<EditProduct> implements EditProductContrac
                   maxLines: 3,
                   minLines: 1,
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 // Giới thiệu chi tiết
                 TextFormField(
                   onTapOutside: (event) {
@@ -166,7 +166,7 @@ class _EditProductState extends State<EditProduct> implements EditProductContrac
                   maxLines: 200,
                   minLines: 1,
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 // Giá
                 TextFormField(
                   onTapOutside: (event) {
@@ -185,7 +185,7 @@ class _EditProductState extends State<EditProduct> implements EditProductContrac
                   ),
                   keyboardType: TextInputType.number,
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 // Số lượng
                 TextFormField(
                   onTapOutside: (event) {
@@ -204,7 +204,7 @@ class _EditProductState extends State<EditProduct> implements EditProductContrac
                   ),
                   keyboardType: TextInputType.number,
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 // Ảnh minh hoạ
                 Text(
                   "Ảnh minh hoạ:",
@@ -213,8 +213,8 @@ class _EditProductState extends State<EditProduct> implements EditProductContrac
                 const SizedBox(height: 8),
                 GridView.builder(
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: 400 / 200,
                     crossAxisSpacing: 8,
@@ -226,20 +226,17 @@ class _EditProductState extends State<EditProduct> implements EditProductContrac
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(8),
-                          child:
-                            _images[index].isNew ?
-                              Image.network(
-                                _images[index].path,
-                                width: double.infinity,
-                                height: double.infinity,
-                                fit: BoxFit.cover
-                              )
-                              :
-                              Image.file(_images[index].file!,
-                                width: double.infinity,
-                                height: double.infinity,
-                                fit: BoxFit.cover,
-                              ),
+                          child: _images[index].isNew == false
+                              ? Image.network(_images[index].path,
+                                  width: double.infinity,
+                                  height: double.infinity,
+                                  fit: BoxFit.cover)
+                              : Image.file(
+                                  _images[index].file!,
+                                  width: double.infinity,
+                                  height: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
                         ),
                         Positioned(
                           top: 8,
@@ -247,11 +244,11 @@ class _EditProductState extends State<EditProduct> implements EditProductContrac
                           child: GestureDetector(
                             onTap: () => _removeImage(index),
                             child: Container(
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 color: Colors.red,
                                 shape: BoxShape.circle,
                               ),
-                              child: Icon(
+                              child: const Icon(
                                 Icons.close,
                                 color: Colors.white,
                                 size: 20,
@@ -276,17 +273,17 @@ class _EditProductState extends State<EditProduct> implements EditProductContrac
                     if (_formKey.currentState?.validate() ?? false) {
                       // Xử lý logic thêm sản phẩm tại đây
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Sản phẩm đã được thêm')),
+                        const SnackBar(content: Text('Sản phẩm đã được thêm')),
                       );
                     }
                   },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 50),
+                    backgroundColor: Palette.main1,
+                  ),
                   child: Text(
                     "CẬP NHẬT",
                     style: TextDecor.robo18Semi,
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: Size(double.infinity, 50),
-                    backgroundColor: Palette.main1,
                   ),
                 ),
                 const Gap(10),
@@ -295,17 +292,17 @@ class _EditProductState extends State<EditProduct> implements EditProductContrac
                     if (_formKey.currentState?.validate() ?? false) {
                       // Xử lý logic thêm sản phẩm tại đây
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Sản phẩm đã được thêm')),
+                        const SnackBar(content: Text('Sản phẩm đã được thêm')),
                       );
                     }
                   },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 50),
+                    backgroundColor: Colors.orangeAccent,
+                  ),
                   child: Text(
                     "HUỶ",
                     style: TextDecor.robo18Semi,
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: Size(double.infinity, 50),
-                    backgroundColor: Colors.orangeAccent,
                   ),
                 ),
                 const Gap(16),

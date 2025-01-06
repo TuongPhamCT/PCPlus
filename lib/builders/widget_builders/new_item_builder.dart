@@ -1,10 +1,7 @@
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:image/image.dart';
 import 'package:pcplus/builders/widget_builders/widget_builder_interface.dart';
 import 'package:pcplus/commands/command_interface.dart';
-import 'package:pcplus/models/interactions/interaction_repo.dart';
 import 'package:pcplus/models/items/item_model.dart';
-import 'package:pcplus/models/users/user_repo.dart';
 import 'package:pcplus/views/widgets/listItem/new_item.dart';
 
 import '../../models/users/user_model.dart';
