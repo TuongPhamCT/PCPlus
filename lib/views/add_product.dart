@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pcplus/contract/add_product_contract.dart';
+import 'package:pcplus/services/utility.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
+import 'package:pcplus/views/widgets/util_widgets.dart';
 
 class AddProduct extends StatefulWidget {
   const AddProduct({super.key});
@@ -24,10 +26,11 @@ class _AddProductState extends State<AddProduct> implements AddProductContract {
 
   // Hàm chọn ảnh từ thiết bị
   Future<void> _pickImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
         _images.add(File(pickedFile.path));
+
       });
     }
   }
@@ -257,5 +260,10 @@ class _AddProductState extends State<AddProduct> implements AddProductContract {
   @override
   void onWaitingProgressBar() {
     // TODO: implement onWaitingProgressBar
+  }
+
+  @override
+  void onAddFailed(String message) {
+    UtilWidgets.createSnackBar(context, message);
   }
 }
