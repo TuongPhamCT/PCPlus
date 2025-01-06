@@ -293,6 +293,14 @@ class _AddProductState extends State<AddProduct> implements AddProductContract {
 
   @override
   void onAddSucceeded() {
-    Navigator.pop(context);
+    UtilWidgets.createSnackBar(context, "Thêm sản phẩm thành công");
+    setState(() {
+      _nameController.text = "";
+      _amountController.text = "";
+      _priceController.text = "";
+      _detailController.text = "";
+      _descriptionController.text = "";
+      _images.clear();
+    });
   }
 }

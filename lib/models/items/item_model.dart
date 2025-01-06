@@ -21,7 +21,7 @@ class ItemModel {
 
   ItemModel(
     {
-      required this.itemID,
+      this.itemID,
       required this.name,
       required this.itemType,
       required this.sellerID,
@@ -55,12 +55,12 @@ class ItemModel {
     'colors': colors
   };
 
-  static ItemModel fromJson(Map<String, dynamic> json) {
+  static ItemModel fromJson(String key, Map<String, dynamic> json) {
     final reviewImagesData = json['reviewImages'] as List?;
     final colorsData = json['colors'] as List?;
 
     return ItemModel(
-      itemID: json['orderID'] as String,
+      itemID: key,
       name: json['name'] as String,
       sellerID: json['sellerID'] as String,
       itemType: json['itemType'] as String,
