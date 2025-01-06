@@ -51,6 +51,7 @@ class _DetailProductState extends State<DetailProduct> implements DetailProductC
   int soluong = 1;
 
   // Shop data
+  String shopAvatar = "";
   String shopName = "King Shop";
   String shopPhone = "0123456789";
   String location = "TP. Ho Chi Minh";
@@ -74,6 +75,7 @@ class _DetailProductState extends State<DetailProduct> implements DetailProductC
     rating = _itemSingleton.itemData!.rating ?? 0;
     shopName = _itemSingleton.itemData!.shop!.getShopName();
     location = _itemSingleton.itemData!.shop!.getLocation();
+    shopAvatar = _itemSingleton.itemData!.shop!.avatarUrl ?? "";
     productsCount = _itemSingleton.shopProductsCount;
     reviews = _itemSingleton.reviewsData;
     images = _itemSingleton.itemData!.product!.reviewImages!;
@@ -411,110 +413,119 @@ class _DetailProductState extends State<DetailProduct> implements DetailProductC
                     ],
                   ),
                   const Gap(20),
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Palette.borderBackBtn),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: 110,
-                          width: 110,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(80),
-                            image: const DecorationImage(
-                              image: AssetImage(AssetHelper.shopAvt),
-                              fit: BoxFit.cover,
+                  if (!isShop)
+                    Container(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Palette.borderBackBtn),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 110,
+                            width: 110,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(80),
+                              image:
+                                shopAvatar.isEmpty ?
+                                  const DecorationImage(
+                                    image: AssetImage(AssetHelper.shopAvt),
+                                    fit: BoxFit.cover,
+                                  )
+                                :
+                                  DecorationImage(
+                                    image: NetworkImage(shopAvatar),
+                                    fit: BoxFit.cover,
+                                  ),
                             ),
                           ),
-                        ),
-                        const Gap(16),
-                        SizedBox(
-                          height: 110,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                width: size.width - 180,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      shopName,
-                                      style: TextDecor.robo18Semi,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        //Go to Shop view
-                                        _presenter?.handleViewShop();
-                                      },
-                                      child: Container(
-                                        height: 24,
-                                        width: 85,
-                                        alignment: Alignment.center,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: Colors.red,
+                          const Gap(16),
+                          SizedBox(
+                            height: 110,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(
+                                  width: size.width - 180,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        shopName,
+                                        style: TextDecor.robo18Semi,
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          //Go to Shop view
+                                          _presenter?.handleViewShop();
+                                        },
+                                        child: Container(
+                                          height: 24,
+                                          width: 85,
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.red,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(5),
                                           ),
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                        ),
-                                        child: Text(
-                                          'View Shop',
-                                          style: TextDecor.robo14.copyWith(
-                                            color: Colors.red,
+                                          child: Text(
+                                            'View Shop',
+                                            style: TextDecor.robo14.copyWith(
+                                              color: Colors.red,
+                                            ),
                                           ),
                                         ),
                                       ),
+                                    ],
+                                  ),
+                                ),
+                                Text(
+                                  shopPhone,
+                                  style: TextDecor.robo16,
+                                ),
+                                Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.location_on,
+                                      color: Colors.black,
+                                      size: 20,
+                                    ),
+                                    Text(
+                                      location,
+                                      style: TextDecor.robo16,
                                     ),
                                   ],
                                 ),
-                              ),
-                              Text(
-                                shopPhone,
-                                style: TextDecor.robo16,
-                              ),
-                              Row(
-                                children: [
-                                  const Icon(
-                                    Icons.location_on,
-                                    color: Colors.black,
-                                    size: 20,
-                                  ),
-                                  Text(
-                                    location,
-                                    style: TextDecor.robo16,
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text(
-                                    "$productsCount",
-                                    style: TextDecor.robo16.copyWith(
-                                      color: Colors.red,
+                                Row(
+                                  children: [
+                                    Text(
+                                      "$productsCount",
+                                      style: TextDecor.robo16.copyWith(
+                                        color: Colors.red,
+                                      ),
                                     ),
-                                  ),
-                                  const Gap(5),
-                                  Text(
-                                    'Products',
-                                    style: TextDecor.robo16,
-                                  ),
-                                ],
-                              ),
-                            ],
+                                    const Gap(5),
+                                    Text(
+                                      'Products',
+                                      style: TextDecor.robo16,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  const Gap(20),
+                  if (!isShop)
+                    const Gap(20),
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: Container(
