@@ -13,6 +13,7 @@ import 'package:pcplus/views/widgets/profile/profile_input.dart';
 import 'package:pcplus/views/widgets/util_widgets.dart';
 
 import '../presenter/login_presenter.dart';
+import '../singleton/shop_singleton.dart';
 import '../singleton/user_singleton.dart';
 import 'home.dart';
 

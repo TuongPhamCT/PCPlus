@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pcplus/services/authentication_service.dart';
 import 'package:pcplus/services/pref_service.dart';
+import 'package:pcplus/singleton/shop_singleton.dart';
 import '../contract/login_contract.dart';
 import '../models/users/user_model.dart';
 import '../models/users/user_repo.dart';
@@ -12,6 +13,8 @@ class LoginPresenter {
   final AuthenticationService _authService = AuthenticationService();
   final UserRepository _userRepo = UserRepository();
   final PrefService _prefService = PrefService();
+  final UserSingleton _userSingleton = UserSingleton.getInstance();
+  final ShopSingleton _shopSingleton = ShopSingleton.getInstance();
 
   Future<void> login(String email, String password) async {
     try {
@@ -23,8 +26,11 @@ class LoginPresenter {
         return;
       }
       UserModel userData = await _userRepo.getUserById(userCredential.user!.uid);
-      UserSingleton.getInstance().loadUser(userData);
+      _userSingleton.loadUser(userData);
       await _prefService.saveUserData(userData: userData, password: password);
+      if (userData.isSeller!) {
+        _shopSingleton.changeShop(_userSingleton.currentUser!);
+      }
     } catch (e) {
       print(e);
       _view.onPopContext();
