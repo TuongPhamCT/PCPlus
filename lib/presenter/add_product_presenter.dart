@@ -56,7 +56,6 @@ class AddProductPresenter {
         price: price,
         status: ProductStatus.BUYABLE,
         stock: amount,
-        image: urls.first,
         reviewImages: urls,
         detail: detail,
         description: description,

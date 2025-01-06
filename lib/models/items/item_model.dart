@@ -6,7 +6,6 @@ class ItemModel {
   String? name;
   String? sellerID;
   String? itemType;
-  String? image;
   String? description;
   String? detail;
   DateTime? addDate;
@@ -31,12 +30,13 @@ class ItemModel {
       required this.price,
       required this.stock,
       required this.status,
-      required this.image,
       this.reviewImages,
       required this.colors,
       this.sold
     }
   );
+
+  String? get image => reviewImages?.first;
 
   Map<String, dynamic> toJson() => {
     'name': name,
@@ -49,7 +49,6 @@ class ItemModel {
     'stock': stock,
     'sold': sold,
     'status': status,
-    'image': image,
     'reviewImages': reviewImages,
     'colors': colors
   };
@@ -70,7 +69,6 @@ class ItemModel {
       stock: json['stock'] as int,
       sold: json['sold'] as int,
       status: json['status'] as String,
-      image: json['image'] as String,
       reviewImages: List.castFrom(reviewImagesData!),
       colors: List.castFrom(colorsData!),
     );
