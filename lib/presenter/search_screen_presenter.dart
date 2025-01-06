@@ -2,6 +2,7 @@ import 'package:pcplus/builders/object_builders/list_item_data_builder.dart';
 import 'package:pcplus/builders/object_builders/list_object_builder_director.dart';
 import 'package:pcplus/const/item_filter.dart';
 import 'package:pcplus/contract/search_screen_contract.dart';
+import 'package:pcplus/models/items/item_repo.dart';
 import 'package:pcplus/objects/suggest_item_data.dart';
 import 'package:pcplus/services/test_tool.dart';
 import 'package:pcplus/singleton/view_item_singleton.dart';
@@ -14,7 +15,7 @@ class SearchScreenPresenter {
   SearchScreenPresenter(this._view);
 
   final ViewItemSingleton _itemSingleton = ViewItemSingleton.getInstance();
-
+  final ItemRepository _itemRepo = ItemRepository();
   final ListItemDataBuilder builder = ListItemDataBuilder();
 
   List<ItemData> searchItemData = [];
@@ -39,8 +40,7 @@ class SearchScreenPresenter {
 
     ListObjectBuilderDirector director = ListObjectBuilderDirector();
 
-    TestTool testTool = TestTool();
-    searchResults = testTool.getRandomItemModelList(30);
+    searchResults = await _itemRepo.getItemsBySearchInput(input);
 
     await director.makeListItemData(builder: builder, items: searchResults, shops: shops);
     searchItemData = builder.createList().cast();
