@@ -9,8 +9,15 @@ class CartShoppingScreenPresenter {
 
   final CartSingleton _cartSingleton = CartSingleton.getInstance();
 
+  Future<void> getData() async {
+    _cartSingleton.deselectAllItemsInCart();
+    _cartSingleton.resetAmount();
+    await _cartSingleton.fetchData();
+    _view.onLoadDataSucceeded();
+  }
+
   void handleDelete(int index) {
-    _cartSingleton.inCartItems.removeAt(index);
+    _cartSingleton.removeInCartItem(_cartSingleton.inCartItems[index]);
     _view.onDeleteItem();
   }
 

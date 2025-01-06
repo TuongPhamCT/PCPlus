@@ -120,9 +120,6 @@ class UserInformationPresenter {
       _userRepo.addUserToFirestore(user);
       await _prefService.saveUserData(userData: user, password: password);
       UserSingleton.getInstance().loadUser(user);
-      if (user.isSeller!) {
-        ShopSingleton.getInstance().changeShop(user);
-      }
       _view.onPopContext();
       _view.onConfirmSucceeded();
     } catch (e) {
