@@ -60,4 +60,8 @@ class ShopHomePresenter implements SubscriberInterface {
     _view.onPopContext();
     _view.onItemPressed();
   }
+
+  void handleBack() {
+    _view.onBack();
+  }
 }

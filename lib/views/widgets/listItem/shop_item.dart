@@ -18,6 +18,7 @@ class ShopItem extends StatelessWidget {
   final CommandInterface? deleteCommand;
   final CommandInterface? editCommand;
   final CommandInterface? pressedCommand;
+  final bool isShop;
 
   const ShopItem({
     super.key,
@@ -32,6 +33,7 @@ class ShopItem extends StatelessWidget {
     this.deleteCommand,
     this.editCommand,
     this.pressedCommand,
+    required this.isShop
   });
 
   @override
@@ -157,64 +159,65 @@ class ShopItem extends StatelessWidget {
                 ],
               ),
             ),
-            Expanded(
-              child: Container(
-                alignment: Alignment.centerRight,
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          editCommand?.execute();
-                        },
-                        child: const Icon(
-                          Icons.edit,
-                          size: 30,
-                          color: Palette.primaryColor,
+            if (isShop)
+              Expanded(
+                child: Container(
+                  alignment: Alignment.centerRight,
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            editCommand?.execute();
+                          },
+                          child: const Icon(
+                            Icons.edit,
+                            size: 30,
+                            color: Palette.primaryColor,
+                          ),
                         ),
                       ),
-                    ),
-                    const Gap(10),
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: const Text('Delete Item'),
-                                content: const Text(
-                                    'Are you sure you want to delete this item?'),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text('Cancel'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                      deleteCommand?.execute();
-                                    },
-                                    child: const Text('Delete'),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        },
-                        child: const Icon(
-                          Icons.delete,
-                          size: 30,
-                          color: Palette.primaryColor,
+                      const Gap(10),
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text('Delete Item'),
+                                  content: const Text(
+                                      'Are you sure you want to delete this item?'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('Cancel'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        deleteCommand?.execute();
+                                      },
+                                      child: const Text('Delete'),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          child: const Icon(
+                            Icons.delete,
+                            size: 30,
+                            color: Palette.primaryColor,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
           ],
         ),
       ),

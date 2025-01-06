@@ -14,6 +14,7 @@ class ShopItemBuilder implements WidgetBuilderInterface {
   CommandInterface? _editCommand;
   CommandInterface? _pressedCommand;
   double? _rating = 4.5;
+  bool _isShop = false;
 
   void setProduct(ItemModel product) {
     _product = product;
@@ -39,6 +40,10 @@ class ShopItemBuilder implements WidgetBuilderInterface {
     _rating = rating;
   }
 
+  void setIsShop(bool value) {
+    _isShop = value;
+  }
+
   @override
   Widget? createWidget() {
     if (_product == null || _shop == null) {
@@ -56,6 +61,7 @@ class ShopItemBuilder implements WidgetBuilderInterface {
         pressedCommand: _pressedCommand,
         description: _product!.description!,
         quantity: _product!.stock!,
+        isShop: _isShop,
     );
   }
 
@@ -66,6 +72,7 @@ class ShopItemBuilder implements WidgetBuilderInterface {
     _rating = 4.5;
     _editCommand = null;
     _deleteCommand = null;
+    _isShop = false;
   }
 
 }
