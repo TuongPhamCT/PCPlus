@@ -20,6 +20,7 @@ class ShopSingleton {
 
   List<ItemModel> itemModels = [];
   List<ItemData> itemsData = [];
+  ItemData? editedItem;
 
   Future<void> initShopData() async {
     itemModels = await _itemRepository.getItemsBySeller(_userSingleton.currentUser!.userID!);
@@ -39,7 +40,24 @@ class ShopSingleton {
     }
   }
 
+  Future<void> addData(ItemModel itemModel) async {
+    itemModels.add(itemModel);
+    ItemData newData = ItemData(
+      shop: _userSingleton.currentUser,
+      product: itemModel,
+      rating: 0,
+    );
+    itemsData.add(newData);
+    _itemRepository.addItemToFirestore(itemModel);
+  }
+
   void updateData(ItemData data) {
     _itemRepository.updateItem(data.product!);
+  }
+
+  void deleteData(ItemData data) {
+    _itemRepository.deleteItemById(data.product!.itemID!);
+    itemsData.remove(data);
+    itemModels.remove(data.product!);
   }
 }

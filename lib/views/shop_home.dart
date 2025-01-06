@@ -11,6 +11,7 @@ import 'package:pcplus/views/add_product.dart';
 import 'package:pcplus/views/widgets/bottom/shop_bottom_bar.dart';
 import 'package:pcplus/views/widgets/listItem/shop_item.dart';
 import 'package:pcplus/views/widgets/listItem/suggest_item.dart';
+import 'package:pcplus/views/widgets/util_widgets.dart';
 
 import '../builders/widget_builders/shop_item_builder.dart';
 import '../builders/widget_builders/widget_builder_director.dart';
@@ -154,25 +155,24 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
               const Gap(20),
               Text('Danh mục sản phẩm', style: TextDecor.robo18Bold),
               const Gap(10),
-              ListView.builder(
-                shrinkWrap: true,
-                padding: EdgeInsets.zero,
-                physics: const NeverScrollableScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                itemCount: 1,
-                itemBuilder: (context, index) {
-                  return ShopItem(
-                      itemName: 'Tai nghe SONY 3',
-                      imagePath:
-                          'https://cdn.tgdd.vn/Files/2022/01/30/1413644/cac-thuong-hieu-tai-nghe-tot-va-duoc-ua-chuong-nha.jpg',
-                      description: 'Tai nghe hiện đại nhất',
-                      quantity: 10,
-                      location: 'Hồ Chí Minh Thu Duc, Linh Xuan',
-                      rating: 4.5,
-                      price: 576000,
-                      sold: 3);
-                },
-              ),
+              if (productWidgets.isEmpty)
+                UtilWidgets.getCenterTextWithContainer(
+                  width: size.width,
+                  height: size.height * 0.5,
+                  text: "Không có sản phẩm nào",
+                  color: Palette.primaryColor
+                )
+              else
+                ListView.builder(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.zero,
+                  physics: const NeverScrollableScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  itemCount: 1,
+                  itemBuilder: (context, index) {
+                    return productWidgets[index];
+                  },
+                ),
             ],
           ),
         ),

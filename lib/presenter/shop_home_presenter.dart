@@ -26,10 +26,12 @@ class ShopHomePresenter {
   }
 
   Future<void> handleItemEdit(ItemData itemData) async {
+    _shopSingleton.editedItem = itemData;
     _view.onItemEdit();
   }
 
   Future<void> handleItemDelete(ItemData itemData) async {
+    _shopSingleton.deleteData(itemData);
     _view.onItemDelete();
   }
 }
