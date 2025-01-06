@@ -4,9 +4,11 @@ import 'package:pcplus/config/asset_helper.dart';
 import 'package:pcplus/models/users/user_model.dart';
 import 'package:pcplus/services/authentication_service.dart';
 import 'package:pcplus/services/pref_service.dart';
+import 'package:pcplus/singleton/user_singleton.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/views/home.dart';
 import 'package:pcplus/views/login.dart';
+import 'package:pcplus/views/shop_home.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -57,13 +59,19 @@ class _SplashScreenState extends State<SplashScreen>
     UserCredential? userCredential = await _auth.signInWithEmailAndPassword(loggedUser.email!, password);
     if(userCredential != null) {
       loginSucceeded = true;
+      UserSingleton.getInstance().currentUser = loggedUser;
     }
   }
 
   // Hàm chuyển sang màn hình Login
   void _navigateToHome() {
     if (loginSucceeded) {
-      Navigator.of(context).pushNamed(HomeScreen.routeName);
+      if (UserSingleton.getInstance().isShop()) {
+        Navigator.of(context).pushNamed(ShopHome.routeName);
+      } else {
+        Navigator.of(context).pushNamed(HomeScreen.routeName);
+      }
+
     } else {
       Navigator.of(context).pushNamed(LoginScreen.routeName);
     }
