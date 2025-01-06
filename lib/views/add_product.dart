@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pcplus/contract/add_product_contract.dart';
+import 'package:pcplus/presenter/add_product_presenter.dart';
 import 'package:pcplus/services/utility.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
@@ -18,11 +19,24 @@ class AddProduct extends StatefulWidget {
 }
 
 class _AddProductState extends State<AddProduct> implements AddProductContract {
-  final _formKey = GlobalKey<FormState>();
+  AddProductPresenter? _presenter;
 
+  final _formKey = GlobalKey<FormState>();
 
   List<File> _images = [];
   final ImagePicker _picker = ImagePicker();
+
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _detailController = TextEditingController();
+  final TextEditingController _priceController = TextEditingController();
+  final TextEditingController _amountController = TextEditingController();
+
+  @override
+  void initState() {
+    _presenter = AddProductPresenter(this);
+    super.initState();
+  }
 
   // Hàm chọn ảnh từ thiết bị
   Future<void> _pickImage() async {
@@ -84,6 +98,7 @@ class _AddProductState extends State<AddProduct> implements AddProductContract {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
+                  controller: _nameController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Vui lòng nhập tên sản phẩm';
@@ -97,6 +112,7 @@ class _AddProductState extends State<AddProduct> implements AddProductContract {
                   onTapOutside: (event) {
                     FocusScope.of(context).unfocus();
                   },
+                  controller: _descriptionController,
                   decoration: InputDecoration(
                     labelText: "Mô tả",
                     labelStyle: TextDecor.robo16,
@@ -110,12 +126,13 @@ class _AddProductState extends State<AddProduct> implements AddProductContract {
                   maxLines: 3,
                   minLines: 1,
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 // Giới thiệu chi tiết
                 TextFormField(
                   onTapOutside: (event) {
                     FocusScope.of(context).unfocus();
                   },
+                  controller: _detailController,
                   decoration: InputDecoration(
                     labelText: "Giới thiệu chi tiết",
                     labelStyle: TextDecor.robo16,
@@ -135,6 +152,7 @@ class _AddProductState extends State<AddProduct> implements AddProductContract {
                   onTapOutside: (event) {
                     FocusScope.of(context).unfocus();
                   },
+                  controller: _priceController,
                   decoration: InputDecoration(
                     labelText: "Giá",
                     labelStyle: TextDecor.robo16,
@@ -153,6 +171,7 @@ class _AddProductState extends State<AddProduct> implements AddProductContract {
                   onTapOutside: (event) {
                     FocusScope.of(context).unfocus();
                   },
+                  controller: _amountController,
                   decoration: InputDecoration(
                     labelText: "Số lượng",
                     labelStyle: TextDecor.robo16,
@@ -228,18 +247,23 @@ class _AddProductState extends State<AddProduct> implements AddProductContract {
                   onPressed: () {
                     if (_formKey.currentState?.validate() ?? false) {
                       // Xử lý logic thêm sản phẩm tại đây
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Sản phẩm đã được thêm')),
+                      _presenter?.handleAddProduct(
+                          name: _nameController.text.trim(),
+                          description: _descriptionController.text.trim(),
+                          detail: _detailController.text.trim(),
+                          price: int.parse(_priceController.text.trim()),
+                          amount: int.parse(_amountController.text.trim()),
+                          images: _images
                       );
                     }
                   },
-                  child: Text(
-                    "Thêm sản phẩm",
-                    style: TextDecor.robo18Semi,
-                  ),
                   style: ElevatedButton.styleFrom(
                     minimumSize: Size(double.infinity, 50),
                     backgroundColor: Palette.main1,
+                  ),
+                  child: Text(
+                    "Thêm sản phẩm",
+                    style: TextDecor.robo18Semi,
                   ),
                 ),
                 const Gap(16),
@@ -253,16 +277,21 @@ class _AddProductState extends State<AddProduct> implements AddProductContract {
 
   @override
   void onPopContext() {
-    // TODO: implement onPopContext
+    Navigator.of(context, rootNavigator: true).pop();
   }
 
   @override
   void onWaitingProgressBar() {
-    // TODO: implement onWaitingProgressBar
+    UtilWidgets.createLoadingWidget(context);
   }
 
   @override
   void onAddFailed(String message) {
     UtilWidgets.createSnackBar(context, message);
+  }
+
+  @override
+  void onAddSucceeded() {
+    Navigator.pop(context);
   }
 }

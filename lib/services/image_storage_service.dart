@@ -55,4 +55,5 @@ class ImageStorageService {
 
 abstract class StorageFolderNames {
   static const String AVATARS = "avatars";
+  static const String PRODUCTS = "products";
 }
