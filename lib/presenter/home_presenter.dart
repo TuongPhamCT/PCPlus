@@ -8,6 +8,7 @@ import 'package:pcplus/models/users/user_model.dart';
 import 'package:pcplus/objects/suggest_item_data.dart';
 import 'package:pcplus/services/test_tool.dart';
 import 'package:pcplus/singleton/search_singleton.dart';
+import 'package:pcplus/singleton/user_singleton.dart';
 import 'package:pcplus/singleton/view_item_singleton.dart';
 
 class HomePresenter {
@@ -19,6 +20,7 @@ class HomePresenter {
   //final AuthenticationService _auth = AuthenticationService();
   final SearchSingleton _searchSingleton = SearchSingleton.getInstance();
   final ViewItemSingleton _itemSingleton = ViewItemSingleton.getInstance();
+  final UserSingleton _userSingleton = UserSingleton.getInstance();
 
   static const MAX_NEWEST_ITEMS = 10;
   static const MAX_RECOMMENDED_ITEMS = 10;

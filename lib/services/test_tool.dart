@@ -4,6 +4,8 @@ import 'package:pcplus/models/items/item_model.dart';
 import 'package:pcplus/services/random_tool.dart';
 
 import '../const/product_status.dart';
+import '../models/ratings/rating_model.dart';
+import '../models/ratings/rating_repo.dart';
 
 class TestTool {
   final RandomTool randomTool = RandomTool();
@@ -197,6 +199,19 @@ class TestTool {
       result.add(getRandomItemModel());
     }
     return result;
+  }
+
+  void createRandomRating() {
+    final RatingRepository ratingRepo = RatingRepository();
+    ratingRepo.addRatingToFirestore(
+        "j4cMBVy1v4GmJYUx6rjj",
+        RatingModel(
+            userID: "qON6WVX4u3c3TqvHMjbuwBFhwmF3",
+            itemID: "j4cMBVy1v4GmJYUx6rjj",
+            rating: 4.5,
+            date: DateTime.now()
+        )
+    );
   }
 
   Future<void> waitRandomDuration(

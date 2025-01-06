@@ -59,7 +59,7 @@ class _SplashScreenState extends State<SplashScreen>
     UserCredential? userCredential = await _auth.signInWithEmailAndPassword(loggedUser.email!, password);
     if(userCredential != null) {
       loginSucceeded = true;
-      UserSingleton.getInstance().currentUser = loggedUser;
+      UserSingleton.getInstance().loadUser(loggedUser);
     }
   }
 

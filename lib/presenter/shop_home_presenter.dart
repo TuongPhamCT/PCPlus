@@ -1,6 +1,7 @@
 import 'package:pcplus/contract/shop_home_contract.dart';
 import 'package:pcplus/observers/subscriber_interface.dart';
 import 'package:pcplus/singleton/shop_singleton.dart';
+import 'package:pcplus/singleton/user_singleton.dart';
 import 'package:pcplus/singleton/view_item_singleton.dart';
 import '../models/items/item_model.dart';
 import '../objects/suggest_item_data.dart';
@@ -13,12 +14,17 @@ class ShopHomePresenter implements SubscriberInterface {
 
   final ShopSingleton _shopSingleton = ShopSingleton.getInstance();
   final ViewItemSingleton _itemSingleton = ViewItemSingleton.getInstance();
+  final UserSingleton _userSingleton = UserSingleton.getInstance();
 
   List<ItemModel> itemModels = [];
   List<ItemData> itemsData = [];
 
   Future<void> getData() async {
-    await _shopSingleton.initShopData();
+    if (_userSingleton.firstEnter) {
+      _shopSingleton.changeShop(_userSingleton.currentUser!);
+      await _shopSingleton.initShopData();
+      _userSingleton.firstEnter = false;
+    }
 
     itemModels = _shopSingleton.itemModels;
     itemsData = _shopSingleton.itemsData;

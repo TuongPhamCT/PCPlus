@@ -15,6 +15,7 @@ import 'package:pcplus/themes/text_decor.dart';
 import 'package:pcplus/views/bill/bill_product.dart';
 
 import '../../objects/review_data.dart';
+import '../shop_home.dart';
 import '../widgets/util_widgets.dart';
 
 class DetailProduct extends StatefulWidget {
@@ -1126,7 +1127,7 @@ class _DetailProductState extends State<DetailProduct> implements DetailProductC
 
   @override
   void onViewShop() {
-    // TODO: implement onViewShop
+    Navigator.of(context).pushNamed(ShopHome.routeName);
   }
 
   @override
