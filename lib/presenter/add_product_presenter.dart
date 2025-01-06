@@ -29,6 +29,11 @@ class AddProductPresenter {
   }) async {
     _view.onWaitingProgressBar();
 
+    if (images.isEmpty) {
+      _view.onAddFailed("Hãy chọn ảnh cho sản phẩm");
+      return;
+    }
+
     List<String> urls = [];
 
     for (File image in images) {
@@ -43,7 +48,6 @@ class AddProductPresenter {
     }
 
     ItemModel model = ItemModel(
-        itemID: await _itemRepository.generateID(),
         name: name,
         itemType: "Product",
         sellerID: _userSingleton.currentUser!.userID,

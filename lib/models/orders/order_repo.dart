@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pcplus/models/orders/order_model.dart';
+
+import '../../services/utility.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 
 class OrderRepository {
@@ -27,6 +29,19 @@ class OrderRepository {
     return isSuccess;
   }
 
+  Future<List<OrderModel>> getAllOrders() async {
+    try {
+      final QuerySnapshot querySnapshot = await _storage.collection(OrderModel.collectionName).get();
+      final orders = querySnapshot
+          .docs
+          .map((doc) => OrderModel.fromJson(doc as Map<String, dynamic>))
+          .toList();
+      return orders;
+    } catch (e) {
+      return [];
+    }
+  }
+
   Future<List<OrderModel>> getAllOrdersByUserID(String id) async {
     try {
       final QuerySnapshot querySnapshot = await _storage.collection(OrderModel.collectionName)
@@ -39,5 +54,23 @@ class OrderRepository {
     } catch (e) {
       return [];
     }
+  }
+
+  Future<String?> generateID() async {
+    final List<OrderModel> orders = await getAllOrders();
+    const prefix = "PCP";
+    if (orders.isEmpty) {
+      return "${prefix}0000000001";
+    }
+
+    int maxIndex = 0;
+    for (OrderModel order in orders) {
+      int index = int.parse(Utility.extractDigits(order.orderID!));
+      if (index > maxIndex) {
+        maxIndex = index;
+      }
+    }
+
+    return "$prefix${(maxIndex + 1).toString().padLeft(10, '0')}";
   }
 }
