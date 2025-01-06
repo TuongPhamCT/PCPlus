@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pcplus/contract/edit_product_contract.dart';
+import 'package:pcplus/presenter/edit_product_presenter.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 
@@ -14,10 +16,17 @@ class EditProduct extends StatefulWidget {
   State<EditProduct> createState() => _EditProductState();
 }
 
-class _EditProductState extends State<EditProduct> {
+class _EditProductState extends State<EditProduct> implements EditProductContract {
   final _formKey = GlobalKey<FormState>();
+  EditProductPresenter? _presenter;
   List<File> _images = [];
   final ImagePicker _picker = ImagePicker();
+
+  @override
+  void initState() {
+    _presenter = EditProductPresenter(this);
+    super.initState();
+  }
 
   // Hàm chọn ảnh từ thiết bị
   Future<void> _pickImage() async {
@@ -263,5 +272,20 @@ class _EditProductState extends State<EditProduct> {
         ),
       ),
     );
+  }
+
+  @override
+  void onLoadDataSucceeded() {
+    // TODO: implement onLoadDataSucceeded
+  }
+
+  @override
+  void onPopContext() {
+    // TODO: implement onPopContext
+  }
+
+  @override
+  void onWaitingProgressBar() {
+    // TODO: implement onWaitingProgressBar
   }
 }
