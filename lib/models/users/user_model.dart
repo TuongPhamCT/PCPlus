@@ -13,8 +13,6 @@ class UserModel {
   bool? isSeller;
   String? avatarUrl;
   int? money = 0;
-  String? location;
-  String? shopName;
   Map<String, Object?>? shopInfo = {};
 
   static String collectionName = 'Users';
