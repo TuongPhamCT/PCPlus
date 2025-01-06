@@ -116,7 +116,7 @@ class ShopItem extends StatelessWidget {
                     children: [
                       const Icon(Icons.star, size: 18, color: Colors.amber),
                       Text(
-                        "4.5",
+                        "$rating",
                         style: TextDecor.robo14,
                       ),
                       Expanded(child: Container()),
