@@ -65,5 +65,6 @@ class AddProductPresenter {
 
     await _shopSingleton.addData(model);
     _view.onPopContext();
+    _view.onAddSucceeded();
   }
 }
