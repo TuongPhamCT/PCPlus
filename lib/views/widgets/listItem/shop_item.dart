@@ -7,6 +7,7 @@ import 'package:pcplus/commands/command_interface.dart';
 import 'package:pcplus/services/utility.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
+import 'package:pcplus/views/edit_product.dart';
 
 class ShopItem extends StatelessWidget {
   final String itemName;
@@ -155,7 +156,10 @@ class ShopItem extends StatelessWidget {
                   children: [
                     Expanded(
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.of(context)
+                              .pushNamed(EditProduct.routeName);
+                        },
                         child: const Icon(
                           Icons.edit,
                           size: 30,
