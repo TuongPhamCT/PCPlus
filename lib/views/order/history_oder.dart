@@ -30,7 +30,7 @@ class _HistoryOrderState extends State<HistoryOrder> {
         ),
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         decoration: BoxDecoration(
           color: Colors.grey.withOpacity(0.5),
         ),
@@ -40,7 +40,7 @@ class _HistoryOrderState extends State<HistoryOrder> {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
-              return HistoryItem();
+              return const HistoryItem();
             },
           ),
         ),

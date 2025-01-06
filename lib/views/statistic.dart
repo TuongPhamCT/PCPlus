@@ -65,11 +65,11 @@ class _StatisticState extends State<Statistic> {
 
             Row(
               children: [
-                Text(
+                const Text(
                   "Thống kê theo: ",
                   style: TextStyle(fontSize: 16),
                 ),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 DropdownButton<String>(
                   value: _selectedStatisticType,
                   items: ["Tháng", "Năm"].map((String option) {
@@ -89,16 +89,16 @@ class _StatisticState extends State<Statistic> {
                 ),
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             // Dropdown chọn Tháng (chỉ hiển thị nếu chọn Tháng)
             if (_selectedStatisticType == "Tháng") ...[
               Row(
                 children: [
-                  Text(
+                  const Text(
                     "Chọn tháng: ",
                     style: TextStyle(fontSize: 16),
                   ),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   DropdownButton<String>(
                     value: _selectedMonth,
                     items: _months.map((String month) {
@@ -115,16 +115,16 @@ class _StatisticState extends State<Statistic> {
                   ),
                 ],
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
             ],
             // Dropdown chọn Năm
             Row(
               children: [
-                Text(
+                const Text(
                   "Chọn năm: ",
                   style: TextStyle(fontSize: 16),
                 ),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 DropdownButton<String>(
                   value: _selectedYear,
                   items: _years.map((String year) {
@@ -141,7 +141,7 @@ class _StatisticState extends State<Statistic> {
                 ),
               ],
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             // Biểu đồ cột
             Expanded(
               child: BarChart(
@@ -168,7 +168,7 @@ class _StatisticState extends State<Statistic> {
                 ),
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             // Chú thích
             Wrap(
               spacing: 8,
@@ -185,7 +185,7 @@ class _StatisticState extends State<Statistic> {
           ],
         ),
       ),
-      bottomNavigationBar: ShopBottomBar(currentIndex: 1),
+      bottomNavigationBar: const ShopBottomBar(currentIndex: 1),
     );
   }
 }

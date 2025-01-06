@@ -31,7 +31,7 @@ class _HistoryItemState extends State<HistoryItem> {
               const SizedBox(height: 10),
               TextField(
                 controller: reasonController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: "Nhập lý do...",
                 ),
@@ -126,7 +126,7 @@ class _HistoryItemState extends State<HistoryItem> {
                   ),
                 ),
                 const Gap(10),
-                Container(
+                SizedBox(
                   width: size.width - 180,
                   height: isShop ? 150 : 125,
                   child: Column(

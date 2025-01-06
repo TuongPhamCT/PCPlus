@@ -71,7 +71,7 @@ class _RatingItemState extends State<RatingItem> {
                   ),
                 ),
                 const Gap(10),
-                Container(
+                SizedBox(
                   width: size.width - 180,
                   height: 125,
                   child: Column(
@@ -146,7 +146,7 @@ class _RatingItemState extends State<RatingItem> {
                 FocusScope.of(context).unfocus();
               },
               decoration: InputDecoration(
-                contentPadding: EdgeInsets.all(8),
+                contentPadding: const EdgeInsets.all(8),
                 hintText: 'Nhập đánh giá của bạn',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),

@@ -41,7 +41,7 @@ class _DeliveryChoiceState extends State<DeliveryChoice> {
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             InkWell(

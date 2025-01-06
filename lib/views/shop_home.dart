@@ -3,15 +3,12 @@ import 'package:gap/gap.dart';
 import 'package:pcplus/commands/shop_home_command.dart';
 import 'package:pcplus/config/asset_helper.dart';
 import 'package:pcplus/contract/shop_home_contract.dart';
-import 'package:pcplus/observers/subscriber_interface.dart';
 import 'package:pcplus/presenter/shop_home_presenter.dart';
 import 'package:pcplus/singleton/user_singleton.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 import 'package:pcplus/views/add_product.dart';
 import 'package:pcplus/views/widgets/bottom/shop_bottom_bar.dart';
-import 'package:pcplus/views/widgets/listItem/shop_item.dart';
-import 'package:pcplus/views/widgets/listItem/suggest_item.dart';
 import 'package:pcplus/views/widgets/util_widgets.dart';
 
 import '../builders/widget_builders/shop_item_builder.dart';
@@ -79,7 +76,7 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
       body: Container(
         height: size.height,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage(AssetHelper.shopBg),
             fit: BoxFit.cover,

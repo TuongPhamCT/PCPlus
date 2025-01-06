@@ -31,7 +31,7 @@ class _RatingScreenState extends State<RatingScreen> {
         ),
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         decoration: BoxDecoration(
           color: Colors.grey.withOpacity(0.5),
         ),
@@ -41,7 +41,7 @@ class _RatingScreenState extends State<RatingScreen> {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
-              return RatingItem();
+              return const RatingItem();
             },
           ),
         ),

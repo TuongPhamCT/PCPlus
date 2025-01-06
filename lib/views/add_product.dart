@@ -5,7 +5,6 @@ import 'package:gap/gap.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pcplus/contract/add_product_contract.dart';
 import 'package:pcplus/presenter/add_product_presenter.dart';
-import 'package:pcplus/services/utility.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 import 'package:pcplus/views/widgets/util_widgets.dart';
@@ -23,7 +22,7 @@ class _AddProductState extends State<AddProduct> implements AddProductContract {
 
   final _formKey = GlobalKey<FormState>();
 
-  List<File> _images = [];
+  final List<File> _images = [];
   final ImagePicker _picker = ImagePicker();
 
   final TextEditingController _nameController = TextEditingController();
@@ -106,7 +105,7 @@ class _AddProductState extends State<AddProduct> implements AddProductContract {
                     return null;
                   },
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 // Mô tả
                 TextFormField(
                   onTapOutside: (event) {
@@ -146,7 +145,7 @@ class _AddProductState extends State<AddProduct> implements AddProductContract {
                   maxLines: 200,
                   minLines: 1,
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 // Giá
                 TextFormField(
                   onTapOutside: (event) {
@@ -165,7 +164,7 @@ class _AddProductState extends State<AddProduct> implements AddProductContract {
                   ),
                   keyboardType: TextInputType.number,
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 // Số lượng
                 TextFormField(
                   onTapOutside: (event) {
@@ -184,17 +183,17 @@ class _AddProductState extends State<AddProduct> implements AddProductContract {
                   ),
                   keyboardType: TextInputType.number,
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 // Ảnh minh hoạ
                 Text(
                   "Ảnh minh hoạ:",
                   style: TextDecor.robo16,
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 GridView.builder(
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     childAspectRatio: 400 / 200,
                     crossAxisSpacing: 8,
@@ -219,11 +218,11 @@ class _AddProductState extends State<AddProduct> implements AddProductContract {
                           child: GestureDetector(
                             onTap: () => _removeImage(index),
                             child: Container(
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 color: Colors.red,
                                 shape: BoxShape.circle,
                               ),
-                              child: Icon(
+                              child: const Icon(
                                 Icons.close,
                                 color: Colors.white,
                                 size: 20,
@@ -235,13 +234,13 @@ class _AddProductState extends State<AddProduct> implements AddProductContract {
                     );
                   },
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 OutlinedButton.icon(
                   onPressed: _pickImage,
-                  icon: Icon(Icons.add_photo_alternate),
-                  label: Text("Tải ảnh lên"),
+                  icon: const Icon(Icons.add_photo_alternate),
+                  label: const Text("Tải ảnh lên"),
                 ),
-                SizedBox(height: 32),
+                const SizedBox(height: 32),
                 // Nút thêm sản phẩm
                 ElevatedButton(
                   onPressed: () {
@@ -258,7 +257,7 @@ class _AddProductState extends State<AddProduct> implements AddProductContract {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    minimumSize: Size(double.infinity, 50),
+                    minimumSize: const Size(double.infinity, 50),
                     backgroundColor: Palette.main1,
                   ),
                   child: Text(

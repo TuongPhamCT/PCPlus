@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:gap/gap.dart';
-import 'package:pcplus/commands/command_interface.dart';
 import 'package:pcplus/config/asset_helper.dart';
 import 'package:pcplus/services/utility.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
-import 'package:pcplus/views/widgets/util_widgets.dart';
 
 class ReviewItem extends StatefulWidget {
   final double? rating;

@@ -66,20 +66,20 @@ class _DeliveryInforState extends State<DeliveryInfor> {
             children: [
               TextFormField(
                 controller: nameController,
-                decoration: InputDecoration(labelText: "Tên người nhận"),
+                decoration: const InputDecoration(labelText: "Tên người nhận"),
                 validator: (value) =>
                     value!.isEmpty ? "Vui lòng nhập tên" : null,
               ),
               TextFormField(
                 controller: phoneController,
-                decoration: InputDecoration(labelText: "Số điện thoại"),
+                decoration: const InputDecoration(labelText: "Số điện thoại"),
                 keyboardType: TextInputType.phone,
                 validator: (value) =>
                     value!.isEmpty ? "Vui lòng nhập số điện thoại" : null,
               ),
               TextFormField(
                 controller: address1Controller,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: "số nhà, tên đường",
                   labelText: "Địa chỉ 1",
                 ),
@@ -88,7 +88,7 @@ class _DeliveryInforState extends State<DeliveryInfor> {
               ),
               TextFormField(
                 controller: address2Controller,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Địa chỉ 2",
                   hintText: "xã/phường, quận/huyện, tỉnh/thành phố",
                 ),

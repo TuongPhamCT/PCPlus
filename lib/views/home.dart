@@ -148,7 +148,7 @@ class _HomeScreenState extends State<HomeScreen> implements HomeContract {
               const Gap(30),
               Text('New Products', style: TextDecor.robo18Bold),
               const Gap(10),
-              Container(
+              SizedBox(
                 height: 285,
                 width: size.width,
                 child: newProducts.isEmpty ? null : ListView.builder(
