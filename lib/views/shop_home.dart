@@ -166,7 +166,7 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
                   padding: EdgeInsets.zero,
                   physics: const NeverScrollableScrollPhysics(),
                   scrollDirection: Axis.vertical,
-                  itemCount: 1,
+                  itemCount: productWidgets.length,
                   itemBuilder: (context, index) {
                     return productWidgets[index];
                   },

@@ -71,6 +71,8 @@ class ItemRepository {
         await _storage.collection(ItemModel.collectionName)
             .where('sellerID', isEqualTo: sellerID)
             .get();
+
+       print("Số lượng tài liệu: ${querySnapshot.docs.length}");
       final items = querySnapshot
           .docs
           .map((doc) => ItemModel.fromJson(doc.id, doc.data() as Map<String, dynamic>))
