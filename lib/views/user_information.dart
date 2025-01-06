@@ -336,6 +336,7 @@ class _UserInformationState extends State<UserInformation>
                     onChanged: (value) {
                       setState(() {
                         _isShopOwner = value!;
+                        print(_isShopOwner);
                       });
                     },
                   ),
@@ -406,8 +407,7 @@ class _UserInformationState extends State<UserInformation>
                       rePassword: _rePasswordController.text.trim(),
                       isSeller: _isShopOwner,
                       shopName: _shopNameController.text.trim(),
-                      location: _locationController.text
-                  );
+                      location: _locationController.text);
                 },
               ),
               const Gap(30),
@@ -450,7 +450,7 @@ class _UserInformationState extends State<UserInformation>
       setState(() {
         _birthDate = picked;
         _birthDateController.text =
-        '${picked.day}/${picked.month}/${picked.year}';
+            '${picked.day}/${picked.month}/${picked.year}';
       });
     }
   }
