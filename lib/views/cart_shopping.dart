@@ -44,13 +44,7 @@ class _CartShoppingScreenState extends State<CartShoppingScreen> implements Cart
   }
 
   Future<void> loadData() async {
-    _cartSingleton.deselectAllItemsInCart();
-    _cartSingleton.resetAmount();
-    await _cartSingleton.fetchData();
-    
-    setState(() {
-      totalPrice = _presenter!.calculateTotalPrice();
-    });
+    await _presenter?.getData();
   }
 
   void _toggleSelectAll(bool? value) {
@@ -215,6 +209,13 @@ class _CartShoppingScreenState extends State<CartShoppingScreen> implements Cart
     setState(() {
       totalPrice = _presenter!.calculateTotalPrice();
       _selectAll = _cartSingleton.inCartItems.every((element) => element.isCheck);
+    });
+  }
+
+  @override
+  void onLoadDataSucceeded() {
+    setState(() {
+      totalPrice = _presenter!.calculateTotalPrice();
     });
   }
 }

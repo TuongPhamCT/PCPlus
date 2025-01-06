@@ -1,3 +1,6 @@
+import 'package:pcplus/singleton/cart_singleton.dart';
+import 'package:pcplus/singleton/shop_singleton.dart';
+
 import '../models/items/item_model.dart';
 import '../models/users/user_model.dart';
 import '../objects/suggest_item_data.dart';
@@ -23,8 +26,21 @@ class UserSingleton {
     return currentUser!.isSeller!;
   }
 
-  void loadUser(UserModel user) {
+  Future<void> loadUser(UserModel user) async {
+    ShopSingleton shopSingleton = ShopSingleton.getInstance();
+    CartSingleton cartSingleton = CartSingleton.getInstance();
+
     currentUser = user;
     firstEnter = true;
+    if (user.isSeller!) {
+      shopSingleton.changeShop(user);
+    } else {
+      await cartSingleton.initCart();
+    }
+  }
+
+  Future<void> signOut() async {
+    CartSingleton cartSingleton = CartSingleton.getInstance();
+    cartSingleton.clearData();
   }
 }

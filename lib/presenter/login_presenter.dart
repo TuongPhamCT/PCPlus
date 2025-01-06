@@ -26,11 +26,8 @@ class LoginPresenter {
         return;
       }
       UserModel userData = await _userRepo.getUserById(userCredential.user!.uid);
-      _userSingleton.loadUser(userData);
+      await _userSingleton.loadUser(userData);
       await _prefService.saveUserData(userData: userData, password: password);
-      if (userData.isSeller!) {
-        _shopSingleton.changeShop(_userSingleton.currentUser!);
-      }
     } catch (e) {
       print(e);
       _view.onPopContext();

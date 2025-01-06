@@ -172,7 +172,7 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
               if (isLoading)
                 UtilWidgets.getLoadingWidgetWithContainer(
                     width: size.width,
-                    height: size.height * 0.75
+                    height: size.height * 0.5
                 )
               else if (productWidgets.isEmpty)
                 UtilWidgets.getCenterTextWithContainer(

@@ -23,6 +23,7 @@ class ProfileScreenPresenter {
     _view.onWaitingProgressBar();
     await _auth.signOut();
     await _pref.clearUserData();
+    await UserSingleton.getInstance().signOut();
     _view.onPopContext();
     _view.onSignOut();
   }

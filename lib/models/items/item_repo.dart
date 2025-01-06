@@ -27,12 +27,17 @@ class ItemRepository {
     return isSuccess;
   }
 
-  Future<ItemModel> getItemById(String id) async {
-    final DocumentReference<Map<String, dynamic>> collectionRef = _storage.collection(ItemModel.collectionName).doc(id);
-    DocumentSnapshot<Map<String, dynamic>> documentSnapshot = await collectionRef.get();
+  Future<ItemModel?> getItemById(String id) async {
+    try {
+      final DocumentReference<Map<String, dynamic>> collectionRef = _storage.collection(ItemModel.collectionName).doc(id);
+      DocumentSnapshot<Map<String, dynamic>> documentSnapshot = await collectionRef.get();
 
-    final ItemModel item = ItemModel.fromJson(documentSnapshot.id, documentSnapshot.data() as Map<String, dynamic>);
-    return item;
+      final ItemModel item = ItemModel.fromJson(documentSnapshot.id, documentSnapshot.data() as Map<String, dynamic>);
+      return item;
+    } catch (e) {
+      return null;
+    }
+
   }
 
   Future<List<ItemModel>> getTopItems(int limit) async {

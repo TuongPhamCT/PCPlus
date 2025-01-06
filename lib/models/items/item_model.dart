@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../../services/utility.dart';
+
 class ItemModel {
 
   String? itemID;
@@ -96,6 +98,23 @@ class ItemModel {
 
   void removeColor(String color) {
     reviewImages?.remove(color);
+  }
+
+  bool isEqual(ItemModel model) {
+    return
+        itemID == model.itemID
+        && itemType == model.itemType
+        && name == model.name
+        && detail == model.detail
+        && sellerID == model.sellerID
+        && stock == model.stock
+        && price == model.price
+        && sold == model.sold
+        && description == model.description
+        && addDate?.compareTo(model.addDate!) == 0
+        && status == model.status
+        && Utility.listStringIsEqual(reviewImages, model.reviewImages)
+        && Utility.listStringIsEqual(colors, model.colors);
   }
 }
 

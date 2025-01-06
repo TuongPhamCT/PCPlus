@@ -1,4 +1,6 @@
 
+import 'package:string_validator/string_validator.dart';
+
 abstract class Utility {
 
   static String getAgeRange(int birthYear) {
@@ -70,6 +72,24 @@ abstract class Utility {
       return "dd/MM/YYYY";
     }
     return "${dateTime.day.toString().padLeft(2,'0')}/${dateTime.month.toString().padLeft(2,'0')}/${dateTime.year}";
+  }
+
+  static bool listStringIsEqual (List<String>? list1, List<String>? list2) {
+    if (list1 == null && list2 == null) {
+      return true;
+    } else if (list1 == null || list2 == null) {
+      return false;
+    }
+
+    if (list1.length != list2.length) {
+      return false;
+    }
+    for (int i = 0; i < list1.length; i++) {
+      if (list1[i].equals(list2[i]) == false) {
+        return false;
+      }
+    }
+    return true;
   }
 }
 

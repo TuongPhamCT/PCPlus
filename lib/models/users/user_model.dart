@@ -15,6 +15,7 @@ class UserModel {
   Map<String, Object?>? shopInfo = {};
 
   static String collectionName = 'Users';
+  static String cartCollectionName = 'Cart';
 
   UserModel(
       {required this.userID,
