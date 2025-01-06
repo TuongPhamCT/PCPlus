@@ -39,7 +39,6 @@ class ItemModel {
   );
 
   Map<String, dynamic> toJson() => {
-    'itemID': itemID,
     'name': name,
     'sellerID': sellerID,
     'itemType': itemType,

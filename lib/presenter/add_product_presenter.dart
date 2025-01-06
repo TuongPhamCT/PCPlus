@@ -30,6 +30,7 @@ class AddProductPresenter {
     _view.onWaitingProgressBar();
 
     if (images.isEmpty) {
+      _view.onPopContext();
       _view.onAddFailed("Hãy chọn ảnh cho sản phẩm");
       return;
     }

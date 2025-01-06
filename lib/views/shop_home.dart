@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:pcplus/commands/shop_home_command.dart';
 import 'package:pcplus/config/asset_helper.dart';
 import 'package:pcplus/contract/shop_home_contract.dart';
+import 'package:pcplus/observers/subscriber_interface.dart';
 import 'package:pcplus/presenter/shop_home_presenter.dart';
 import 'package:pcplus/singleton/user_singleton.dart';
 import 'package:pcplus/themes/palette/palette.dart';
@@ -45,20 +46,17 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (init) {
-      loadData();
-      init = false;
-    } else {
-      fetchData();
-    }
+    loadData();
   }
 
   Future<void> loadData() async {
     await _presenter?.getData();
   }
 
-  Future<void> fetchData() async {
-    await _presenter?.fetchData();
+  @override
+  void dispose() {
+    super.dispose();
+    _presenter?.dispose();
   }
 
   @override

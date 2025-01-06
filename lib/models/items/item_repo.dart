@@ -44,7 +44,7 @@ class ItemRepository {
           .get();
       final items = querySnapshot
           .docs
-          .map((doc) => ItemModel.fromJson(doc.id, doc as Map<String, dynamic>))
+          .map((doc) => ItemModel.fromJson(doc.id, doc.data() as Map<String, dynamic>))
           .toList();
       return items;
     } catch (e) {
@@ -57,7 +57,7 @@ class ItemRepository {
       final QuerySnapshot querySnapshot = await _storage.collection(ItemModel.collectionName).get();
       final items = querySnapshot
           .docs
-          .map((doc) => ItemModel.fromJson(doc.id, doc as Map<String, dynamic>))
+          .map((doc) => ItemModel.fromJson(doc.id, doc.data() as Map<String, dynamic>))
           .toList();
       return items;
     } catch (e) {
@@ -73,7 +73,7 @@ class ItemRepository {
             .get();
       final items = querySnapshot
           .docs
-          .map((doc) => ItemModel.fromJson(doc.id, doc as Map<String, dynamic>))
+          .map((doc) => ItemModel.fromJson(doc.id, doc.data() as Map<String, dynamic>))
           .toList();
       return items;
     } catch (e) {
@@ -85,14 +85,14 @@ class ItemRepository {
     try {
       final QuerySnapshot querySnapshot = await _storage.collection(ItemModel.collectionName)
           .where((doc) {
-            ItemModel item = ItemModel.fromJson(doc, doc as Map<String, dynamic>);
+            ItemModel item = ItemModel.fromJson(doc, doc.data() as Map<String, dynamic>);
             String name = item.name!.toLowerCase();
             return name.contains(searchInput.toLowerCase());
           })
           .get();
       final items = querySnapshot
           .docs
-          .map((doc) => ItemModel.fromJson(doc.id, doc as Map<String, dynamic>))
+          .map((doc) => ItemModel.fromJson(doc.id, doc.data() as Map<String, dynamic>))
           .toList();
       return items;
     } catch (e) {
