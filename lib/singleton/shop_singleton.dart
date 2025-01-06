@@ -66,15 +66,17 @@ class ShopSingleton extends PublisherInterface {
 
   void updateData(ItemData data) {
     _itemRepository.updateItem(data.product!);
+    notifySubscribers();
   }
 
-  void deleteData(ItemData data) {
+  Future<void> deleteData(ItemData data) async {
     for (String url in data.product!.reviewImages!) {
-      _imageStorageService.deleteImage(url);
+      await _imageStorageService.deleteImage(url);
     }
     _itemRepository.deleteItemById(data.product!.itemID!);
     itemsData.remove(data);
     itemModels.remove(data.product!);
+    notifySubscribers();
   }
 
   void reorder() {
