@@ -62,7 +62,7 @@ class _NotificationScreenState extends State<NotificationScreen> implements Noti
           },
         ),
       ),
-      bottomNavigationBar: !isShop ? const ShopBottomBar(currentIndex: 2) : const BottomBarCustom(currentIndex: 2),
+      bottomNavigationBar: isShop ? const ShopBottomBar(currentIndex: 2) : const BottomBarCustom(currentIndex: 2),
     );
   }
 

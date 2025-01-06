@@ -10,7 +10,6 @@ class ProfileScreenPresenter {
   ProfileScreenPresenter(this._view);
 
   UserModel? user;
-  bool isSeller = false;
 
   final AuthenticationService _auth = AuthenticationService();
   final PrefService _pref = PrefService();

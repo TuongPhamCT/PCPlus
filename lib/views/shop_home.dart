@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:pcplus/config/asset_helper.dart';
+import 'package:pcplus/singleton/user_singleton.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 import 'package:pcplus/views/add_product.dart';
@@ -17,6 +18,8 @@ class ShopHome extends StatefulWidget {
 }
 
 class _ShopHomeState extends State<ShopHome> {
+  final UserSingleton _userSingleton = UserSingleton.getInstance();
+
   bool isShop = true;
   @override
   Widget build(BuildContext context) {
@@ -66,7 +69,7 @@ class _ShopHomeState extends State<ShopHome> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(
-                        'Tuong Shop',
+                        _userSingleton.currentUser!.name!,
                         style: TextDecor.robo24Bold.copyWith(
                           color: Palette.primaryColor,
                         ),
@@ -80,7 +83,7 @@ class _ShopHomeState extends State<ShopHome> {
                           ),
                           const Gap(10),
                           Text(
-                            '0123456789',
+                            _userSingleton.currentUser!.phone!,
                             style: TextDecor.robo18.copyWith(
                               color: Colors.black,
                             ),
@@ -96,7 +99,7 @@ class _ShopHomeState extends State<ShopHome> {
                           ),
                           const Gap(5),
                           Text(
-                            'Hồ Chí Minh',
+                            _userSingleton.currentUser!.getLocation(),
                             style: TextDecor.robo18.copyWith(
                               color: Colors.black,
                             ),
