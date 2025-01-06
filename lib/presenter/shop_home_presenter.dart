@@ -21,7 +21,6 @@ class ShopHomePresenter implements SubscriberInterface {
 
   Future<void> getData() async {
     if (_userSingleton.firstEnter) {
-      _shopSingleton.changeShop(_userSingleton.currentUser!);
       await _shopSingleton.initShopData();
       _userSingleton.firstEnter = false;
     }

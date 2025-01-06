@@ -4,6 +4,7 @@ import 'package:pcplus/config/asset_helper.dart';
 import 'package:pcplus/models/users/user_model.dart';
 import 'package:pcplus/services/authentication_service.dart';
 import 'package:pcplus/services/pref_service.dart';
+import 'package:pcplus/singleton/shop_singleton.dart';
 import 'package:pcplus/singleton/user_singleton.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/views/home.dart';
@@ -60,6 +61,9 @@ class _SplashScreenState extends State<SplashScreen>
     if(userCredential != null) {
       loginSucceeded = true;
       UserSingleton.getInstance().loadUser(loggedUser);
+      if (loggedUser.isSeller!) {
+        ShopSingleton.getInstance().changeShop(loggedUser);
+      }
     }
   }
 

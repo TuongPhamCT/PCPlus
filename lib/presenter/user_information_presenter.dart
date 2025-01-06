@@ -9,6 +9,7 @@ import 'package:pcplus/models/users/user_model.dart';
 import 'package:pcplus/models/users/user_repo.dart';
 import 'package:pcplus/services/authentication_service.dart';
 import 'package:pcplus/services/image_storage_service.dart';
+import 'package:pcplus/singleton/shop_singleton.dart';
 
 import '../builders/model_builders/user_builder.dart';
 import '../services/pref_service.dart';
@@ -119,6 +120,9 @@ class UserInformationPresenter {
       _userRepo.addUserToFirestore(user);
       await _prefService.saveUserData(userData: user, password: password);
       UserSingleton.getInstance().loadUser(user);
+      if (user.isSeller!) {
+        ShopSingleton.getInstance().changeShop(user);
+      }
       _view.onPopContext();
       _view.onConfirmSucceeded();
     } catch (e) {
