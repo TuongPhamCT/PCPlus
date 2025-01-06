@@ -14,16 +14,15 @@ class NewItem extends StatelessWidget {
   final int sold;
   final CommandInterface? command;
 
-  const NewItem({
-    super.key,
-    required this.itemName,
-    required this.imagePath,
-    required this.location,
-    required this.rating,
-    required this.price,
-    required this.sold,
-    this.command
-  });
+  const NewItem(
+      {super.key,
+      required this.itemName,
+      required this.imagePath,
+      required this.location,
+      required this.rating,
+      required this.price,
+      required this.sold,
+      this.command});
 
   @override
   Widget build(BuildContext context) {
@@ -91,10 +90,16 @@ class NewItem extends StatelessWidget {
                         style: TextDecor.robo14,
                       ),
                       Expanded(child: Container()),
-                      const Icon(Icons.location_on, size: 18, color: Colors.black),
-                      Text(
-                        location,
-                        style: TextDecor.robo14,
+                      const Icon(Icons.location_on,
+                          size: 18, color: Colors.black),
+                      SizedBox(
+                        width: size.width * 0.22,
+                        child: Text(
+                          location,
+                          style: TextDecor.robo14,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ],
                   ),
