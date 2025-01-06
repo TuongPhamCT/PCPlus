@@ -190,6 +190,7 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
   }
 
   Future<void> buildItemList() async {
+    productWidgets.clear();
     ShopItemBuilder shopItemBuilder = ShopItemBuilder();
     for (ItemData item in _presenter!.itemsData) {
       director.makeShopItem(
