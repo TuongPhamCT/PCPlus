@@ -48,6 +48,7 @@ class ShopSingleton extends PublisherInterface {
       itemData.shop = _userSingleton.currentUser!;
     }
     init = false;
+    reorder();
   }
 
   Future<void> addData(ItemModel itemModel) async {
