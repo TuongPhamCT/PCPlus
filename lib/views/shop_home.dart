@@ -80,7 +80,10 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
         height: size.height,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: Colors.grey.withOpacity(0.2),
+          image: DecorationImage(
+            image: AssetImage(AssetHelper.shopBg),
+            fit: BoxFit.cover,
+          ),
         ),
         child: SingleChildScrollView(
           child: Column(
