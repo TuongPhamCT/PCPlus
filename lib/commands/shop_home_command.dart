@@ -32,3 +32,18 @@ class ShopHomeItemDeleteCommand implements CommandInterface {
   }
 }
 
+class ShopHomeItemPressedCommand implements CommandInterface {
+  final ShopHomePresenter presenter;
+  final ItemData item;
+
+  ShopHomeItemPressedCommand({
+    required this.presenter,
+    required this.item
+  });
+
+  @override
+  void execute() {
+    presenter.handleItemPressed(item);
+  }
+}
+

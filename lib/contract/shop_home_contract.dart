@@ -6,4 +6,5 @@ abstract class ShopHomeContract {
   void onPopContext();
   void onItemEdit();
   void onItemDelete();
+  void onItemPressed();
 }

@@ -8,6 +8,7 @@ import 'package:pcplus/singleton/user_singleton.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 import 'package:pcplus/views/add_product.dart';
+import 'package:pcplus/views/product/detail_product.dart';
 import 'package:pcplus/views/widgets/bottom/shop_bottom_bar.dart';
 import 'package:pcplus/views/widgets/util_widgets.dart';
 
@@ -30,12 +31,14 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
   WidgetBuilderDirector director = WidgetBuilderDirector();
   bool init = true;
   bool isShop = true;
+  String avatarUrl = "";
 
   List<Widget> productWidgets = [];
 
   @override
   void initState() {
     isShop = _userSingleton.isShop();
+    avatarUrl = _userSingleton.currentUser!.avatarUrl ?? "";
     _presenter = ShopHomePresenter(this);
     super.initState();
   }
@@ -76,11 +79,18 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
       body: Container(
         height: size.height,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(AssetHelper.shopBg),
-            fit: BoxFit.cover,
-          ),
+        decoration: BoxDecoration(
+          image:
+            avatarUrl.isEmpty ?
+              const DecorationImage(
+                image: AssetImage(AssetHelper.shopBg),
+                fit: BoxFit.cover,
+              )
+            :
+            DecorationImage(
+              image: NetworkImage(avatarUrl),
+              fit: BoxFit.cover,
+            ),
         ),
         child: SingleChildScrollView(
           child: Column(
@@ -197,7 +207,10 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
           editCommand:
               ShopHomeItemEditCommand(presenter: _presenter!, item: item),
           deleteCommand:
-              ShopHomeItemDeleteCommand(presenter: _presenter!, item: item));
+              ShopHomeItemDeleteCommand(presenter: _presenter!, item: item),
+          pressedCommand:
+              ShopHomeItemPressedCommand(presenter: _presenter!, item: item)
+      );
       productWidgets.add(shopItemBuilder.createWidget()!);
     }
     setState(() {});
@@ -235,5 +248,10 @@ class _ShopHomeState extends State<ShopHome> implements ShopHomeContract {
     setState(() {
       buildItemList();
     });
+  }
+
+  @override
+  void onItemPressed() {
+    Navigator.of(context).pushNamed(DetailProduct.routeName);
   }
 }
