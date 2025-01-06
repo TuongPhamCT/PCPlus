@@ -8,6 +8,7 @@ class ItemModel {
   String? itemType;
   String? image;
   String? description;
+  String? detail;
   DateTime? addDate;
   int? price;
   int? stock;
@@ -25,6 +26,7 @@ class ItemModel {
       required this.itemType,
       required this.sellerID,
       this.description,
+      this.detail,
       required this.addDate,
       required this.price,
       required this.stock,
@@ -43,6 +45,7 @@ class ItemModel {
     'itemType': itemType,
     'addDate': addDate,
     'description': description,
+    'detail': detail,
     'price': price,
     'stock': stock,
     'sold': sold,
@@ -63,6 +66,7 @@ class ItemModel {
       itemType: json['itemType'] as String,
       addDate: (json['addDate'] as Timestamp).toDate(),
       description: json['description'] as String,
+      detail: json['detail'] as String,
       price: json['price'] as int,
       stock: json['stock'] as int,
       sold: json['sold'] as int,

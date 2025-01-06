@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:gap/gap.dart';
@@ -8,13 +6,13 @@ import 'package:pcplus/builders/widget_builders/widget_builder_director.dart';
 import 'package:pcplus/commands/search_command.dart';
 import 'package:pcplus/const/item_filter.dart';
 import 'package:pcplus/contract/search_screen_contract.dart';
-import 'package:pcplus/models/items/item_model.dart';
 import 'package:pcplus/presenter/search_screen_presenter.dart';
+import 'package:pcplus/singleton/search_singleton.dart';
 import 'package:pcplus/themes/palette/palette.dart';
-import 'package:pcplus/views/widgets/listItem/suggest_item.dart';
 import 'package:pcplus/views/widgets/util_widgets.dart';
 
 import '../../objects/suggest_item_data.dart';
+import '../product/detail_product.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -27,6 +25,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> implements SearchScreenContract {
   SearchScreenPresenter? _presenter;
   final WidgetBuilderDirector director = WidgetBuilderDirector();
+  final SearchSingleton _searchSingleton = SearchSingleton.getInstance();
 
   List<ItemData> _items = [];
 
@@ -42,14 +41,17 @@ class _SearchScreenState extends State<SearchScreen> implements SearchScreenCont
   @override
   void initState() {
     _presenter = SearchScreenPresenter(this);
-    _searchController.text = "typed search input";
+    _searchController.text = _searchSingleton.storedSearchInput;
     super.initState();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    loadData();
+    if (_searchSingleton.needSearch) {
+      loadData();
+      _searchSingleton.needSearch = false;
+    }
   }
 
   Future<void> loadData() async {
@@ -300,7 +302,7 @@ class _SearchScreenState extends State<SearchScreen> implements SearchScreenCont
                         data: _items[index],
                         command: SearchItemPressedCommand(
                             presenter: _presenter!,
-                            itemModel: _items[index].product!
+                            item: _items[index]
                         ),
                     );
                     return builder.createWidget();
@@ -337,5 +339,20 @@ class _SearchScreenState extends State<SearchScreen> implements SearchScreenCont
     setState(() {
       isSearching = true;
     });
+  }
+
+  @override
+  void onSelectItem() {
+    Navigator.of(context).pushNamed(DetailProduct.routeName);
+  }
+
+  @override
+  void onPopContext() {
+    Navigator.of(context, rootNavigator: true).pop();
+  }
+
+  @override
+  void onWaitingProgressBar() {
+    UtilWidgets.createLoadingWidget(context);
   }
 }

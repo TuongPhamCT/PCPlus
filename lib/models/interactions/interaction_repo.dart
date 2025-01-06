@@ -72,6 +72,9 @@ class InteractionRepository {
           .docs
           .map((doc) => InteractionModel.fromJson(doc as Map<String, dynamic>))
           .toList();
+      if (items.isEmpty) {
+        return 0;
+      }
       double rating = 0;
       for (InteractionModel item in items) {
         rating = item.rating! as double;

@@ -65,6 +65,22 @@ class ItemRepository {
     }
   }
 
+  Future<List<ItemModel>> getItemsBySeller(String sellerID) async {
+    try {
+      final QuerySnapshot querySnapshot =
+        await _storage.collection(ItemModel.collectionName)
+            .where('sellerID', isEqualTo: sellerID)
+            .get();
+      final items = querySnapshot
+          .docs
+          .map((doc) => ItemModel.fromJson(doc as Map<String, dynamic>))
+          .toList();
+      return items;
+    } catch (e) {
+      return [];
+    }
+  }
+
   Future<List<ItemModel>> getItemsBySearchInput(String searchInput) async {
     try {
       final QuerySnapshot querySnapshot = await _storage.collection(ItemModel.collectionName)

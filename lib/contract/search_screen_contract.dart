@@ -5,4 +5,7 @@ abstract class SearchScreenContract {
   void onFinishSearching();
   void onChangeFilter(List<ItemData> result);
   void onBack();
+  void onSelectItem();
+  void onPopContext();
+  void onWaitingProgressBar();
 }

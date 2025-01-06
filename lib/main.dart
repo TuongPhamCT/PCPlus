@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pcplus/commands/search_command.dart';
 import 'package:pcplus/component/dependency_injection.dart';
 import 'package:pcplus/firebase_options.dart';
 import 'package:pcplus/route.dart';
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const SearchScreen(),
+      home: const CartShoppingScreen(),
       routes: routes,
       debugShowCheckedModeBanner: false,
     );

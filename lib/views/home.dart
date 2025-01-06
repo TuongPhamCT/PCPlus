@@ -7,13 +7,11 @@ import 'package:pcplus/builders/widget_builders/widget_builder_director.dart';
 import 'package:pcplus/commands/home_command.dart';
 import 'package:pcplus/config/asset_helper.dart';
 import 'package:pcplus/contract/home_contract.dart';
-import 'package:pcplus/models/items/item_model.dart';
-import 'package:pcplus/services/utility.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
+import 'package:pcplus/views/product/detail_product.dart';
+import 'package:pcplus/views/search/search_screen.dart';
 import 'package:pcplus/views/widgets/bottom/bottom_bar_custom.dart';
-import 'package:pcplus/views/widgets/listItem/new_item.dart';
-import 'package:pcplus/views/widgets/listItem/suggest_item.dart';
 import 'package:pcplus/views/widgets/util_widgets.dart';
 
 import '../objects/suggest_item_data.dart';
@@ -32,8 +30,11 @@ class _HomeScreenState extends State<HomeScreen> implements HomeContract {
   WidgetBuilderDirector director = WidgetBuilderDirector();
   bool isShop = false;
   bool isLoading = true;
+  bool isFirstLoad = true;
   List<Widget> newProducts = [];
   List<Widget> recommendedProducts = [];
+
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -70,10 +71,11 @@ class _HomeScreenState extends State<HomeScreen> implements HomeContract {
                   },
                   onChanged: (value) {},
                   onEditingComplete: () {},
+                  controller: _searchController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderSide:
-                          BorderSide(color: Palette.primaryColor, width: 1),
+                          const BorderSide(color: Palette.primaryColor, width: 1),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     focusedBorder: OutlineInputBorder(
@@ -84,7 +86,9 @@ class _HomeScreenState extends State<HomeScreen> implements HomeContract {
                     contentPadding: const EdgeInsets.only(top: 4),
                     prefixIcon: InkWell(
                       customBorder: const CircleBorder(),
-                      onTap: () {},
+                      onTap: () {
+                        _presenter!.handleSearch(_searchController.text.trim());
+                      },
                       child: const Icon(
                         FontAwesomeIcons.magnifyingGlass,
                         size: 16,
@@ -105,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> implements HomeContract {
                   alignment: Alignment.bottomRight,
                   children: [
                     Container(
-                      padding: EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(12),
                       height: 145,
                       width: double.infinity,
                       decoration: BoxDecoration(
@@ -164,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> implements HomeContract {
           ),
         ),
       ),
-      bottomNavigationBar: BottomBarCustom(currentIndex: 0),
+      bottomNavigationBar: const BottomBarCustom(currentIndex: 0),
     );
   }
 
@@ -175,19 +179,19 @@ class _HomeScreenState extends State<HomeScreen> implements HomeContract {
       await director.makeNewItem(
         builder: newItemBuilder,
         data: item,
-        command: HomeItemPressedCommand(presenter: _presenter!, itemModel: item.product!),
+        command: HomeItemPressedCommand(presenter: _presenter!, item: item),
       );
       newProducts.add(newItemBuilder.createWidget()!);
     }
 
     SuggestItemBuilder suggestItemBuilder = SuggestItemBuilder();
     for (ItemData item in _presenter!.recommendedItems) {
-      await director.makeSuggestItem(
+      director.makeSuggestItem(
           builder: suggestItemBuilder,
           data: item,
-          command: HomeItemPressedCommand(presenter: _presenter!, itemModel: item.product!),
+          command: HomeItemPressedCommand(presenter: _presenter!, item: item),
       );
-      newProducts.add(newItemBuilder.createWidget()!);
+      recommendedProducts.add(suggestItemBuilder.createWidget()!);
     }
 
     setState(() {
@@ -197,6 +201,21 @@ class _HomeScreenState extends State<HomeScreen> implements HomeContract {
 
   @override
   void onItemPressed() {
-    // TODO: implement onItemPressed
+    Navigator.of(context).pushNamed(DetailProduct.routeName);
+  }
+
+  @override
+  void onSearch() {
+    Navigator.of(context).pushNamed(SearchScreen.routeName);
+  }
+
+  @override
+  void onPopContext() {
+    Navigator.of(context, rootNavigator: true).pop();
+  }
+
+  @override
+  void onWaitingProgressBar() {
+    UtilWidgets.createLoadingWidget(context);
   }
 }

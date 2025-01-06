@@ -2,13 +2,9 @@ import 'package:pcplus/builders/object_builders/list_item_data_builder.dart';
 import 'package:pcplus/builders/object_builders/list_object_builder_director.dart';
 import 'package:pcplus/const/item_filter.dart';
 import 'package:pcplus/contract/search_screen_contract.dart';
-import 'package:pcplus/models/interactions/interaction_repo.dart';
-import 'package:pcplus/models/items/item_repo.dart';
-import 'package:pcplus/models/ratings/rating_repo.dart';
-import 'package:pcplus/models/users/user_repo.dart';
-import 'package:pcplus/objects/data_object_interface.dart';
 import 'package:pcplus/objects/suggest_item_data.dart';
 import 'package:pcplus/services/test_tool.dart';
+import 'package:pcplus/singleton/view_item_singleton.dart';
 
 import '../models/items/item_model.dart';
 import '../models/users/user_model.dart';
@@ -17,15 +13,13 @@ class SearchScreenPresenter {
   final SearchScreenContract _view;
   SearchScreenPresenter(this._view);
 
-  final ItemRepository _itemRepo = ItemRepository();
-  final UserRepository _userRepo = UserRepository();
-  final InteractionRepository _interactionRepo = InteractionRepository();
+  final ViewItemSingleton _itemSingleton = ViewItemSingleton.getInstance();
 
   final ListItemDataBuilder builder = ListItemDataBuilder();
 
   List<ItemData> searchItemData = [];
 
-  String filterMode = ItemFilter.DEFAULT;
+  String filterMode = ItemFilter.RELATED;
 
   void handleBack() {
     _view.onBack();
@@ -97,7 +91,10 @@ class SearchScreenPresenter {
     _view.onChangeFilter(showResults);
   }
 
-  void handleItemPressed(ItemModel itemModel) {
-
+  Future<void> handleItemPressed(ItemData itemData) async {
+    _view.onWaitingProgressBar();
+    await _itemSingleton.storeItemData(itemData);
+    _view.onPopContext();
+    _view.onSelectItem();
   }
 }

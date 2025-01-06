@@ -1,3 +1,5 @@
+import 'package:pcplus/presenter/register_presenter.dart';
+
 abstract class Utility {
 
   static String getAgeRange(int birthYear) {
@@ -23,16 +25,31 @@ abstract class Utility {
   }
 
   static String formatSoldCount(int sold) {
-    return "$sold";
+    String value = "";
+
+    if (sold < 10000) {
+      value = sold.toString();
+    } else if (sold < 1000000) {
+      double transform = sold / 1000;
+      value = "${transform.toStringAsFixed(1)}k";
+    } else if (sold < 1000000000) {
+      double transform = sold / 1000000;
+      value = "${transform.toStringAsFixed(1)}M";
+    }
+
+    return "$value";
   }
 
   static String formatCurrency(int? amount) {
+    const String currency = "đ";
+
     if (amount == null){
-      return "00,000";
+      return "00,000 $currency";
     }
 
-    return amount.toStringAsFixed(2).replaceAllMapped(
+    String value = amount.toString().replaceAllMapped(
         RegExp(r'\B(?=(\d{3})+(?!\d))'), (match) => ',');
+    return "$value $currency";
   }
 
   static String formatRatingValue(double? value) {
@@ -47,6 +64,13 @@ abstract class Utility {
     // Lấy tất cả các chữ số tìm được và nối chúng lại thành một chuỗi
     String result = matches.map((match) => match.group(0)).join();
     return result;
+  }
+
+  static String formatDateFromDateTime(DateTime? dateTime) {
+    if (dateTime == null) {
+      return "dd/MM/YYYY";
+    }
+    return "${dateTime.day.toString().padLeft(2,'0')}/${dateTime.month.toString().padLeft(2,'0')}/${dateTime.year}";
   }
 }
 

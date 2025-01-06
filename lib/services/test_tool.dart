@@ -38,7 +38,9 @@ class TestTool {
         price: randomTool.generateRandomPrice(1, 100, 4),
         stock: randomTool.generateRandomNumber(100, 1000),
         status: "",
+        detail: randomTool.generateRandomString(40),
         image: testImages[randomTool.generateRandomNumber(0, testImages.length - 1)],
+        reviewImages: testImages,
         colors: testColor,
         description: randomTool.generateRandomString(20),
         sold: randomTool.generateRandomNumber(100, 1000)
