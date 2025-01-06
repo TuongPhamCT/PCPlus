@@ -1,5 +1,6 @@
 import 'package:pcplus/models/items/item_repo.dart';
 import 'package:pcplus/models/users/user_repo.dart';
+import 'package:pcplus/observers/publisher_interface.dart';
 import 'package:pcplus/services/image_storage_service.dart';
 import 'package:pcplus/singleton/user_singleton.dart';
 
@@ -9,7 +10,7 @@ import '../models/items/item_model.dart';
 import '../models/users/user_model.dart';
 import '../objects/suggest_item_data.dart';
 
-class ShopSingleton {
+class ShopSingleton extends PublisherInterface {
   static ShopSingleton? _instance;
   static ShopSingleton getInstance() {
     _instance ??= ShopSingleton();
@@ -20,11 +21,17 @@ class ShopSingleton {
   final UserSingleton _userSingleton = UserSingleton.getInstance();
   final ImageStorageService _imageStorageService = ImageStorageService();
 
+  bool init = true;
+
   List<ItemModel> itemModels = [];
   List<ItemData> itemsData = [];
   ItemData? editedItem;
 
   Future<void> initShopData() async {
+    if (init == false) {
+      return;
+    }
+
     itemModels = await _itemRepository.getItemsBySeller(_userSingleton.currentUser!.userID!);
 
     final ListItemDataBuilder builder = ListItemDataBuilder();
@@ -40,6 +47,7 @@ class ShopSingleton {
     for (ItemData itemData in itemsData) {
       itemData.shop = _userSingleton.currentUser!;
     }
+    init = false;
   }
 
   Future<void> addData(ItemModel itemModel) async {
@@ -52,6 +60,7 @@ class ShopSingleton {
     itemsData.add(newData);
     _itemRepository.addItemToFirestore(itemModel);
     reorder();
+    notifySubscribers();
   }
 
   void updateData(ItemData data) {
