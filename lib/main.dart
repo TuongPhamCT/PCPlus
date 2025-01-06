@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const Statistic(),
+      home: const SplashScreen(),
       routes: routes,
       debugShowCheckedModeBanner: false,
     );
