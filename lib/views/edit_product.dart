@@ -8,7 +8,7 @@ import 'package:pcplus/presenter/edit_product_presenter.dart';
 import 'package:pcplus/singleton/shop_singleton.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
-
+import 'package:pcplus/objects/image_data.dart';
 import '../models/items/item_model.dart';
 
 class EditProduct extends StatefulWidget {
@@ -22,7 +22,7 @@ class EditProduct extends StatefulWidget {
 class _EditProductState extends State<EditProduct> implements EditProductContract {
   final _formKey = GlobalKey<FormState>();
   EditProductPresenter? _presenter;
-  List<File> _images = [];
+  List<ImageData> _images = [];
   final ImagePicker _picker = ImagePicker();
 
   final ShopSingleton _shopSingleton = ShopSingleton.getInstance();
@@ -42,6 +42,15 @@ class _EditProductState extends State<EditProduct> implements EditProductContrac
     _descriptionController.text = itemModel.description!;
     _priceController.text = itemModel.price.toString();
     _amountController.text = itemModel.stock.toString();
+    for (String url in itemModel.reviewImages!) {
+      ImageData imageData = ImageData(
+          path: url,
+          isNew: false
+      );
+      imageData.loadFileFromUrl();
+      _images.add(imageData);
+    }
+
     super.initState();
   }
 
@@ -50,7 +59,12 @@ class _EditProductState extends State<EditProduct> implements EditProductContrac
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
-        _images.add(File(pickedFile.path));
+        ImageData imageData = ImageData(
+          path: pickedFile.path,
+          isNew: true,
+          file: File(pickedFile.path)
+        );
+        _images.add(imageData);
       });
     }
   }
@@ -214,7 +228,7 @@ class _EditProductState extends State<EditProduct> implements EditProductContrac
                         ClipRRect(
                           borderRadius: BorderRadius.circular(8),
                           child: Image.file(
-                            _images[index],
+                            _images[index].file!,
                             width: double.infinity,
                             height: double.infinity,
                             fit: BoxFit.cover,
