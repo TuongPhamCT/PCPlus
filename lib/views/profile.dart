@@ -184,7 +184,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => const HistoryOrder(
-                                        orderType: OrderStatus.PENDING_CONFIRMATION,
+                                        orderType:
+                                            OrderStatus.PENDING_CONFIRMATION,
                                       ),
                                     ),
                                   );
@@ -205,26 +206,30 @@ class _ProfileScreenState extends State<ProfileScreen>
                                               color: Palette.main1,
                                             ),
                                           ),
-                                          Positioned(
-                                            right: 0,
-                                            top: 0,
-                                            child: Container(
-                                              width: 20,
-                                              height: 20,
-                                              alignment: Alignment.center,
-                                              decoration: const BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: Palette.primaryColor,
-                                              ),
-                                              child: Text(
-                                                '1',
-                                                style:
-                                                    TextDecor.robo16.copyWith(
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
+                                          awaitConfirm > 0
+                                              ? Positioned(
+                                                  right: 0,
+                                                  top: 0,
+                                                  child: Container(
+                                                    width: 20,
+                                                    height: 20,
+                                                    alignment: Alignment.center,
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color:
+                                                          Palette.primaryColor,
+                                                    ),
+                                                    child: Text(
+                                                      '$awaitConfirm',
+                                                      style: TextDecor.robo16
+                                                          .copyWith(
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                              : const SizedBox(),
                                         ],
                                       ),
                                     ),
@@ -242,7 +247,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     await Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => const HistoryOrder(
+                                        builder: (context) =>
+                                            const HistoryOrder(
                                           orderType: OrderStatus.AWAIT_PICKUP,
                                         ),
                                       ),
@@ -264,26 +270,31 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                 color: Palette.main1,
                                               ),
                                             ),
-                                            Positioned(
-                                              right: 0,
-                                              top: 0,
-                                              child: Container(
-                                                width: 20,
-                                                height: 20,
-                                                alignment: Alignment.center,
-                                                decoration: const BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: Palette.primaryColor,
-                                                ),
-                                                child: Text(
-                                                  '1',
-                                                  style:
-                                                      TextDecor.robo16.copyWith(
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
+                                            awaitPickUp > 0
+                                                ? Positioned(
+                                                    right: 0,
+                                                    top: 0,
+                                                    child: Container(
+                                                      width: 20,
+                                                      height: 20,
+                                                      alignment:
+                                                          Alignment.center,
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        color: Palette
+                                                            .primaryColor,
+                                                      ),
+                                                      child: Text(
+                                                        '$awaitPickUp',
+                                                        style: TextDecor.robo16
+                                                            .copyWith(
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
+                                                : const SizedBox(),
                                           ],
                                         ),
                                       ),
@@ -322,26 +333,30 @@ class _ProfileScreenState extends State<ProfileScreen>
                                               color: Palette.main1,
                                             ),
                                           ),
-                                          Positioned(
-                                            right: 0,
-                                            top: 0,
-                                            child: Container(
-                                              width: 20,
-                                              height: 20,
-                                              alignment: Alignment.center,
-                                              decoration: const BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: Palette.primaryColor,
-                                              ),
-                                              child: Text(
-                                                '1',
-                                                style:
-                                                    TextDecor.robo16.copyWith(
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
+                                          awaitDelivery > 0
+                                              ? Positioned(
+                                                  right: 0,
+                                                  top: 0,
+                                                  child: Container(
+                                                    width: 20,
+                                                    height: 20,
+                                                    alignment: Alignment.center,
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color:
+                                                          Palette.primaryColor,
+                                                    ),
+                                                    child: Text(
+                                                      '$awaitDelivery',
+                                                      style: TextDecor.robo16
+                                                          .copyWith(
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
+                                              : const SizedBox(),
                                         ],
                                       ),
                                     ),
@@ -359,7 +374,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     await Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => const HistoryOrder(
+                                        builder: (context) =>
+                                            const HistoryOrder(
                                           orderType: OrderStatus.AWAIT_RATING,
                                         ),
                                       ),
@@ -381,26 +397,31 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                 color: Palette.main1,
                                               ),
                                             ),
-                                            Positioned(
-                                              right: 0,
-                                              top: 0,
-                                              child: Container(
-                                                width: 20,
-                                                height: 20,
-                                                alignment: Alignment.center,
-                                                decoration: const BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: Palette.primaryColor,
-                                                ),
-                                                child: Text(
-                                                  '1',
-                                                  style:
-                                                      TextDecor.robo16.copyWith(
-                                                    color: Colors.white,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
+                                            awaitRating > 0
+                                                ? Positioned(
+                                                    right: 0,
+                                                    top: 0,
+                                                    child: Container(
+                                                      width: 20,
+                                                      height: 20,
+                                                      alignment:
+                                                          Alignment.center,
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        color: Palette
+                                                            .primaryColor,
+                                                      ),
+                                                      child: Text(
+                                                        '$awaitRating',
+                                                        style: TextDecor.robo16
+                                                            .copyWith(
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
+                                                : const SizedBox(),
                                           ],
                                         ),
                                       ),
