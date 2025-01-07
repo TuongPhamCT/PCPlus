@@ -27,7 +27,8 @@ class OrderModel {
         required this.address,
         required this.itemModel,
         required this.deliveryMethod,
-        required this.deliveryCost
+        required this.deliveryCost,
+        required this.amount,
       });
 
   Map<String, dynamic> toJson() => {
@@ -39,7 +40,8 @@ class OrderModel {
     'address': address?.toJson(),
     'itemModel': itemModel?.toJson(),
     'deliveryMethod': deliveryMethod,
-    'deliveryCost': deliveryCost
+    'deliveryCost': deliveryCost,
+    'amount': amount,
   };
 
   static OrderModel fromJson(Map<String, dynamic> json) {
@@ -53,6 +55,7 @@ class OrderModel {
       itemModel: OrderItemModel.fromJson(json['itemModel']),
       deliveryMethod: json['deliveryMethod'] as String,
       deliveryCost:  json['deliveryCost'] as int,
+      amount: json['amount'] as int
     );
   }
 

@@ -271,7 +271,8 @@ class CartSingleton {
           address: address,
           itemModel: data.item!.toOrderItemModel(colorIndex: data.colorIndex),
           deliveryMethod: data.deliveryMethod,
-          deliveryCost: data.deliveryCost
+          deliveryCost: data.deliveryCost,
+          amount: data.amount
       );
 
       orderRepository.addOrderToFirestore(userId, newOrder);
