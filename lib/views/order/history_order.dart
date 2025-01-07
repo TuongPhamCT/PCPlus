@@ -6,17 +6,15 @@ import 'package:pcplus/themes/text_decor.dart';
 
 class HistoryOrder extends StatefulWidget {
   final String orderType;
-  const HistoryOrder({
-    super.key,
-    required this.orderType
-  });
+  const HistoryOrder({super.key, required this.orderType});
   static const String routeName = 'history_order';
 
   @override
   State<HistoryOrder> createState() => _HistoryOrderState();
 }
 
-class _HistoryOrderState extends State<HistoryOrder> implements HistoryOrderContract {
+class _HistoryOrderState extends State<HistoryOrder>
+    implements HistoryOrderContract {
   HistoryOrderPresenter? _presenter;
 
   late HistoryOrderBuildListStrategy _buildListStrategy;
