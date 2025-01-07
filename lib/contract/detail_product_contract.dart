@@ -5,4 +5,5 @@ abstract class DetailProductContract {
   void onWaitingProgressBar();
   void onPopContext();
   void onViewShop();
+  void onError(String message);
 }

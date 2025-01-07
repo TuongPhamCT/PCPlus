@@ -9,6 +9,9 @@ class InCartItemData extends DataObjectInterface {
   double rating = 0;
   int colorIndex = 0;
   int amount = 0;
+  String noteForShop = "";
+  String deliveryMethod = "";
+  int deliveryCost = 0;
   bool isCheck = false;
 
   InCartItemData({
@@ -24,5 +27,11 @@ class InCartItemData extends DataObjectInterface {
       return false;
     }
     return amount <= item!.stock!;
+  }
+
+  void clearPaymentInfo() {
+    noteForShop = "";
+    deliveryMethod = "";
+    deliveryCost = 0;
   }
 }

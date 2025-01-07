@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:gap/gap.dart';
+import 'package:pcplus/contract/bill_product_contract.dart';
+import 'package:pcplus/objects/in_cart_item_data.dart';
+import 'package:pcplus/presenter/bill_product_presenter.dart';
+import 'package:pcplus/singleton/cart_singleton.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 import 'package:pcplus/views/delivery/delivery_infor.dart';
+import 'package:pcplus/models/orders/order_address_model.dart';
 import 'package:pcplus/views/widgets/listItem/payment_product.dart';
+
+import '../widgets/util_widgets.dart';
 
 class BillProduct extends StatefulWidget {
   const BillProduct({super.key});
@@ -14,20 +21,26 @@ class BillProduct extends StatefulWidget {
   State<BillProduct> createState() => _BillProductState();
 }
 
-class _BillProductState extends State<BillProduct> {
+class _BillProductState extends State<BillProduct> implements BillProductContract {
+  BillProductPresenter? _presenter;
+  final CartSingleton _cartSingleton = CartSingleton.getInstance();
+
   int productCount = 2;
   bool isFirst = true;
-  Map<String, String> address = {
-    "name": "Nguyễn Văn A",
-    "phone": "0123456789",
-    "address1": "123 Đường ABC",
-    "address2": "Phường XYZ, Quận TUV, TP. HCM",
-  };
+  OrderAddressModel address = OrderAddressModel(
+    receiverName: "",
+    phone: "",
+    address1: "",
+    address2: "",
+  );
 
   @override
   void initState() {
-
-
+    if (_cartSingleton.address != null) {
+      address = _cartSingleton.address!;
+      isFirst = false;
+    }
+    _presenter = BillProductPresenter(this);
     super.initState();
   }
 
@@ -46,7 +59,7 @@ class _BillProductState extends State<BillProduct> {
             size: 30,
           ),
           onPressed: () {
-            Navigator.pop(context);
+            _presenter?.handleBack();
           },
         ),
       ),
@@ -73,7 +86,8 @@ class _BillProductState extends State<BillProduct> {
                 // Nếu có địa chỉ mới, cập nhật lại thông tin
                 if (updatedAddress != null) {
                   setState(() {
-                    address = updatedAddress;
+                    address = updatedAddress.first;
+                    _presenter!.handleChangeLocation(address);
                     isFirst = false;
                   });
                 }
@@ -103,21 +117,21 @@ class _BillProductState extends State<BillProduct> {
                                       Row(
                                         children: [
                                           Text(
-                                            '${address["name"]}',
+                                            '${address.receiverName}',
                                             style: TextDecor.robo18Semi,
                                           ),
                                           const Gap(10),
                                           Text(
-                                            '${address["phone"]}',
+                                            '${address.phone}',
                                             style: TextDecor.robo16.copyWith(
                                               color: Palette.hintText,
                                             ),
                                           ),
                                         ],
                                       ),
-                                      Text('${address["address1"]}',
+                                      Text('${address.address1}',
                                           style: TextDecor.robo15),
-                                      Text('${address["address2"]}',
+                                      Text('${address.address2}',
                                           style: TextDecor.robo15),
                                     ],
                                   ),
@@ -163,11 +177,29 @@ class _BillProductState extends State<BillProduct> {
               ),
             ),
             ListView.builder(
-              itemCount: productCount,
+              itemCount: _cartSingleton.onPaymentItems.length,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
-                return const PaymentProductItem();
+                InCartItemData data = _cartSingleton.onPaymentItems[index];
+                return PaymentProductItem(
+                  productName: data.item!.name!,
+                  shopName: data.shop!.getShopName(),
+                  price: data.item!.price!,
+                  amount: data.amount,
+                  imageUrl: data.item!.image!,
+                  onChangeNote: (text) {
+                    _presenter?.handleNoteForShop(data: data, text: text);
+                  },
+                  onChangeDeliveryMethod: (method, price) {
+                    _presenter?.handleChangeDelivery(
+                        data: data,
+                        deliveryMethod: method,
+                        cost: price
+                    );
+                  },
+                  color: "Black",
+                );
               },
             ),
             const Gap(10),
@@ -209,9 +241,9 @@ class _BillProductState extends State<BillProduct> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                Text('1.000.000 VNĐ', style: TextDecor.robo16),
+                                Text(_presenter!.getProductCost(), style: TextDecor.robo16),
                                 const Gap(5),
-                                Text('25.000 VNĐ', style: TextDecor.robo16),
+                                Text(_presenter!.getShippingFee(), style: TextDecor.robo16),
                               ],
                             ),
                           ],
@@ -225,7 +257,7 @@ class _BillProductState extends State<BillProduct> {
                           children: [
                             Text('Total:', style: TextDecor.robo18Semi),
                             Expanded(child: Container()),
-                            Text('1.025.000 VNĐ', style: TextDecor.robo18Semi),
+                            Text(_presenter!.getTotalCost(), style: TextDecor.robo18Semi),
                           ],
                         ),
                       ],
@@ -259,7 +291,7 @@ class _BillProductState extends State<BillProduct> {
             Text('Total:', style: TextDecor.robo18Semi),
             const Gap(5),
             Text(
-              '1.025.000 VNĐ',
+              _presenter!.getTotalCost(),
               style: TextDecor.robo18Semi.copyWith(
                 color: Colors.red,
               ),
@@ -268,6 +300,7 @@ class _BillProductState extends State<BillProduct> {
             InkWell(
               onTap: () {
                 //Go to Order
+                _presenter?.handleOrder(address);
               },
               child: Container(
                 alignment: Alignment.center,
@@ -289,5 +322,38 @@ class _BillProductState extends State<BillProduct> {
         ),
       ),
     );
+  }
+
+  @override
+  void onBuy() {
+    UtilWidgets.createSnackBar(context, "Order succeeded");
+  }
+
+  @override
+  void onBuyFailed(String message) {
+    UtilWidgets.createSnackBar(context, message);
+  }
+
+  @override
+  void onPopContext() {
+    Navigator.of(context, rootNavigator: true).pop();
+  }
+
+  @override
+  void onWaitingProgressBar() {
+    UtilWidgets.createLoadingWidget(context);
+  }
+
+  @override
+  void onBack() {
+    Navigator.pop(context);
+  }
+
+  @override
+  void onChangeData() {
+    if (context.mounted == false) {
+      return;
+    }
+    setState(() {});
   }
 }

@@ -14,6 +14,8 @@ import 'package:pcplus/views/widgets/bottom/bottom_bar_custom.dart';
 import 'package:pcplus/views/widgets/listItem/cart_item.dart';
 import 'package:pcplus/views/widgets/util_widgets.dart';
 
+import 'bill/bill_product.dart';
+
 class CartShoppingScreen extends StatefulWidget {
   const CartShoppingScreen({super.key});
   static const String routeName = 'cart_shopping_screen';
@@ -61,10 +63,6 @@ class _CartShoppingScreenState extends State<CartShoppingScreen> implements Cart
 
   void _deleteItem(int index) {
     _presenter?.handleDelete(index);
-  }
-
-  int _getCheckedCount() {
-    return _cartSingleton.inCartItems.where((element) => element.isCheck).length;
   }
 
   @override
@@ -121,6 +119,7 @@ class _CartShoppingScreenState extends State<CartShoppingScreen> implements Cart
                         price: itemData.item!.price!,
                         stock: itemData.item!.stock!,
                         onDelete: () => _deleteItem(index),
+                        onPressed: () => _presenter?.handleItemPressed(_cartSingleton.inCartItems[index]),
                         onChangeAmount: (value) => _presenter?.handleChangeItemAmount(index, value),
                     );
                   },
@@ -166,7 +165,7 @@ class _CartShoppingScreenState extends State<CartShoppingScreen> implements Cart
                       color: Palette.primaryColor,
                     ),
                     child: Text(
-                      'Mua hàng (${_getCheckedCount()})',
+                      'Mua hàng (${_presenter?.getCheckedCount()})',
                       style: TextDecor.robo16Semi,
                     ),
                   ),
@@ -184,7 +183,7 @@ class _CartShoppingScreenState extends State<CartShoppingScreen> implements Cart
 
   @override
   void onBuy() {
-    Navigator.of(context).pushNamed(DetailProduct.routeName);
+    Navigator.of(context).pushNamed(BillProduct.routeName);
   }
 
   @override
@@ -217,5 +216,15 @@ class _CartShoppingScreenState extends State<CartShoppingScreen> implements Cart
     setState(() {
       totalPrice = _presenter!.calculateTotalPrice();
     });
+  }
+
+  @override
+  void onItemPressed() {
+    Navigator.of(context).pushNamed(DetailProduct.routeName);
+  }
+
+  @override
+  void onBuyFailed(String message) {
+    UtilWidgets.createSnackBar(context, message);
   }
 }

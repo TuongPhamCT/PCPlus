@@ -1,4 +1,4 @@
-import 'package:pcplus/views/order/order_address_model.dart';
+import 'package:pcplus/models/orders/order_address_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/users/user_model.dart';
 

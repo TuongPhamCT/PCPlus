@@ -22,7 +22,6 @@ class ListItemDataBuilder implements ListObjectBuilderInterface {
 
   Future<void> build() async {
     final UserRepository userRepo = UserRepository();
-    final InteractionRepository interactionRepo = InteractionRepository();
     if (items == null || shops == null) {
       return;
     }
@@ -42,7 +41,7 @@ class ListItemDataBuilder implements ListObjectBuilderInterface {
           shop: shop
       );
 
-      await data.loadRating(interactionRepo);
+      await data.loadRating();
 
       result!.add(data);
     }
