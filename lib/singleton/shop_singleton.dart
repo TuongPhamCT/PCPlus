@@ -61,6 +61,7 @@ class ShopSingleton extends PublisherInterface {
   }
 
   Future<void> addData(ItemModel itemModel) async {
+    await _itemRepository.addItemToFirestore(itemModel);
     itemModels.add(itemModel);
     ItemData newData = ItemData(
       shop: shop,
@@ -68,7 +69,6 @@ class ShopSingleton extends PublisherInterface {
       rating: 0,
     );
     itemsData.add(newData);
-    await _itemRepository.addItemToFirestore(itemModel);
     reorder();
     notifySubscribers();
   }
