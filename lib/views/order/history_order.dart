@@ -89,6 +89,9 @@ class _HistoryOrderState extends State<HistoryOrder>
 
   @override
   void onLoadDataSucceeded() {
+    if (!mounted) {
+      return;
+    }
     setState(() {
       isLoading = false;
       orders = _buildListStrategy.execute();

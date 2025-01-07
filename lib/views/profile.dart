@@ -309,14 +309,26 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 ),
                               InkWell(
                                 onTap: () async {
-                                  await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const HistoryOrder(
-                                        orderType: OrderStatus.AWAIT_DELIVERY,
+                                  if (isShop) {
+                                    await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const HistoryOrder(
+                                          orderType: OrderStatus.AWAIT_PICKUP,
+                                        ),
                                       ),
-                                    ),
-                                  );
+                                    );
+                                  } else {
+                                    await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const HistoryOrder(
+                                          orderType: OrderStatus.AWAIT_PICKUP,
+                                        ),
+                                      ),
+                                    );
+                                  }
+
                                 },
                                 child: Column(
                                   children: [
@@ -334,7 +346,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                               color: Palette.main1,
                                             ),
                                           ),
-                                          awaitDelivery > 0
+                                          (isShop ? awaitPickUp > 0 : awaitDelivery > 0)
                                               ? Positioned(
                                                   right: 0,
                                                   top: 0,
@@ -349,7 +361,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                           Palette.primaryColor,
                                                     ),
                                                     child: Text(
-                                                      '$awaitDelivery',
+                                                      '${isShop ? awaitPickUp : awaitDelivery}',
                                                       style: TextDecor.robo16
                                                           .copyWith(
                                                         color: Colors.white,
