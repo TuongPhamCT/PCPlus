@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pcplus/contract/history_order_contract.dart';
 import 'package:pcplus/presenter/history_order_presenter.dart';
+import 'package:pcplus/strategy/history_order/confirm_orders_build_strategy.dart';
+import 'package:pcplus/strategy/history_order/history_order_strategy.dart';
 import 'package:pcplus/themes/text_decor.dart';
 import 'package:pcplus/views/widgets/listItem/history_item.dart';
 
@@ -19,9 +21,14 @@ class HistoryOrder extends StatefulWidget {
 class _HistoryOrderState extends State<HistoryOrder> implements HistoryOrderContract {
   HistoryOrderPresenter? _presenter;
 
+  late HistoryOrderBuildListStrategy _buildListStrategy;
+
+  List<Widget> orders = [];
+
   @override
   void initState() {
     _presenter = HistoryOrderPresenter(this, orderType: widget.orderType);
+    _buildListStrategy = ConfirmOrdersBuildStrategy(_presenter);
     super.initState();
   }
 
@@ -64,7 +71,7 @@ class _HistoryOrderState extends State<HistoryOrder> implements HistoryOrderCont
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
-              return const HistoryItem();
+              return null;
             },
           ),
         ),
@@ -79,7 +86,9 @@ class _HistoryOrderState extends State<HistoryOrder> implements HistoryOrderCont
 
   @override
   void onLoadDataSucceeded() {
-    // TODO: implement onLoadDataSucceeded
+    setState(() {
+      orders = _buildListStrategy.execute();
+    });
   }
 
   @override
