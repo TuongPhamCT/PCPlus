@@ -53,10 +53,6 @@ class _HomeScreenState extends State<HomeScreen> implements HomeContract {
     await _presenter?.getData();
   }
 
-  Future<void> fetchData() async {
-
-  }
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;

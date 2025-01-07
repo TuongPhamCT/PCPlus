@@ -47,7 +47,25 @@ class OrderRepository {
             .get();
       final orders = querySnapshot
           .docs
-          .map((doc) => OrderModel.fromJson(doc as Map<String, dynamic>))
+          .map((doc) => OrderModel.fromJson(doc.data() as Map<String, dynamic>))
+          .toList();
+      return orders;
+    } catch (e) {
+      return [];
+    }
+  }
+
+  Future<List<OrderModel>> getAllOrdersFromUserByStatus(String userID, String status) async {
+    try {
+      final QuerySnapshot querySnapshot =
+      await _storage.collection(UserModel.collectionName)
+          .doc(userID)
+          .collection(OrderModel.collectionName)
+          .where('status', isEqualTo: status)
+          .get();
+      final orders = querySnapshot
+          .docs
+          .map((doc) => OrderModel.fromJson(doc.data() as Map<String, dynamic>))
           .toList();
       return orders;
     } catch (e) {

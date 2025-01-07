@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:gap/gap.dart';
 import 'package:pcplus/config/asset_helper.dart';
+import 'package:pcplus/const/order_status.dart';
 import 'package:pcplus/contract/profile_screen_contract.dart';
 import 'package:pcplus/presenter/profile_screen_presenter.dart';
 import 'package:pcplus/themes/palette/palette.dart';
@@ -32,6 +33,11 @@ class _ProfileScreenState extends State<ProfileScreen>
   String _userName = "";
   bool _isLoading = false;
   bool isShop = false;
+
+  int awaitConfirm = 0;
+  int awaitPickUp = 0;
+  int awaitDelivery = 0;
+  int awaitRating = 0;
 
   Future<void> launchEmailApp() async {
     final Uri emailLaunchUri = Uri(
@@ -149,9 +155,15 @@ class _ProfileScreenState extends State<ProfileScreen>
                                 style: TextDecor.profileIntroText,
                               ),
                               InkWell(
-                                onTap: () {
-                                  Navigator.of(context)
-                                      .pushNamed(HistoryOrder.routeName);
+                                onTap: () async {
+                                  await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const HistoryOrder(
+                                        orderType: "",
+                                      ),
+                                    ),
+                                  );
                                 },
                                 child: Text(
                                   'Xem lịch sử đơn hàng',
@@ -167,7 +179,16 @@ class _ProfileScreenState extends State<ProfileScreen>
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               InkWell(
-                                onTap: () {},
+                                onTap: () async {
+                                  await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const HistoryOrder(
+                                        orderType: OrderStatus.PENDING_CONFIRMATION,
+                                      ),
+                                    ),
+                                  );
+                                },
                                 child: Column(
                                   children: [
                                     SizedBox(
@@ -217,7 +238,16 @@ class _ProfileScreenState extends State<ProfileScreen>
                               ),
                               if (!isShop)
                                 InkWell(
-                                  onTap: () {},
+                                  onTap: () async {
+                                    await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const HistoryOrder(
+                                          orderType: OrderStatus.AWAIT_PICKUP,
+                                        ),
+                                      ),
+                                    );
+                                  },
                                   child: Column(
                                     children: [
                                       SizedBox(
@@ -266,7 +296,16 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   ),
                                 ),
                               InkWell(
-                                onTap: () {},
+                                onTap: () async {
+                                  await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const HistoryOrder(
+                                        orderType: OrderStatus.AWAIT_DELIVERY,
+                                      ),
+                                    ),
+                                  );
+                                },
                                 child: Column(
                                   children: [
                                     SizedBox(
@@ -316,7 +355,16 @@ class _ProfileScreenState extends State<ProfileScreen>
                               ),
                               if (!isShop)
                                 InkWell(
-                                  onTap: () {},
+                                  onTap: () async {
+                                    await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const HistoryOrder(
+                                          orderType: OrderStatus.AWAIT_RATING,
+                                        ),
+                                      ),
+                                    );
+                                  },
                                   child: Column(
                                     children: [
                                       SizedBox(
@@ -537,6 +585,10 @@ class _ProfileScreenState extends State<ProfileScreen>
       _userName = _presenter!.user!.name!;
       _userAvatarUrl = _presenter!.user!.avatarUrl!;
       _isLoading = false;
+      awaitDelivery = _presenter!.awaitDelivery;
+      awaitConfirm = _presenter!.awaitConfirm;
+      awaitPickUp = _presenter!.awaitPickup;
+      awaitRating = _presenter!.awaitRating;
     });
   }
 
