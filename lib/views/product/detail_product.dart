@@ -823,7 +823,7 @@ class _DetailProductState extends State<DetailProduct> implements DetailProductC
                                       InkWell(
                                         onTap: () {
                                           setBottomSheetState(() {
-                                            color = 2;
+                                            color = 1;
                                           });
                                         },
                                         child: Container(
@@ -880,7 +880,7 @@ class _DetailProductState extends State<DetailProduct> implements DetailProductC
                                       InkWell(
                                         onTap: () {
                                           setBottomSheetState(() {
-                                            color = 3;
+                                            color = 2;
                                           });
                                         },
                                         child: Container(
@@ -1138,5 +1138,10 @@ class _DetailProductState extends State<DetailProduct> implements DetailProductC
   @override
   void onWaitingProgressBar() {
     UtilWidgets.createLoadingWidget(context);
+  }
+
+  @override
+  void onError(String message) {
+    UtilWidgets.createSnackBar(context, message);
   }
 }

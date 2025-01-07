@@ -1,3 +1,5 @@
+import 'package:mailer/mailer.dart';
+
 class OrderAddressModel {
 
   String? receiverName;
@@ -26,5 +28,20 @@ class OrderAddressModel {
         address1: json['address1'] as String,
         address2: json['address2'] as String,
     );
+  }
+
+  static final emptyAddress = OrderAddressModel(
+      receiverName: "",
+      phone: "",
+      address1: "",
+      address2: ""
+  );
+
+  bool isValid() {
+    return
+        receiverName!.isNotEmpty
+        && phone!.isNotEmpty
+        && address1!.isNotEmpty
+        && address2!.isNotEmpty;
   }
 }

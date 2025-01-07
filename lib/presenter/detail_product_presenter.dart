@@ -33,10 +33,23 @@ class DetailProductPresenter {
     _view.onAddToCart();
   }
 
-  void handleBuyNow({
+  Future<void> handleBuyNow({
     required int colorIndex,
     required int amount
-  }) {
-    _view.onBuyNow();
+  }) async {
+    _view.onWaitingProgressBar();
+    bool result = await _cartSingleton.handleBuyNow(
+        data: _itemSingleton.itemData!,
+        colorIndex: colorIndex,
+        amount: amount
+    );
+    if (result) {
+      await _cartSingleton.prepareForPayment();
+      _view.onPopContext();
+      _view.onBuyNow();
+    } else {
+      _view.onPopContext();
+      _view.onError("Sản phẩm này hiện không mua được");
+    }
   }
 }

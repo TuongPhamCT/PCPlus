@@ -1,12 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:gap/gap.dart';
+import 'package:pcplus/services/utility.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 import 'package:pcplus/views/bill/delivery_choice.dart';
 
 class PaymentProductItem extends StatefulWidget {
-  const PaymentProductItem({super.key});
+  final String shopName;
+  final String productName;
+  final String imageUrl;
+  final String color;
+  final int price;
+  final int amount;
+  final Function(String)? onChangeNote;
+  final Function(String, int)? onChangeDeliveryMethod;
+  const PaymentProductItem({
+    super.key,
+    required this.shopName,
+    required this.productName,
+    required this.imageUrl,
+    required this.color,
+    required this.price,
+    required this.amount,
+    this.onChangeNote,
+    this.onChangeDeliveryMethod,
+  });
 
   @override
   State<PaymentProductItem> createState() => _PaymentProductItemState();
@@ -14,8 +33,22 @@ class PaymentProductItem extends StatefulWidget {
 
 class _PaymentProductItemState extends State<PaymentProductItem> {
   String method = 'Nhanh';
+  int deliveryCost = 0;
   @override
   Widget build(BuildContext context) {
+    switch (method) {
+      case 'Nhanh':
+        deliveryCost = 25000;
+        break;
+      case 'Tiet Kiem':
+        deliveryCost = 12500;
+        break;
+      case 'Hoa Toc':
+        deliveryCost = 120000;
+        break;
+    }
+    widget.onChangeDeliveryMethod!(method, deliveryCost);
+
     return Container(
       margin: const EdgeInsets.all(12),
       padding: const EdgeInsets.all(8),
@@ -37,7 +70,7 @@ class _PaymentProductItemState extends State<PaymentProductItem> {
               ),
               const Gap(5),
               Text(
-                'Shop Name',
+                widget.shopName,
                 style: TextDecor.robo17Medi,
               )
             ],
@@ -50,9 +83,8 @@ class _PaymentProductItemState extends State<PaymentProductItem> {
                 width: 85,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
-                  image: const DecorationImage(
-                    image: NetworkImage(
-                        'https://cdn.tgdd.vn/Files/2022/01/30/1413644/cac-thuong-hieu-tai-nghe-tot-va-duoc-ua-chuong-nha.jpg'),
+                  image: DecorationImage(
+                    image: NetworkImage(widget.imageUrl),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -66,7 +98,7 @@ class _PaymentProductItemState extends State<PaymentProductItem> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Product Name Here ',
+                      widget.productName,
                       style: TextDecor.robo18,
                       maxLines: 2,
                     ),
@@ -79,13 +111,13 @@ class _PaymentProductItemState extends State<PaymentProductItem> {
                     Row(
                       children: [
                         Text(
-                          'đ 1,000,000',
+                          Utility.formatCurrency(widget.price),
                           style: TextDecor.robo16Medi.copyWith(
                             color: Colors.red,
                           ),
                         ),
                         Expanded(child: Container()),
-                        Text('x1', style: TextDecor.robo16Medi),
+                        Text('x${widget.amount}', style: TextDecor.robo16Medi),
                       ],
                     ),
                   ],
@@ -103,6 +135,12 @@ class _PaymentProductItemState extends State<PaymentProductItem> {
             minLines: 1,
             maxLines: 100,
             style: TextDecor.robo15,
+            onChanged: (text) {
+              widget.onChangeNote!(text);
+            },
+            onTapOutside: (event) {
+              FocusScope.of(context).unfocus();
+            },
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.all(8),
               hintText: 'Write your note here',
@@ -308,10 +346,10 @@ class _PaymentProductItemState extends State<PaymentProductItem> {
           const Gap(10),
           Row(
             children: [
-              Text('Total cost (3 products)', style: TextDecor.robo16Medi),
+              Text('Total cost (${widget.amount} products)', style: TextDecor.robo16Medi),
               Expanded(child: Container()),
               Text(
-                '1,120,000 VNĐ',
+                Utility.formatCurrency(widget.amount * widget.price + deliveryCost),
                 style: TextDecor.robo16Medi.copyWith(
                   color: Colors.red,
                 ),

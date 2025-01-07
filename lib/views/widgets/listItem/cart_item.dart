@@ -19,6 +19,7 @@ class CartItem extends StatefulWidget {
   final void Function(bool?)? onChanged;
   final void Function()? onDelete;
   final void Function(int amount)? onChangeAmount;
+  final void Function()? onPressed;
   const CartItem({
     super.key,
     required this.shopName,
@@ -28,6 +29,7 @@ class CartItem extends StatefulWidget {
     required this.location,
     required this.imageUrl,
     required this.onChanged,
+    required this.onPressed,
     required this.isCheck,
     required this.price,
     required this.stock,
@@ -77,7 +79,7 @@ class _CartItemState extends State<CartItem> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return GestureDetector(
-      onTap: () {},
+      onTap: widget.onPressed,
       child: Container(
         margin: const EdgeInsets.only(bottom: 10, left: 16, right: 16),
         padding: const EdgeInsets.only(top: 10, right: 16, bottom: 10),

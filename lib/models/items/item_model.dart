@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pcplus/models/orders/order_item_model.dart';
 
 import '../../services/utility.dart';
 
@@ -115,6 +116,23 @@ class ItemModel {
         && status == model.status
         && Utility.listStringIsEqual(reviewImages, model.reviewImages)
         && Utility.listStringIsEqual(colors, model.colors);
+  }
+
+  OrderItemModel toOrderItemModel({
+    required int colorIndex
+  }) {
+    return OrderItemModel(
+      itemID: itemID,
+      name: name,
+      itemType: itemType,
+      sellerID: sellerID,
+      addDate: addDate,
+      price: price,
+      color: colors!.firstOrNull ?? "",
+      description: description,
+      image: image,
+      detail: detail
+    );
   }
 }
 

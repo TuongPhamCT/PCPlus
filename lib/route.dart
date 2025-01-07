@@ -13,7 +13,8 @@ import 'package:pcplus/views/home.dart';
 import 'package:pcplus/views/login.dart';
 import 'package:pcplus/views/no_network.dart';
 import 'package:pcplus/views/notification.dart';
-import 'package:pcplus/views/order/history_oder.dart';
+import 'package:pcplus/views/order/history_order.dart';
+import 'package:pcplus/models/orders/order_address_model.dart';
 import 'package:pcplus/views/order/rating.dart';
 import 'package:pcplus/views/product/detail_product.dart';
 import 'package:pcplus/views/profile.dart';
@@ -41,7 +42,7 @@ final Map<String, WidgetBuilder> routes = {
   DetailProduct.routeName: (context) => const DetailProduct(),
   BillProduct.routeName: (context) => const BillProduct(),
   DeliveryChoice.routeName: (context) => const DeliveryChoice(),
-  DeliveryInfor.routeName: (context) => const DeliveryInfor(),
+  DeliveryInfor.routeName: (context) => DeliveryInfor(currentAddress: OrderAddressModel.emptyAddress),
   SearchScreen.routeName: (context) => const SearchScreen(),
   HistoryOrder.routeName: (context) => const HistoryOrder(),
   RatingScreen.routeName: (context) => const RatingScreen(),

@@ -68,4 +68,30 @@ class RatingRepository {
       return [];
     }
   }
+
+  Future<double> getRatingValueByItemID(String itemId) async {
+    try {
+      final QuerySnapshot querySnapshot =
+        await _storage.collection(ItemModel.collectionName)
+                .doc(itemId)
+                .collection(RatingModel.collectionName)
+                .get();
+      final items = querySnapshot
+          .docs
+          .map((doc) => RatingModel.fromJson(doc.id, doc.data() as Map<String, dynamic>))
+          .toList();
+      if (items.isEmpty) {
+        return 0;
+      }
+      double rating = 0;
+      for (RatingModel item in items) {
+        rating = item.rating!;
+      }
+      rating = rating / items.length;
+      return rating;
+    } catch (e) {
+      print(e);
+      return 0;
+    }
+  }
 }

@@ -5,4 +5,6 @@ abstract class CartShoppingScreenContract {
   void onBuy();
   void onSelectItem();
   void onDeleteItem();
+  void onItemPressed();
+  void onBuyFailed(String message);
 }

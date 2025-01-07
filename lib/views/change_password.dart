@@ -2,11 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:gap/gap.dart';
 import 'package:pcplus/config/asset_helper.dart';
+import 'package:pcplus/contract/change_password_contract.dart';
+import 'package:pcplus/presenter/change_password_presenter.dart';
+import 'package:pcplus/singleton/user_singleton.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 import 'package:pcplus/views/widgets/button/accept_button.dart';
 import 'package:pcplus/views/widgets/button/cancel_button.dart';
 import 'package:pcplus/views/widgets/profile/background_container.dart';
+import 'package:pcplus/views/widgets/util_widgets.dart';
+
+import '../models/users/user_model.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
@@ -16,12 +22,26 @@ class ChangePasswordScreen extends StatefulWidget {
   State<ChangePasswordScreen> createState() => _ChangePasswordScreenState();
 }
 
-class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
-  final String _userAvatarUrl = "";
+class _ChangePasswordScreenState extends State<ChangePasswordScreen> implements ChangePasswordContract {
+  ChangePasswordPresenter? _presenter;
+  final UserSingleton _userSingleton = UserSingleton.getInstance();
+  UserModel? user;
+  String _userAvatarUrl = "";
 
   bool _oldPasswordVisible = false;
   bool _newPasswordVisible = false;
   bool _rePasswordVisible = false;
+
+  final TextEditingController _oldPassController = TextEditingController();
+  final TextEditingController _newPassController = TextEditingController();
+  final TextEditingController _rePassController = TextEditingController();
+
+  @override
+  void initState() {
+    user = _userSingleton.currentUser;
+    _userAvatarUrl = user!.avatarUrl ?? "";
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,14 +81,14 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               Container(
                 alignment: Alignment.center,
                 child: Text(
-                  'Nguyen Van A',
+                  user!.name!,
                   style: TextDecor.profileName,
                 ),
               ),
               Container(
                 alignment: Alignment.center,
                 child: Text(
-                  'Demo@gmail.com',
+                  user!.email!,
                   style: TextDecor.robo16Medi,
                 ),
               ),
@@ -81,6 +101,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   style: TextDecor.robo16Medi,
                   keyboardType: TextInputType.text,
                   obscureText: !_oldPasswordVisible,
+                  controller: _oldPassController,
                   decoration: InputDecoration(
                     label: Text(
                       'Old Password',
@@ -112,6 +133,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   onTapOutside: (event) {
                     FocusScope.of(context).unfocus();
                   },
+                  controller: _newPassController,
                   style: TextDecor.robo16Medi,
                   keyboardType: TextInputType.text,
                   obscureText: !_newPasswordVisible,
@@ -149,6 +171,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   style: TextDecor.robo16Medi,
                   keyboardType: TextInputType.text,
                   obscureText: !_rePasswordVisible,
+                  controller: _rePassController,
                   decoration: InputDecoration(
                     label: Text(
                       'Confirm Password',
@@ -177,7 +200,13 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               ),
               const Gap(15),
               AcceptButton(
-                onPressed: () {},
+                onPressed: () {
+                  _presenter?.handleChange(
+                      oldPass: _oldPassController.text,
+                      newPass: _newPassController.text,
+                      rePass: _rePassController.text,
+                  );
+                },
                 name: 'CHANGE',
               ),
               const Gap(10),
@@ -191,5 +220,37 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void onChangeSucceeded() {
+    UtilWidgets.createDialog(
+        context,
+        UtilWidgets.NOTIFICATION,
+        "Đổi mật khẩu thành công",
+        () {
+          Navigator.of(context, rootNavigator: true).pop();
+        }
+    );
+    setState(() {
+      _rePassController.clear();
+      _newPassController.clear();
+      _oldPassController.clear();
+    });
+  }
+
+  @override
+  void onChangedFailed(String message) {
+    UtilWidgets.createSnackBar(context, message);
+  }
+
+  @override
+  void onPopContext() {
+    Navigator.of(context, rootNavigator: true).pop();
+  }
+
+  @override
+  void onWaitingProgressBar() {
+    UtilWidgets.createLoadingWidget(context);
   }
 }
