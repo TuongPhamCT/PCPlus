@@ -53,7 +53,8 @@ class MixOrdersBuildStrategy extends HistoryOrderBuildListStrategy {
             break;
         }
       }
-      widgets.add(widget!);
+      widget ??= createNormalOrderWidget(order);
+      widgets.add(widget);
     }
     return widgets;
   }

@@ -4,6 +4,8 @@ import 'package:pcplus/presenter/history_order_presenter.dart';
 import 'package:pcplus/strategy/history_order/history_order_strategy.dart';
 import 'package:pcplus/themes/text_decor.dart';
 
+import '../widgets/util_widgets.dart';
+
 class HistoryOrder extends StatefulWidget {
   final String orderType;
   const HistoryOrder({super.key, required this.orderType});
@@ -20,6 +22,7 @@ class _HistoryOrderState extends State<HistoryOrder>
   late HistoryOrderBuildListStrategy _buildListStrategy;
 
   List<Widget> orders = [];
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -61,16 +64,20 @@ class _HistoryOrderState extends State<HistoryOrder>
         decoration: BoxDecoration(
           color: Colors.grey.withOpacity(0.5),
         ),
-        child: SingleChildScrollView(
-          child: ListView.builder(
-            itemCount: orders.length,
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              return orders[index];
-            },
-          ),
-        ),
+        child:
+          isLoading ?
+            UtilWidgets.getLoadingWidget()
+          :
+            SingleChildScrollView(
+              child: ListView.builder(
+                itemCount: orders.length,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) {
+                  return orders[index];
+                },
+              ),
+            ),
       ),
     );
   }
@@ -83,17 +90,18 @@ class _HistoryOrderState extends State<HistoryOrder>
   @override
   void onLoadDataSucceeded() {
     setState(() {
+      isLoading = false;
       orders = _buildListStrategy.execute();
     });
   }
 
   @override
   void onPopContext() {
-    // TODO: implement onPopContext
+    Navigator.of(context, rootNavigator: true).pop();
   }
 
   @override
   void onWaitingProgressBar() {
-    // TODO: implement onWaitingProgressBar
+    UtilWidgets.createLoadingWidget(context);
   }
 }
