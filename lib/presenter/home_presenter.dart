@@ -53,7 +53,7 @@ class HomePresenter {
     // for (String itemId in itemIds) {
     //   recommendedItems.add(await _itemRepo.getItemById(itemId));
     // }
-    List<ItemModel> recommendItemModels = testTool.getRandomItemModelList(10);
+    List<ItemModel> recommendItemModels = await _itemRepo.getRandomItems(20);
     await director.makeListItemData(
         builder: builder,
         items: recommendItemModels,
