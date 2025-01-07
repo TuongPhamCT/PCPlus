@@ -37,7 +37,7 @@ class UserRepository {
     final QuerySnapshot querySnapshot = await _storage.collection(UserModel.collectionName).get();
     final users = querySnapshot
         .docs
-        .map((doc) => UserModel.fromJson(doc as Map<String, dynamic>))
+        .map((doc) => UserModel.fromJson(doc.data() as Map<String, dynamic>))
         .toList();
     return users;
   }
