@@ -107,4 +107,19 @@ class ItemRepository {
       return [];
     }
   }
+
+  Future<List<ItemModel>> getRandomItems(int limit) async {
+    try {
+      final QuerySnapshot querySnapshot = await _storage.collection(ItemModel.collectionName)
+          .get();
+      List<ItemModel> items = querySnapshot
+          .docs
+          .map((doc) => ItemModel.fromJson(doc.id, doc.data() as Map<String, dynamic>))
+          .toList();
+      items.shuffle();
+      return items.getRange(0, limit).toList();
+    } catch (e) {
+      return [];
+    }
+  }
 }
