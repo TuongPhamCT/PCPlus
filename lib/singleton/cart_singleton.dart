@@ -264,8 +264,7 @@ class CartSingleton {
 
       OrderModel newOrder = OrderModel(
           orderID: await orderRepository.generateID(),
-          userID: userId,
-          receiverName: _userSingleton.currentUser!.name,
+          shopName: data.shop!.name,
           orderDate: DateTime.now(),
           status: OrderStatus.PENDING_CONFIRMATION,
           address: address,

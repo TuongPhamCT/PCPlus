@@ -4,7 +4,31 @@ import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 
 class HistoryItem extends StatefulWidget {
-  const HistoryItem({super.key});
+  final String shopName;
+  final String status;
+  final String productName;
+  final String address;
+  final int price;
+  final int amount;
+  final bool isShop;
+  final Function()? onValidateOrder;
+  final Function(String)? onCancelOrder;
+  final Function()? onReceivedOrder;
+  final Function()? onSentOrder;
+  const HistoryItem({
+    super.key,
+    required this.shopName,
+    required this.status,
+    required this.productName,
+    required this.address,
+    required this.price,
+    required this.amount,
+    required this.isShop,
+    this.onValidateOrder,
+    this.onCancelOrder,
+    this.onReceivedOrder,
+    this.onSentOrder
+  });
 
   @override
   State<HistoryItem> createState() => _HistoryItemState();
@@ -18,6 +42,13 @@ class _HistoryItemState extends State<HistoryItem> {
   bool choDanhGia = false;
   bool choDuyetDon = false;
   bool choGuiHang = false;
+
+  @override
+  void initState() {
+
+    super.initState();
+  }
+
   void _showCancelOrderDialog(BuildContext context) {
     TextEditingController reasonController = TextEditingController();
     showDialog(
