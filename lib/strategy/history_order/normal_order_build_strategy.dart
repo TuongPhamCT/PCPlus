@@ -4,9 +4,9 @@ import 'package:pcplus/strategy/history_order/history_order_strategy.dart';
 import '../../models/orders/order_model.dart';
 import '../../views/widgets/listItem/history_item.dart';
 
-class ConfirmOrdersBuildStrategy extends HistoryOrderBuildListStrategy {
+class NormalOrdersBuildStrategy extends HistoryOrderBuildListStrategy {
 
-  ConfirmOrdersBuildStrategy(presenter) {
+  NormalOrdersBuildStrategy(presenter) {
     this.presenter = presenter;
   }
 
@@ -16,6 +16,7 @@ class ConfirmOrdersBuildStrategy extends HistoryOrderBuildListStrategy {
     for (OrderModel order in presenter!.orders) {
       HistoryItem widget = HistoryItem(
         shopName: order.shopName!,
+        isShop: presenter!.isShop,
         productName: order.itemModel!.name!,
         amount: order.amount!,
         price: order.itemModel!.price!,
