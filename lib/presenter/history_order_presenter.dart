@@ -29,10 +29,9 @@ class HistoryOrderPresenter {
   UserModel? get user => _userSingleton.currentUser;
 
   List<OrderModel> orders = [];
-  bool isShop = false;
+  bool get isShop => _userSingleton.isShop();
 
   Future<void> getData() async {
-    isShop = user!.isSeller!;
     if (orderType.isEmpty) {
       orders = await _orderRepo.getAllOrdersFromUser(user!.userID!);
     } else {
