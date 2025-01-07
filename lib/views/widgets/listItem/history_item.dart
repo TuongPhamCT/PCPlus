@@ -498,7 +498,8 @@ class _HistoryItemState extends State<HistoryItem> {
                     alignment: Alignment.centerRight,
                     child: InkWell(
                       onTap: () {
-                        widget.onReceivedOrder!;
+                        // widget.onReceivedOrder!;
+                        widget.presenter!.handleAlreadyReceivedOrder(widget.order!);
                       },
                       child: Container(
                         alignment: Alignment.center,

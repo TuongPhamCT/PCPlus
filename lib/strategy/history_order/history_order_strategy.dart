@@ -37,6 +37,8 @@ abstract class HistoryOrderBuildListStrategy {
       onReceivedOrder: () {
         presenter?.handleAlreadyReceivedOrder(order);
       },
+      presenter: presenter,
+      order: order,
     );
   }
 
