@@ -229,6 +229,7 @@ class _HistoryItemState extends State<HistoryItem> {
                 String reason = reasonController.text;
                 Navigator.of(context).pop(); // Đóng dialog
                 // Thực hiện logic với lý do huỷ
+                widget.onCancelOrder!(reason);
                 print("Lý do huỷ đơn: $reason");
               },
               child: const Text("Confirm"),
@@ -394,15 +395,13 @@ class _HistoryItemState extends State<HistoryItem> {
               children: [
                 if (!isShop && !choDuyetDon) Expanded(child: Container()),
                 if (isShop && choDuyetDon)
-                  Row(
-                    children: [
-                      Container(
-                        width: size.width - 80,
-                        alignment: Alignment.centerRight,
-                        child: InkWell(
-                          onTap: () {
-                            // _showCancelOrderDialog(context);
-                          },
+                  SizedBox(
+                    width: size.width - 45,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        InkWell(
+                          onTap: () {},
                           child: Container(
                             alignment: Alignment.center,
                             height: 45,
@@ -417,13 +416,9 @@ class _HistoryItemState extends State<HistoryItem> {
                             ),
                           ),
                         ),
-                      ),
-                      Container(
-                        width: size.width - 80,
-                        alignment: Alignment.centerRight,
-                        child: InkWell(
+                        InkWell(
                           onTap: () {
-                            // _showCancelOrderDialog(context);
+                            widget.onValidateOrder!();
                           },
                           child: Container(
                             alignment: Alignment.center,
@@ -439,8 +434,8 @@ class _HistoryItemState extends State<HistoryItem> {
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 if (isShop && choGuiHang)
                   Container(
@@ -448,7 +443,7 @@ class _HistoryItemState extends State<HistoryItem> {
                     alignment: Alignment.centerRight,
                     child: InkWell(
                       onTap: () {
-                        // _showCancelOrderDialog(context);
+                        widget.onSentOrder!;
                       },
                       child: Container(
                         alignment: Alignment.center,
@@ -471,7 +466,7 @@ class _HistoryItemState extends State<HistoryItem> {
                     alignment: Alignment.centerRight,
                     child: InkWell(
                       onTap: () {
-                        // _showCancelOrderDialog(context);
+                        _showCancelOrderDialog(context);
                       },
                       child: Container(
                         alignment: Alignment.center,
@@ -494,7 +489,7 @@ class _HistoryItemState extends State<HistoryItem> {
                     alignment: Alignment.centerRight,
                     child: InkWell(
                       onTap: () {
-                        // _showCancelOrderDialog(context);
+                        widget.onReceivedOrder!;
                       },
                       child: Container(
                         alignment: Alignment.center,
