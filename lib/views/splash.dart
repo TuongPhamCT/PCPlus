@@ -4,6 +4,7 @@ import 'package:pcplus/config/asset_helper.dart';
 import 'package:pcplus/models/users/user_model.dart';
 import 'package:pcplus/services/authentication_service.dart';
 import 'package:pcplus/services/pref_service.dart';
+import 'package:pcplus/services/test_tool.dart';
 import 'package:pcplus/singleton/user_singleton.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/views/home.dart';
@@ -56,8 +57,9 @@ class _SplashScreenState extends State<SplashScreen>
       return;
     }
     String password = await _pref.getPassword();
-    UserCredential? userCredential = await _auth.signInWithEmailAndPassword(loggedUser.email!, password);
-    if(userCredential != null) {
+    UserCredential? userCredential =
+        await _auth.signInWithEmailAndPassword(loggedUser.email!, password);
+    if (userCredential != null) {
       loginSucceeded = true;
       UserSingleton.getInstance().loadUser(loggedUser);
     }
@@ -71,7 +73,6 @@ class _SplashScreenState extends State<SplashScreen>
       } else {
         Navigator.of(context).pushNamed(HomeScreen.routeName);
       }
-
     } else {
       Navigator.of(context).pushNamed(LoginScreen.routeName);
     }
