@@ -10,6 +10,7 @@ class HistoryItem extends StatefulWidget {
   final String address;
   final int price;
   final int amount;
+  final bool isShop;
   final Function()? onValidateOrder;
   final Function(String)? onCancelOrder;
   final Function()? onReceivedOrder;
@@ -22,6 +23,7 @@ class HistoryItem extends StatefulWidget {
     required this.address,
     required this.price,
     required this.amount,
+    required this.isShop,
     this.onValidateOrder,
     this.onCancelOrder,
     this.onReceivedOrder,

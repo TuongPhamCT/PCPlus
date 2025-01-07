@@ -8,5 +8,5 @@ abstract class OrderStatus {
   // Cho danh gia
   static const AWAIT_RATING = "AwaitRating";
   // Hoan thanh
-  static const COMPLETE = "Complete";
+  static const COMPLETED = "Completed";
 }
