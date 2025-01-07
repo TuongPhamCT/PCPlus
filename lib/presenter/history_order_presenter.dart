@@ -32,6 +32,7 @@ class HistoryOrderPresenter {
   bool isShop = false;
 
   Future<void> getData() async {
+    isShop = user!.isSeller!;
     if (orderType.isEmpty) {
       orders = await _orderRepo.getAllOrdersFromUser(user!.userID!);
     } else {

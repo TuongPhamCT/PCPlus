@@ -17,7 +17,7 @@ class MixOrdersBuildStrategy extends HistoryOrderBuildListStrategy {
     for (OrderModel order in presenter!.orders) {
       HistoryItem? widget;
       if (presenter!.isShop) {
-        switch (presenter!.orderType) {
+        switch (order.status) {
           case OrderStatus.PENDING_CONFIRMATION:
             widget = createNeedConfirmOrderWidget(order);
             break;
@@ -35,7 +35,7 @@ class MixOrdersBuildStrategy extends HistoryOrderBuildListStrategy {
             break;
         }
       } else {
-        switch (presenter!.orderType) {
+        switch (order.status) {
           case OrderStatus.PENDING_CONFIRMATION:
             widget = createNormalOrderWidget(order);
             break;

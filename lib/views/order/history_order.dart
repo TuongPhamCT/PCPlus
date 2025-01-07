@@ -63,11 +63,11 @@ class _HistoryOrderState extends State<HistoryOrder>
         ),
         child: SingleChildScrollView(
           child: ListView.builder(
-            itemCount: 10,
+            itemCount: orders.length,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
-              return null;
+              return orders[index];
             },
           ),
         ),
@@ -82,9 +82,6 @@ class _HistoryOrderState extends State<HistoryOrder>
 
   @override
   void onLoadDataSucceeded() {
-    if (!context.mounted) {
-      return;
-    }
     setState(() {
       orders = _buildListStrategy.execute();
     });
