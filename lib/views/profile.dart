@@ -313,7 +313,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     await Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => const HistoryOrder(
+                                        builder: (context) =>
+                                            const HistoryOrder(
                                           orderType: OrderStatus.AWAIT_PICKUP,
                                         ),
                                       ),
@@ -322,13 +323,13 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     await Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => const HistoryOrder(
-                                          orderType: OrderStatus.AWAIT_PICKUP,
+                                        builder: (context) =>
+                                            const HistoryOrder(
+                                          orderType: OrderStatus.AWAIT_DELIVERY,
                                         ),
                                       ),
                                     );
                                   }
-
                                 },
                                 child: Column(
                                   children: [
@@ -346,7 +347,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                                               color: Palette.main1,
                                             ),
                                           ),
-                                          (isShop ? awaitPickUp > 0 : awaitDelivery > 0)
+                                          (isShop
+                                                  ? awaitPickUp > 0
+                                                  : awaitDelivery > 0)
                                               ? Positioned(
                                                   right: 0,
                                                   top: 0,
