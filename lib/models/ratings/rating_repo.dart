@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pcplus/models/ratings/rating_model.dart';
+import 'package:pcplus/services/utility.dart';
 
 import '../items/item_model.dart';
 
@@ -85,10 +86,11 @@ class RatingRepository {
       }
       double rating = 0;
       for (RatingModel item in items) {
-        rating = item.rating!;
+        rating += item.rating!;
       }
       rating = rating / items.length;
-      return rating;
+      String ratingText = Utility.formatRatingValue(rating);
+      return double.parse(ratingText);
     } catch (e) {
       print(e);
       return 0;

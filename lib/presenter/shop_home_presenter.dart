@@ -20,10 +20,14 @@ class ShopHomePresenter implements SubscriberInterface {
   List<ItemData> itemsData = [];
 
   Future<void> getData() async {
-    if (_userSingleton.firstEnter) {
-      await _shopSingleton.initShopData();
-      _userSingleton.firstEnter = false;
-    }
+    await _shopSingleton.initShopData();
+    // await _shopSingleton.initShopData();
+    // if (_userSingleton.firstEnter) {
+    //
+    //   _userSingleton.firstEnter = false;
+    // } else {
+    //
+    // }
 
     itemModels = _shopSingleton.itemModels;
     itemsData = _shopSingleton.itemsData;
