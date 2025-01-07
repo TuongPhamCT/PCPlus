@@ -68,7 +68,7 @@ class ShopSingleton extends PublisherInterface {
       rating: 0,
     );
     itemsData.add(newData);
-    _itemRepository.addItemToFirestore(itemModel);
+    await _itemRepository.addItemToFirestore(itemModel);
     reorder();
     notifySubscribers();
   }

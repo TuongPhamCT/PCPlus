@@ -16,6 +16,7 @@ class RatingRepository {
             .doc();
       await docRef.set(model.toJson()).whenComplete(()
       => print('Rating added to Firestore with ID: ${docRef.id}'));
+      model.itemID = docRef.id;
     } catch (e) {
       print('Error adding Rating to Firestore: $e');
     }
