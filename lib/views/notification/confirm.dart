@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:pcplus/services/utility.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 
 class ConfirmNoti extends StatefulWidget {
-  const ConfirmNoti({super.key});
+  final String image;
+  final String title;
+  final String content;
+  final DateTime date;
+  final bool isView;
+  const ConfirmNoti({
+    super.key,
+    required this.image,
+    required this.title,
+    required this.content,
+    required this.date,
+    required this.isView
+  });
 
   @override
   State<ConfirmNoti> createState() => _ConfirmNotiState();
@@ -12,6 +25,13 @@ class ConfirmNoti extends StatefulWidget {
 
 class _ConfirmNotiState extends State<ConfirmNoti> {
   bool isViewed = false;
+
+  @override
+  void initState() {
+    isViewed = widget.isView;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -45,9 +65,8 @@ class _ConfirmNotiState extends State<ConfirmNoti> {
               height: 60,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                image: const DecorationImage(
-                  image: NetworkImage(
-                      'https://cdn.tgdd.vn/Files/2022/01/30/1413644/cac-thuong-hieu-tai-nghe-tot-va-duoc-ua-chuong-nha.jpg'),
+                image: DecorationImage(
+                  image: NetworkImage(widget.image),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -59,17 +78,17 @@ class _ConfirmNotiState extends State<ConfirmNoti> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Title: Đang vận chuyển',
+                    widget.title,
                     style: TextDecor.robo15Medi,
                   ),
                   const Gap(8),
                   Text(
-                    'Description: Đơn hàng của bạn đang được vận chuyển viet noti khong can description o truoc dau',
+                    widget.content,
                     style: TextDecor.robo15,
                   ),
                   const Gap(8),
                   Text(
-                    '10:00 20/10/2022',
+                    Utility.formatDetailDateFromDateTime(widget.date),
                     style: TextDecor.robo14.copyWith(color: Colors.grey),
                   ),
                   

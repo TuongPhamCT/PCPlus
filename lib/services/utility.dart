@@ -67,6 +67,16 @@ abstract class Utility {
     return result;
   }
 
+  static String formatDetailDateFromDateTime(DateTime? dateTime) {
+    if (dateTime == null) {
+      return "hh:mm dd/MM/YYYY";
+    }
+
+    final String time = "${dateTime.hour}:${dateTime.minute.toString().padLeft(2, '0')}";
+    final String date = "${dateTime.day.toString().padLeft(2,'0')}/${dateTime.month.toString().padLeft(2,'0')}/${dateTime.year}";
+    return "$time $date";
+  }
+
   static String formatDateFromDateTime(DateTime? dateTime) {
     if (dateTime == null) {
       return "dd/MM/YYYY";
