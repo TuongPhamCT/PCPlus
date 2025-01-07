@@ -45,10 +45,10 @@ class HistoryOrderPresenter {
           strategy = NeedConfirmOrdersBuildStrategy(this);
           break;
         case OrderStatus.AWAIT_PICKUP:
-          strategy = CanCancelOrdersBuildStrategy(this);
+          strategy = SentOrdersBuildStrategy(this);
           break;
         case OrderStatus.AWAIT_DELIVERY:
-          strategy = SentOrdersBuildStrategy(this);
+          strategy = NormalOrdersBuildStrategy(this);
           break;
         case OrderStatus.AWAIT_RATING:
           strategy = NormalOrdersBuildStrategy(this);

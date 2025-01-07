@@ -14,18 +14,7 @@ class SentOrdersBuildStrategy extends HistoryOrderBuildListStrategy {
   List<Widget> execute() {
     List<Widget> widgets = [];
     for (OrderModel order in presenter!.orders) {
-      HistoryItem widget = HistoryItem(
-        shopName: order.shopName!,
-        isShop: presenter!.isShop,
-        productName: order.itemModel!.name!,
-        amount: order.amount!,
-        price: order.itemModel!.price!,
-        status: order.status!,
-        address: order.address!.getFullAddress(),
-        onSentOrder: () {
-          presenter?.handleSentOrder(order);
-        },
-      );
+      HistoryItem widget = createSentOrderWidget(order);
       widgets.add(widget);
     }
     return widgets;

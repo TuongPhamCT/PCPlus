@@ -1,39 +1,40 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class NotificaionModel {
-  String? nguoiNhan;
+class NotificationModel {
+  String? key;
   String? title;
   String? content;
-  DateTime? ngayTao;
+  DateTime? date;
   bool? isRead;
   String? productImage;
 
   static String collectionName = 'Notifications';
 
-  NotificaionModel(
-      {required this.nguoiNhan,
-      required this.title,
-      required this.content,
-      required this.ngayTao,
-      required this.isRead,
-      required this.productImage});
+  NotificationModel({
+    this.key,
+    required this.title,
+    required this.content,
+    required this.date,
+    required this.isRead,
+    required this.productImage
+  });
 
   Map<String, dynamic> toJson() => {
-        'nguoiNhan': nguoiNhan,
         'title': title,
         'content': content,
-        'ngayTao': ngayTao,
+        'date': date,
         'isRead': isRead,
         'productImage': productImage
       };
 
-  static NotificaionModel fromJson(Map<String, dynamic> json) {
-    return NotificaionModel(
-        nguoiNhan: json['nguoiNhan'] as String,
-        title: json['title'] as String,
-        content: json['content'] as String,
-        ngayTao: (json['ngayTao'] as Timestamp).toDate(),
-        isRead: json['isRead'] as bool,
-        productImage: json['productImage'] as String);
+  static NotificationModel fromJson(String key, Map<String, dynamic> json) {
+    return NotificationModel(
+      key: key,
+      title: json['title'] as String,
+      content: json['content'] as String,
+      date: (json['date'] as Timestamp).toDate(),
+      isRead: json['isRead'] as bool,
+      productImage: json['productImage'] as String
+    );
   }
 }

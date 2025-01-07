@@ -14,15 +14,7 @@ class NormalOrdersBuildStrategy extends HistoryOrderBuildListStrategy {
   List<Widget> execute() {
     List<Widget> widgets = [];
     for (OrderModel order in presenter!.orders) {
-      HistoryItem widget = HistoryItem(
-        shopName: order.shopName!,
-        isShop: presenter!.isShop,
-        productName: order.itemModel!.name!,
-        amount: order.amount!,
-        price: order.itemModel!.price!,
-        status: order.status!,
-        address: order.address!.getFullAddress(),
-      );
+      HistoryItem widget = createNormalOrderWidget(order);
       widgets.add(widget);
     }
     return widgets;
