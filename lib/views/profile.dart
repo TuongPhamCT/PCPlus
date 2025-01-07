@@ -10,6 +10,7 @@ import 'package:pcplus/themes/text_decor.dart';
 import 'package:pcplus/views/edit_profile.dart';
 import 'package:pcplus/views/login.dart';
 import 'package:pcplus/views/order/history_order.dart';
+import 'package:pcplus/views/order/rating.dart';
 import 'package:pcplus/views/widgets/bottom/bottom_bar_custom.dart';
 import 'package:pcplus/views/widgets/bottom/shop_bottom_bar.dart';
 import 'package:pcplus/views/widgets/profile/background_container.dart';
@@ -370,16 +371,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                               ),
                               if (!isShop)
                                 InkWell(
-                                  onTap: () async {
-                                    await Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const HistoryOrder(
-                                          orderType: OrderStatus.AWAIT_RATING,
-                                        ),
-                                      ),
-                                    );
+                                  onTap: () {
+                                    Navigator.of(context)
+                                        .pushNamed(RatingScreen.routeName);
                                   },
                                   child: Column(
                                     children: [
