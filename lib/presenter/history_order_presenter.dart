@@ -96,21 +96,33 @@ class HistoryOrderPresenter {
 
   Future<void> handleCancelOrder(OrderModel model, String reason) async {
     updateOrder(model, OrderStatus.CANCELLED);
+    if (orderType.isNotEmpty) {
+      orders.remove(model);
+    }
     _view.onLoadDataSucceeded();
   }
 
   Future<void> handleAlreadyReceivedOrder(OrderModel model) async {
     updateOrder(model, OrderStatus.AWAIT_RATING);
+    if (orderType.isNotEmpty) {
+      orders.remove(model);
+    }
     _view.onLoadDataSucceeded();
   }
 
   Future<void> handleConfirmOrder(OrderModel model) async {
     updateOrder(model, OrderStatus.AWAIT_PICKUP);
+    if (orderType.isNotEmpty) {
+      orders.remove(model);
+    }
     _view.onLoadDataSucceeded();
   }
 
   Future<void> handleSentOrder(OrderModel model) async {
     updateOrder(model, OrderStatus.AWAIT_DELIVERY);
+    if (orderType.isNotEmpty) {
+      orders.remove(model);
+    }
     _view.onLoadDataSucceeded();
   }
 }
