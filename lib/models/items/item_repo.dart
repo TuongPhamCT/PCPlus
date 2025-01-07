@@ -4,14 +4,17 @@ import 'package:pcplus/models/items/item_model.dart';
 class ItemRepository {
   final FirebaseFirestore _storage = FirebaseFirestore.instance;
 
-  void addItemToFirestore(ItemModel model) async {
+  Future<String> addItemToFirestore(ItemModel model) async {
     try {
       DocumentReference docRef = _storage.collection(ItemModel.collectionName).doc();
       await docRef.set(model.toJson()).whenComplete(()
       => print('Item added to Firestore with ID: ${docRef.id}'));
+      model.itemID = docRef.id;
+      return docRef.id;
     } catch (e) {
       print('Error adding Item to Firestore: $e');
     }
+    return "";
   }
 
   void deleteItemById(String id) async => _storage.collection(ItemModel.collectionName).doc(id).delete();
