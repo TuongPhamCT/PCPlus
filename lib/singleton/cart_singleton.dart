@@ -267,6 +267,7 @@ class CartSingleton {
           shopName: data.shop!.name,
           receiverID: userId,
           orderDate: DateTime.now(),
+          receiverName: _userSingleton.currentUser!.name!,
           status: OrderStatus.PENDING_CONFIRMATION,
           address: address,
           itemModel: data.item!.toOrderItemModel(colorIndex: data.colorIndex),

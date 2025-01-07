@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:pcplus/services/utility.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 
 class HistoryItem extends StatefulWidget {
   final String shopName;
+  final String receiverName;
   final String status;
   final String productName;
   final String address;
   final int price;
   final int amount;
+  final String image;
   final bool isShop;
   final Function()? onValidateOrder;
   final Function(String)? onCancelOrder;
@@ -21,9 +24,11 @@ class HistoryItem extends StatefulWidget {
       required this.status,
       required this.productName,
       required this.address,
+      required this.receiverName,
       required this.price,
       required this.amount,
       required this.isShop,
+      required this.image,
       this.onValidateOrder,
       this.onCancelOrder,
       this.onReceivedOrder,
@@ -41,6 +46,7 @@ class _HistoryItemState extends State<HistoryItem> {
   bool choDanhGia = false;
   bool choDuyetDon = false;
   bool choGuiHang = false;
+  String status = "status";
 
   @override
   void initState() {
@@ -127,12 +133,12 @@ class _HistoryItemState extends State<HistoryItem> {
                 ),
                 const Gap(5),
                 Text(
-                  'Shop Name',
+                  widget.shopName,
                   style: TextDecor.robo17Medi,
                 ),
                 Expanded(child: Container()),
                 Text(
-                  'Trạng thái',
+                  status,
                   style: TextDecor.robo14.copyWith(color: Colors.red),
                 ),
               ],
@@ -143,7 +149,7 @@ class _HistoryItemState extends State<HistoryItem> {
                 ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(10)),
                   child: Image.network(
-                    "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AA1wMWtv.img?w=730&h=487&m=6",
+                    widget.image,
                     width: 125,
                     height: 140,
                     fit: BoxFit.cover,
@@ -165,7 +171,7 @@ class _HistoryItemState extends State<HistoryItem> {
                       SizedBox(
                         width: size.width - 180,
                         child: Text(
-                          "PTT",
+                          widget.productName,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.justify,
@@ -184,7 +190,7 @@ class _HistoryItemState extends State<HistoryItem> {
                           ),
                           Expanded(child: Container()),
                           Text(
-                            "x2",
+                            "x${widget.amount}",
                             textAlign: TextAlign.justify,
                             maxLines: 2,
                             style: TextDecor.robo14.copyWith(
@@ -200,7 +206,7 @@ class _HistoryItemState extends State<HistoryItem> {
                             SizedBox(
                               width: size.width - 180,
                               child: Text(
-                                "To: Pham Thanh Tuong",
+                                "To: ${widget.receiverName}",
                                 style: TextDecor.robo17,
                                 maxLines: 1,
                               ),
@@ -208,7 +214,7 @@ class _HistoryItemState extends State<HistoryItem> {
                             SizedBox(
                               width: size.width - 180,
                               child: Text(
-                                "Address: 123 Nguyen Van Linh, Da Nang",
+                                widget.address,
                                 style: TextDecor.robo17,
                                 maxLines: 2,
                               ),
@@ -220,7 +226,7 @@ class _HistoryItemState extends State<HistoryItem> {
                         children: [
                           Expanded(child: Container()),
                           Text(
-                            "10.000VNĐ",
+                            Utility.formatCurrency(widget.price),
                             style: TextDecor.robo17,
                           ),
                         ],
@@ -235,7 +241,7 @@ class _HistoryItemState extends State<HistoryItem> {
               children: [
                 Expanded(child: Container()),
                 Text(
-                  "Total (2 products): 20.000đ",
+                  "Total (${widget.amount} products): ${Utility.formatCurrency(widget.amount * widget.price)}",
                   style: TextDecor.robo17Medi,
                 ),
               ],
