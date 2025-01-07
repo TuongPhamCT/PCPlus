@@ -9,6 +9,7 @@ import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 import 'package:pcplus/views/delivery/delivery_infor.dart';
 import 'package:pcplus/models/orders/order_address_model.dart';
+import 'package:pcplus/views/home.dart';
 import 'package:pcplus/views/widgets/listItem/payment_product.dart';
 
 import '../widgets/util_widgets.dart';
@@ -326,7 +327,42 @@ class _BillProductState extends State<BillProduct> implements BillProductContrac
 
   @override
   void onBuy() {
-    UtilWidgets.createSnackBar(context, "Order succeeded");
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        Future.delayed(const Duration(seconds: 1), () {
+          Navigator.of(context).pop();
+          Navigator.of(context).pushNamed(HomeScreen.routeName);// Đóng dialog
+        });
+        return AlertDialog(
+          alignment: Alignment.center,
+          content: Container(
+            alignment: Alignment.center,
+            height: 120,
+            child: Column(
+              children: [
+                Expanded(child: Container()),
+                const Icon(
+                  Icons.check_circle,
+                  color: Colors.white,
+                  size: 50,
+                ),
+                const Gap(10),
+                Text(
+                  'Order thành công!',
+                  style: TextDecor.robo18Semi.copyWith(
+                    color: Colors.white,
+                  ),
+                ),
+                Expanded(child: Container()),
+              ],
+            ),
+          ),
+          backgroundColor: Colors.black.withOpacity(0.45),
+        );
+      },
+    );
   }
 
   @override

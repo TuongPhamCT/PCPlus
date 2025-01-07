@@ -52,6 +52,7 @@ class CartShoppingScreenPresenter {
 
   void handleChangeItemAmount(int index, int value) {
     _cartSingleton.inCartItems[index].amount = value;
+    _view.onChangeItemAmount();
   }
 
   Future<void> handleBuy() async {
