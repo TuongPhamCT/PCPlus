@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pcplus/contract/notification_screen_contract.dart';
+import 'package:pcplus/models/notification/notification_model.dart';
 import 'package:pcplus/presenter/notification_screen_presenter.dart';
 import 'package:pcplus/singleton/user_singleton.dart';
+import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
 import 'package:pcplus/views/notification/confirm.dart';
 import 'package:pcplus/views/widgets/bottom/bottom_bar_custom.dart';
 import 'package:pcplus/views/widgets/bottom/shop_bottom_bar.dart';
+import 'package:pcplus/views/widgets/util_widgets.dart';
 
 
 
@@ -21,6 +25,7 @@ class _NotificationScreenState extends State<NotificationScreen> implements Noti
   NotificationScreenPresenter? _presenter;
 
   bool isShop = false;
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -41,6 +46,7 @@ class _NotificationScreenState extends State<NotificationScreen> implements Noti
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -53,14 +59,37 @@ class _NotificationScreenState extends State<NotificationScreen> implements Noti
       body: Container(
         padding: const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
-          color: Colors.grey.withOpacity(0.5),
+          color: Colors.grey.withOpacity(0.0),
         ),
-        child: ListView.builder(
-          itemCount: 10,
-          itemBuilder: (context, index) {
-            return const ConfirmNoti();
-          },
-        ),
+        child:
+          isLoading ?
+            UtilWidgets.getLoadingWidgetWithContainer(
+                width: size.width,
+                height: size.height * 0.8
+            )
+          :
+            _presenter!.notifications.isEmpty ?
+              UtilWidgets.getCenterTextWithContainer(
+                width: size.width,
+                height: size.height * 0.8,
+                text: "Nothing here",
+                color: Palette.primaryColor,
+                fontSize: 16
+              )
+              :
+              ListView.builder(
+                itemCount: _presenter!.notifications.length,
+                itemBuilder: (context, index) {
+                  NotificationModel model = _presenter!.notifications[index];
+                  return ConfirmNoti(
+                    title: model.title!,
+                    image: model.productImage!,
+                    date: model.date!,
+                    content: model.content!,
+                    isView: model.isRead!,
+                  );
+                },
+              ),
       ),
       bottomNavigationBar: isShop ? const ShopBottomBar(currentIndex: 2) : const BottomBarCustom(currentIndex: 2),
     );
@@ -69,7 +98,7 @@ class _NotificationScreenState extends State<NotificationScreen> implements Noti
   @override
   void onLoadDataSucceeded() {
     setState(() {
-      isShop = _presenter!.isShop;
+      isLoading = false;
     });
   }
 }

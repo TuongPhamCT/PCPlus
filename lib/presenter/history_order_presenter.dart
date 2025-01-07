@@ -96,34 +96,53 @@ class HistoryOrderPresenter {
   }
 
   Future<void> handleCancelOrder(OrderModel model, String reason) async {
+    _view.onWaitingProgressBar();
     updateOrder(model, OrderStatus.CANCELLED);
+    if (isShop) {
+      await _notificationService.createShopCancelOrderingNotification(model, reason);
+    } else {
+      await _notificationService.createCancelOrderingNotification(model, reason);
+    }
+
     if (orderType.isNotEmpty) {
       orders.remove(model);
     }
+    _view.onPopContext();
     _view.onLoadDataSucceeded();
   }
 
   Future<void> handleAlreadyReceivedOrder(OrderModel model) async {
+    _view.onWaitingProgressBar();
     updateOrder(model, OrderStatus.AWAIT_RATING);
+    await _notificationService.createReceivedOrderNotification(model);
+
     if (orderType.isNotEmpty) {
       orders.remove(model);
     }
+    _view.onPopContext();
     _view.onLoadDataSucceeded();
   }
 
   Future<void> handleConfirmOrder(OrderModel model) async {
+    _view.onWaitingProgressBar();
     updateOrder(model, OrderStatus.AWAIT_PICKUP);
+    await _notificationService.createShopConfirmOrderNotification(model);
+
     if (orderType.isNotEmpty) {
       orders.remove(model);
     }
+    _view.onPopContext();
     _view.onLoadDataSucceeded();
   }
 
   Future<void> handleSentOrder(OrderModel model) async {
+    _view.onWaitingProgressBar();
     updateOrder(model, OrderStatus.AWAIT_DELIVERY);
+    await _notificationService.createShopSentOrderNotification(model);
     if (orderType.isNotEmpty) {
       orders.remove(model);
     }
+    _view.onPopContext();
     _view.onLoadDataSucceeded();
   }
 }
