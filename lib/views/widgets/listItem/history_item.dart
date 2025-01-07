@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:pcplus/const/order_status.dart';
+import 'package:pcplus/presenter/history_order_presenter.dart';
 import 'package:pcplus/services/utility.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
+
+import '../../../models/orders/order_model.dart';
 
 class HistoryItem extends StatefulWidget {
   final String shopName;
@@ -15,6 +18,8 @@ class HistoryItem extends StatefulWidget {
   final int amount;
   final String image;
   final bool isShop;
+  final HistoryOrderPresenter? presenter;
+  final OrderModel? order;
   final Function()? onValidateOrder;
   final Function(String)? onCancelOrder;
   final Function()? onReceivedOrder;
@@ -33,7 +38,10 @@ class HistoryItem extends StatefulWidget {
       this.onValidateOrder,
       this.onCancelOrder,
       this.onReceivedOrder,
-      this.onSentOrder});
+      this.onSentOrder,
+      this.presenter,
+      this.order
+    });
 
   @override
   State<HistoryItem> createState() => _HistoryItemState();
@@ -443,7 +451,8 @@ class _HistoryItemState extends State<HistoryItem> {
                     alignment: Alignment.centerRight,
                     child: InkWell(
                       onTap: () {
-                        widget.onSentOrder!;
+                        widget.onSentOrder;
+                        widget.presenter?.handleSentOrder(widget.order!);
                       },
                       child: Container(
                         alignment: Alignment.center,
