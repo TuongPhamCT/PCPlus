@@ -1,7 +1,9 @@
 import 'package:pcplus/const/order_status.dart';
 import 'package:pcplus/contract/history_order_contract.dart';
+import 'package:pcplus/models/notification/notification_repo.dart';
 import 'package:pcplus/models/orders/order_model.dart';
 import 'package:pcplus/models/orders/order_repo.dart';
+import 'package:pcplus/services/notification_service.dart';
 import 'package:pcplus/singleton/user_singleton.dart';
 import 'package:pcplus/strategy/history_order/confirm_received_order_build_strategy.dart';
 import 'package:pcplus/strategy/history_order/history_order_strategy.dart';
@@ -23,13 +25,13 @@ class HistoryOrderPresenter {
 
   final OrderRepository _orderRepo = OrderRepository();
   final UserSingleton _userSingleton = UserSingleton.getInstance();
-  UserModel? user;
+  final NotificationService _notificationService = NotificationService();
+  UserModel? get user => _userSingleton.currentUser;
 
   List<OrderModel> orders = [];
   bool isShop = false;
 
   Future<void> getData() async {
-    user = _userSingleton.currentUser;
     if (orderType.isEmpty) {
       orders = await _orderRepo.getAllOrdersFromUser(user!.userID!);
     } else {
@@ -86,19 +88,41 @@ class HistoryOrderPresenter {
     return strategy;
   }
 
-  Future<void> handleCancelOrder(OrderModel model, String reason) async {
+  void updateOrder(OrderModel model, String status) {
+    model.status = status;
+    _orderRepo.updateOrder(model.receiverID!, model);
+    _orderRepo.updateOrder(model.itemModel!.sellerID!, model);
+  }
 
+  Future<void> handleCancelOrder(OrderModel model, String reason) async {
+    updateOrder(model, OrderStatus.CANCELLED);
+    if (orderType.isNotEmpty) {
+      orders.remove(model);
+    }
+    _view.onLoadDataSucceeded();
   }
 
   Future<void> handleAlreadyReceivedOrder(OrderModel model) async {
-
+    updateOrder(model, OrderStatus.AWAIT_RATING);
+    if (orderType.isNotEmpty) {
+      orders.remove(model);
+    }
+    _view.onLoadDataSucceeded();
   }
 
   Future<void> handleConfirmOrder(OrderModel model) async {
-
+    updateOrder(model, OrderStatus.AWAIT_PICKUP);
+    if (orderType.isNotEmpty) {
+      orders.remove(model);
+    }
+    _view.onLoadDataSucceeded();
   }
 
-  Future<void> handleSentOrder(OrderModel order) async {
-
+  Future<void> handleSentOrder(OrderModel model) async {
+    updateOrder(model, OrderStatus.AWAIT_DELIVERY);
+    if (orderType.isNotEmpty) {
+      orders.remove(model);
+    }
+    _view.onLoadDataSucceeded();
   }
 }
