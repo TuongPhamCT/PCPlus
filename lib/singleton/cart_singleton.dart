@@ -4,10 +4,12 @@ import 'package:pcplus/const/order_status.dart';
 import 'package:pcplus/models/items/in_cart_item_repo.dart';
 import 'package:pcplus/models/items/item_model.dart';
 import 'package:pcplus/models/items/item_repo.dart';
+import 'package:pcplus/models/notification/notification_repo.dart';
 import 'package:pcplus/models/orders/order_repo.dart';
 import 'package:pcplus/models/system/param_store_repo.dart';
 import 'package:pcplus/models/users/user_repo.dart';
 import 'package:pcplus/objects/in_cart_item_data.dart';
+import 'package:pcplus/services/notification_service.dart';
 import 'package:pcplus/services/pref_service.dart';
 import 'package:pcplus/singleton/user_singleton.dart';
 import 'package:pcplus/models/orders/order_address_model.dart';
@@ -257,6 +259,7 @@ class CartSingleton {
   Future<void> performPayment() async {
     OrderRepository orderRepository = OrderRepository();
     ParamStoreRepository paramRepository = ParamStoreRepository();
+    NotificationService notificationService = NotificationService();
 
     for (InCartItemData data in onPaymentItems) {
       String userId = _userSingleton.currentUser!.userID!;
@@ -278,6 +281,7 @@ class CartSingleton {
 
       orderRepository.addOrderToFirestore(userId, newOrder);
       orderRepository.addOrderToFirestore(shopId, newOrder);
+      await notificationService.createOrderingNotification(newOrder);
 
       await paramRepository.increaseOrderIdIndex();
       removeInCartItem(data);
