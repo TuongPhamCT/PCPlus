@@ -290,7 +290,7 @@ class _DetailProductState extends State<DetailProduct> implements DetailProductC
                       ),
                       const Gap(3),
                       Text(
-                        "$rating",
+                        Utility.formatRatingValue(rating),
                         style: TextDecor.robo13Medi,
                       ),
                       Expanded(child: Container()),

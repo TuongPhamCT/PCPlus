@@ -34,9 +34,9 @@ class ShopSingleton extends PublisherInterface {
   }
 
   Future<void> initShopData() async {
-    if (init == false) {
-      return;
-    }
+    // if (init == false) {
+    //   return;
+    // }
 
     itemModels.clear();
     itemsData.clear();
