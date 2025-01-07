@@ -7,4 +7,5 @@ abstract class CartShoppingScreenContract {
   void onDeleteItem();
   void onItemPressed();
   void onBuyFailed(String message);
+  void onChangeItemAmount();
 }
