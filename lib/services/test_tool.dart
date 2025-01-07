@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:pcplus/models/items/item_model.dart';
 import 'package:pcplus/models/items/item_repo.dart';
+import 'package:pcplus/models/users/user_model.dart';
+import 'package:pcplus/models/users/user_repo.dart';
 import 'package:pcplus/services/random_tool.dart';
 
 import '../const/product_status.dart';
@@ -55,17 +57,51 @@ class TestTool {
     }
   }
 
+  UserModel getUserModel() {
+    return UserModel(
+      userID: randomTool.generateRandomString(20),
+      name: randomTool.generateRandomText(10, true),
+      email: randomTool.generateRandomEmail(),
+      phone: randomTool.generateRandomPhoneNumber(),
+      dateOfBirth: randomTool.generateRandomDate(DateTime(1970, 1, 1),
+          DateTime.now().subtract(Duration(days: 365 * 18))),
+      gender: 'male',
+      isSeller: false,
+      avatarUrl:
+          "https://product.hstatic.net/200000722513/product/b3ver24z_39c09f4db42b4078ac82013a19385b21_grande.png",
+      money: randomTool.generateRandomNumber(100, 1000),
+      shopInfo: {},
+    );
+  }
+
+  void createRandomUserToFirestore(int length) {
+    final UserRepository userRepository = UserRepository();
+
+    for (int i = 0; i < length; i++) {
+      userRepository.addUserToFirestore(getUserModel());
+    }
+  }
+
   void createRandomRating() {
     final RatingRepository ratingRepo = RatingRepository();
-    ratingRepo.addRatingToFirestore(
-        "j4cMBVy1v4GmJYUx6rjj",
-        RatingModel(
-            userID: "qON6WVX4u3c3TqvHMjbuwBFhwmF3",
-            itemID: "j4cMBVy1v4GmJYUx6rjj",
-            rating: 4.5,
-            date: DateTime.now()
-        )
-    );
+    final UserRepository userRepo = UserRepository();
+    final ItemRepository itemRepo = ItemRepository();
+    itemRepo.getAllItems().then((items) {
+      userRepo.getAllUsers().then((users) {
+        for (ItemModel item in items) {
+          for (UserModel user in users) {
+            RatingModel rating = RatingModel(
+              itemID: item.itemID,
+              userID: user.userID,
+              rating: randomTool.generateRandomNumber(1, 5).toDouble(),
+              comment: randomTool.generateRandomText(18, true),
+              date: randomTool.generateRandomDate(startDate, endDate),
+            );
+            ratingRepo.addRatingToFirestore(item.itemID!, rating);
+          }
+        }
+      });
+    });
   }
 
   Future<void> waitRandomDuration(
