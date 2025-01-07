@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:math';
 
 class RandomTool {
@@ -49,6 +50,8 @@ class RandomTool {
     return random.nextInt(max - min + 1) + min;
   }
 
+  
+
   int generateRandomPrice(int min, int max, int maxMultiplierPower) {
     final random = Random();
 
@@ -61,4 +64,51 @@ class RandomTool {
     // Tính giá tiền cuối cùng
     return baseValue * multiplier;
   }
+
+  String generateRandomPhoneNumber() {
+    final random = Random();
+
+    // Tạo một số điện thoại ngẫu nhiên bắt đầu bằng 0
+    String phoneNumber = '0';
+
+    // Tạo 9 chữ số còn lại
+    phoneNumber += List.generate(9, (_) => random.nextInt(10).toString()).join();
+
+    return phoneNumber;
+  }
+
+  String generateRandomEmail() {
+    final random = Random();
+
+    // Tạo một email ngẫu nhiên
+    String email = generateRandomText(10, false);
+
+    // Thêm ký tự '@'
+    email += '@';
+
+    // Thêm domain ngẫu nhiên
+    email += generateRandomText(5, false);
+
+    // Thêm phần mở rộng ngẫu nhiên
+    email += ['.com', '.net', '.org'][random.nextInt(3)];
+
+    return email;
+  }
+
+  String generateRandomAddress() {
+    final random = Random();
+
+    // Tạo một địa chỉ ngẫu nhiên
+    String address = generateRandomText(10, false);
+
+    // Thêm số nhà ngẫu nhiên
+    address += ' ' + random.nextInt(100).toString();
+
+    // Thêm tên đường ngẫu nhiên
+    address += ' ' + generateRandomText(5, false);
+
+    return address;
+  }
+
+
 }
