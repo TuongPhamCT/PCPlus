@@ -15,20 +15,19 @@ class HistoryItem extends StatefulWidget {
   final Function(String)? onCancelOrder;
   final Function()? onReceivedOrder;
   final Function()? onSentOrder;
-  const HistoryItem({
-    super.key,
-    required this.shopName,
-    required this.status,
-    required this.productName,
-    required this.address,
-    required this.price,
-    required this.amount,
-    required this.isShop,
-    this.onValidateOrder,
-    this.onCancelOrder,
-    this.onReceivedOrder,
-    this.onSentOrder
-  });
+  const HistoryItem(
+      {super.key,
+      required this.shopName,
+      required this.status,
+      required this.productName,
+      required this.address,
+      required this.price,
+      required this.amount,
+      required this.isShop,
+      this.onValidateOrder,
+      this.onCancelOrder,
+      this.onReceivedOrder,
+      this.onSentOrder});
 
   @override
   State<HistoryItem> createState() => _HistoryItemState();
@@ -45,7 +44,6 @@ class _HistoryItemState extends State<HistoryItem> {
 
   @override
   void initState() {
-
     super.initState();
   }
 
@@ -243,7 +241,130 @@ class _HistoryItemState extends State<HistoryItem> {
               ],
             ),
             const Gap(10),
-            
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                if (!isShop && !choDuyetDon) Expanded(child: Container()),
+                if (isShop && choDuyetDon)
+                  Row(
+                    children: [
+                      Container(
+                        width: size.width - 80,
+                        alignment: Alignment.centerRight,
+                        child: InkWell(
+                          onTap: () {
+                            // _showCancelOrderDialog(context);
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: 45,
+                            width: 160,
+                            decoration: BoxDecoration(
+                              color: Colors.orange,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              'Huỷ đơn hàng',
+                              style: TextDecor.robo16Semi,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: size.width - 80,
+                        alignment: Alignment.centerRight,
+                        child: InkWell(
+                          onTap: () {
+                            // _showCancelOrderDialog(context);
+                          },
+                          child: Container(
+                            alignment: Alignment.center,
+                            height: 45,
+                            width: 160,
+                            decoration: BoxDecoration(
+                              color: Palette.primaryColor,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              'Duyệt đơn',
+                              style: TextDecor.robo16Semi,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                if (isShop && choGuiHang)
+                  Container(
+                    width: size.width - 80,
+                    alignment: Alignment.centerRight,
+                    child: InkWell(
+                      onTap: () {
+                        // _showCancelOrderDialog(context);
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 45,
+                        width: 160,
+                        decoration: BoxDecoration(
+                          color: Palette.primaryColor,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          'Đã gửi hàng',
+                          style: TextDecor.robo16Semi,
+                        ),
+                      ),
+                    ),
+                  ),
+                if (!isShop && choLayHang)
+                  Container(
+                    width: size.width - 80,
+                    alignment: Alignment.centerRight,
+                    child: InkWell(
+                      onTap: () {
+                        // _showCancelOrderDialog(context);
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 45,
+                        width: 160,
+                        decoration: BoxDecoration(
+                          color: Palette.primaryColor,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          'Huỷ Đơn Hàng',
+                          style: TextDecor.robo16Semi,
+                        ),
+                      ),
+                    ),
+                  ),
+                if (!isShop && choGiaoHang)
+                  Container(
+                    width: size.width - 80,
+                    alignment: Alignment.centerRight,
+                    child: InkWell(
+                      onTap: () {
+                        // _showCancelOrderDialog(context);
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 45,
+                        width: 160,
+                        decoration: BoxDecoration(
+                          color: Palette.primaryColor,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          'Đã nhận được hàng',
+                          style: TextDecor.robo16Semi,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
           ],
         ),
       ),
