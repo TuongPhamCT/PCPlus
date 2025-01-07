@@ -4,6 +4,7 @@ import 'package:pcplus/contract/edit_profile_screen_contract.dart';
 import 'package:pcplus/models/users/user_repo.dart';
 import 'package:pcplus/services/image_storage_service.dart';
 import 'package:pcplus/services/pref_service.dart';
+import 'package:pcplus/singleton/user_singleton.dart';
 
 import '../models/users/user_model.dart';
 
@@ -49,6 +50,7 @@ class EditProfileScreenPresenter {
 
     await _userRepo.updateUser(user!);
     await _pref.saveUserData(userData: user!);
+    UserSingleton.getInstance().currentUser = user;
     _view.onPopContext();
     _view.onSaveSucceeded();
   }

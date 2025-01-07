@@ -9,4 +9,6 @@ abstract class OrderStatus {
   static const AWAIT_RATING = "AwaitRating";
   // Hoan thanh
   static const COMPLETED = "Completed";
+  // Huy
+  static const CANCELLED = "Cancelled";
 }
