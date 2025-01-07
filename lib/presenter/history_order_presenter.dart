@@ -11,6 +11,7 @@ import 'package:pcplus/strategy/history_order/sent_order_build_strategy.dart';
 
 import '../models/users/user_model.dart';
 import '../strategy/history_order/can_cancel_order_build_strategy.dart';
+import '../strategy/history_order/mix_order_build_strategy.dart';
 
 class HistoryOrderPresenter {
   final HistoryOrderContract _view;
@@ -56,6 +57,9 @@ class HistoryOrderPresenter {
         case OrderStatus.COMPLETED:
           strategy = NormalOrdersBuildStrategy(this);
           break;
+        default:
+          strategy = MixOrdersBuildStrategy(this);
+          break;
       }
     } else {
       switch (orderType) {
@@ -73,6 +77,9 @@ class HistoryOrderPresenter {
           break;
         case OrderStatus.COMPLETED:
           strategy = NormalOrdersBuildStrategy(this);
+          break;
+        default:
+          strategy = MixOrdersBuildStrategy(this);
           break;
       }
     }
