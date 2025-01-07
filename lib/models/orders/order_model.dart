@@ -4,8 +4,7 @@ import 'package:pcplus/models/orders/order_address_model.dart';
 class OrderModel {
 
   String? orderID;
-  String? userID;
-  String? receiverName;
+  String? shopName;
   DateTime? orderDate;
   String? status;
   OrderAddressModel? address;
@@ -19,8 +18,7 @@ class OrderModel {
   OrderModel(
       {
         required this.orderID,
-        required this.userID,
-        required this.receiverName,
+        required this.shopName,
         required this.orderDate,
         required this.status,
         required this.address,
@@ -31,8 +29,7 @@ class OrderModel {
 
   Map<String, dynamic> toJson() => {
     'orderID': orderID,
-    'userID': userID,
-    'receiverName': receiverName,
+    'shopName': shopName,
     'orderDate': orderDate,
     'status': status,
     'address': address?.toJson(),
@@ -44,8 +41,7 @@ class OrderModel {
   static OrderModel fromJson(Map<String, dynamic> json) {
     return OrderModel(
       orderID: json['orderID'] as String,
-      userID: json['userID'] as String,
-      receiverName: json['receiverName'] as String,
+      shopName: json['shopName'] as String,
       orderDate: json['orderDate'] as DateTime,
       status: json['status'] as String,
       address: OrderAddressModel.fromJson(json['address']),

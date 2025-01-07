@@ -44,4 +44,8 @@ class OrderAddressModel {
         && address1!.isNotEmpty
         && address2!.isNotEmpty;
   }
+
+  String getFullAddress() {
+    return "$address1, $address2";
+  }
 }
