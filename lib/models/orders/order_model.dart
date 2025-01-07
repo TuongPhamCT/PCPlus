@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pcplus/models/orders/order_item_model.dart';
 import 'package:pcplus/models/orders/order_address_model.dart';
 
@@ -46,7 +47,7 @@ class OrderModel {
       orderID: json['orderID'] as String,
       shopName: json['shopName'] as String,
       receiverID: json['receiverID'] as String,
-      orderDate: json['orderDate'] as DateTime,
+      orderDate: (json['orderDate'] as Timestamp).toDate(),
       status: json['status'] as String,
       address: OrderAddressModel.fromJson(json['address']),
       itemModel: OrderItemModel.fromJson(json['itemModel']),
