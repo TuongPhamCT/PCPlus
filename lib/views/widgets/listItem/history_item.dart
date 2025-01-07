@@ -36,10 +36,12 @@ class HistoryItem extends StatefulWidget {
 
 class _HistoryItemState extends State<HistoryItem> {
   bool isShop = true;
-  bool xacNhan = false;
-  bool goiHang = true;
-  bool giaoHang = false;
-  bool isTake = false;
+  bool choXacNhan = false;
+  bool choLayHang = false;
+  bool choGiaoHang = false;
+  bool choDanhGia = false;
+  bool choDuyetDon = false;
+  bool choGuiHang = false;
 
   @override
   void initState() {
@@ -49,7 +51,6 @@ class _HistoryItemState extends State<HistoryItem> {
 
   void _showCancelOrderDialog(BuildContext context) {
     TextEditingController reasonController = TextEditingController();
-
     showDialog(
       context: context,
       builder: (context) {
@@ -163,11 +164,15 @@ class _HistoryItemState extends State<HistoryItem> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "PTT",
-                        maxLines: 2,
-                        textAlign: TextAlign.justify,
-                        style: TextDecor.robo16Medi,
+                      SizedBox(
+                        width: size.width - 180,
+                        child: Text(
+                          "PTT",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.justify,
+                          style: TextDecor.robo16Medi,
+                        ),
                       ),
                       Row(
                         children: [
@@ -194,13 +199,21 @@ class _HistoryItemState extends State<HistoryItem> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              "To: Pham Thanh Tuong",
-                              style: TextDecor.robo17,
+                            SizedBox(
+                              width: size.width - 180,
+                              child: Text(
+                                "To: Pham Thanh Tuong",
+                                style: TextDecor.robo17,
+                                maxLines: 1,
+                              ),
                             ),
-                            Text(
-                              "Address: 123 Nguyen Van Linh, Da Nang",
-                              style: TextDecor.robo17,
+                            SizedBox(
+                              width: size.width - 180,
+                              child: Text(
+                                "Address: 123 Nguyen Van Linh, Da Nang",
+                                style: TextDecor.robo17,
+                                maxLines: 2,
+                              ),
                             ),
                           ],
                         ),
@@ -230,78 +243,7 @@ class _HistoryItemState extends State<HistoryItem> {
               ],
             ),
             const Gap(10),
-            Row(
-              children: [
-                Expanded(child: Container()),
-                if (goiHang)
-                  Container(
-                    width: size.width - 80,
-                    alignment: Alignment.centerRight,
-                    child: InkWell(
-                      onTap: () {
-                        _showCancelOrderDialog(context);
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        height: 45,
-                        width: 160,
-                        decoration: BoxDecoration(
-                          color: Palette.primaryColor,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Text(
-                          'Huy Don Hang',
-                          style: TextDecor.robo16Semi,
-                        ),
-                      ),
-                    ),
-                  ),
-                if (giaoHang)
-                  Container(
-                    width: size.width - 80,
-                    alignment: Alignment.centerRight,
-                    child: InkWell(
-                      onTap: () {
-                        setState(() {
-                          isTake = true;
-                        });
-                      },
-                      child: !isTake
-                          ? Container(
-                              alignment: Alignment.center,
-                              height: 45,
-                              width: 160,
-                              decoration: BoxDecoration(
-                                color: Palette.primaryColor,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Text(
-                                'Đã nhận được hàng',
-                                style: TextDecor.robo16Semi,
-                              ),
-                            )
-                          : Container(
-                              alignment: Alignment.center,
-                              height: 45,
-                              width: 160,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Palette.primaryColor,
-                                  width: 1,
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Text(
-                                'Đã nhận được hàng',
-                                style: TextDecor.robo16Semi.copyWith(
-                                  color: Palette.primaryColor,
-                                ),
-                              ),
-                            ),
-                    ),
-                  ),
-              ],
-            ),
+            
           ],
         ),
       ),
