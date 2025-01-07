@@ -41,7 +41,7 @@ class ShopHomePresenter implements SubscriberInterface {
   }
 
   Future<void> handleItemDelete(ItemData itemData) async {
-    _shopSingleton.deleteData(itemData);
+    await _shopSingleton.deleteData(itemData);
     _view.onItemDelete();
   }
 
