@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:pcplus/const/order_status.dart';
 import 'package:pcplus/services/utility.dart';
 import 'package:pcplus/themes/palette/palette.dart';
 import 'package:pcplus/themes/text_decor.dart';
@@ -50,6 +51,147 @@ class _HistoryItemState extends State<HistoryItem> {
 
   @override
   void initState() {
+    isShop = widget.isShop;
+    if (isShop) {
+      switch (widget.status) {
+        case OrderStatus.PENDING_CONFIRMATION:
+          setState(() {
+            status = "Chờ duyệt đơn";
+            choXacNhan = false;
+            choLayHang = false;
+            choGiaoHang = false;
+            choDanhGia = false;
+            choDuyetDon = true;
+            choGuiHang = false;
+          });
+          break;
+        case OrderStatus.AWAIT_PICKUP:
+          setState(() {
+            status = "Chờ gửi hàng";
+            choXacNhan = false;
+            choLayHang = false;
+            choGiaoHang = false;
+            choDanhGia = false;
+            choDuyetDon = false;
+            choGuiHang = true;
+          });
+          break;
+        case OrderStatus.AWAIT_DELIVERY:
+          setState(() {
+            status = "Chờ giao hàng";
+            choXacNhan = false;
+            choLayHang = false;
+            choGiaoHang = true;
+            choDanhGia = false;
+            choDuyetDon = false;
+            choGuiHang = false;
+          });
+          break;
+        case OrderStatus.AWAIT_RATING:
+          setState(() {
+            status = "Chờ đánh giá";
+            choXacNhan = false;
+            choLayHang = false;
+            choGiaoHang = false;
+            choDanhGia = true;
+            choDuyetDon = false;
+            choGuiHang = false;
+          });
+          break;
+        case OrderStatus.COMPLETED:
+          setState(() {
+            status = "Hoàn thành";
+            choXacNhan = false;
+            choLayHang = false;
+            choGiaoHang = false;
+            choDanhGia = false;
+            choDuyetDon = false;
+            choGuiHang = false;
+          });
+          break;
+        default:
+          setState(() {
+            status = "Đã Hủy";
+            choXacNhan = false;
+            choLayHang = false;
+            choGiaoHang = false;
+            choDanhGia = false;
+            choDuyetDon = false;
+            choGuiHang = false;
+          });
+          break;
+      }
+    } else {
+      switch (widget.status) {
+        case OrderStatus.PENDING_CONFIRMATION:
+          setState(() {
+            status = "Chờ xác nhận";
+            choXacNhan = true;
+            choLayHang = false;
+            choGiaoHang = false;
+            choDanhGia = false;
+            choDuyetDon = false;
+            choGuiHang = false;
+          });
+          break;
+        case OrderStatus.AWAIT_PICKUP:
+          setState(() {
+            status = "Chờ lấy hàng";
+            choXacNhan = false;
+            choLayHang = true;
+            choGiaoHang = false;
+            choDanhGia = false;
+            choDuyetDon = false;
+            choGuiHang = false;
+          });
+          break;
+        case OrderStatus.AWAIT_DELIVERY:
+          setState(() {
+            status = "Chờ giao hàng";
+            choXacNhan = false;
+            choLayHang = false;
+            choGiaoHang = true;
+            choDanhGia = false;
+            choDuyetDon = false;
+            choGuiHang = false;
+          });
+          break;
+        case OrderStatus.AWAIT_RATING:
+          setState(() {
+            status = "Chờ đánh giá";
+            choXacNhan = false;
+            choLayHang = false;
+            choGiaoHang = false;
+            choDanhGia = true;
+            choDuyetDon = false;
+            choGuiHang = false;
+          });
+          break;
+        case OrderStatus.COMPLETED:
+          setState(() {
+            status = "Hoàn thành";
+            choXacNhan = false;
+            choLayHang = false;
+            choGiaoHang = false;
+            choDanhGia = false;
+            choDuyetDon = false;
+            choGuiHang = false;
+          });
+          break;
+        default:
+          setState(() {
+            status = "Đã Hủy";
+            choXacNhan = false;
+            choLayHang = false;
+            choGiaoHang = false;
+            choDanhGia = false;
+            choDuyetDon = false;
+            choGuiHang = false;
+          });
+          break;
+      }
+    }
+
     super.initState();
   }
 
